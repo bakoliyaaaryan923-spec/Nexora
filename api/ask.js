@@ -1,1 +1,1 @@
-export defa ult function handler(req, res) { res.json({ reply: "Hello from Nexora API" }); }
+export default function handler(req, res) { res.json({ reply: "Hello from Nexora API" }); }
