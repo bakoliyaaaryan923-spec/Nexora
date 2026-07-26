@@ -15,7 +15,7 @@
 
     body {
       background: #070b14;
-      color: white;
+      color: #ffffff;
       min-height: 100vh;
     }
 
@@ -58,24 +58,24 @@
 
     .hero p {
       color: #9ca8bc;
-      max-width: 520px;
+      max-width: 550px;
       margin: auto;
       line-height: 1.6;
     }
 
-    .search-section {
-      max-width: 650px;
+    .workspace {
+      max-width: 900px;
       margin: 20px auto;
       padding: 20px;
     }
 
     .search-box {
-      display: flex;
-      gap: 8px;
       background: #0e1524;
       border: 1px solid #27344b;
       border-radius: 18px;
       padding: 8px;
+      display: flex;
+      gap: 8px;
     }
 
     .search-box input {
@@ -99,19 +99,24 @@
       cursor: pointer;
     }
 
+    .search-box button:hover {
+      opacity: 0.9;
+    }
+
     #result {
+      display: none;
       margin-top: 15px;
-      padding: 16px;
+      padding: 18px;
       background: #0e1524;
-      border-radius: 15px;
+      border: 1px solid #27344b;
+      border-radius: 16px;
       color: #cbd5e1;
       line-height: 1.6;
-      display: none;
     }
 
     .tools {
       max-width: 950px;
-      margin: 20px auto;
+      margin: 10px auto;
       padding: 20px;
     }
 
@@ -185,7 +190,7 @@
 
   <header>
     <div class="logo">NEXORA AI</div>
-    <div class="badge">AI POWERED</div>
+    <div class="badge">FREE MODE</div>
   </header>
 
   <section class="hero">
@@ -196,15 +201,15 @@
     </p>
   </section>
 
-  <section class="search-section">
+  <section class="workspace">
     <div class="search-box">
       <input
-        id="searchInput"
+        id="question"
         type="text"
-        placeholder="Search Nexora..."
+        placeholder="Ask Nexora anything..."
         onkeydown="handleEnter(event)"
       >
-      <button onclick="searchNexora()">Search</button>
+      <button onclick="askNexora()">Ask</button>
     </div>
 
     <div id="result"></div>
@@ -215,28 +220,28 @@
 
     <div class="grid">
 
-      <div class="card" onclick="showTool('AI Assistant')">
+      <div class="card" onclick="openTool('assistant')">
         <div class="icon">🤖</div>
         <h3>AI Assistant</h3>
-        <p>Ask questions and explore your ideas with Nexora.</p>
+        <p>Ask simple questions and get helpful responses.</p>
       </div>
 
-      <div class="card" onclick="showTool('AI Writer')">
+      <div class="card" onclick="openTool('writer')">
         <div class="icon">✍️</div>
         <h3>AI Writer</h3>
-        <p>Create ideas, captions, descriptions and creative content.</p>
+        <p>Get simple writing ideas for captions, posts and projects.</p>
       </div>
 
-      <div class="card" onclick="showTool('Idea Generator')">
+      <div class="card" onclick="openTool('ideas')">
         <div class="icon">💡</div>
         <h3>Idea Generator</h3>
-        <p>Generate fresh ideas for videos, projects and businesses.</p>
+        <p>Generate starter ideas for videos, projects and businesses.</p>
       </div>
 
-      <div class="card" onclick="showTool('Study Helper')">
+      <div class="card" onclick="openTool('study')">
         <div class="icon">📚</div>
         <h3>Study Helper</h3>
-        <p>Make difficult topics easier to understand and learn.</p>
+        <p>Get simple study prompts and learning suggestions.</p>
       </div>
 
     </div>
@@ -247,40 +252,93 @@
   </footer>
 
   <script>
-    function searchNexora() {
-      const input = document.getElementById("searchInput");
+    function showResult(title, message) {
       const result = document.getElementById("result");
-      const text = input.value.trim();
-
-      if (!text) {
-        result.style.display = "block";
-        result.innerHTML = "Please enter something to search.";
-        return;
-      }
 
       result.style.display = "block";
       result.innerHTML =
-        "<b>Nexora Search</b><br><br>" +
-        "You searched for: <b>" +
-        escapeHTML(text) +
-        "</b><br><br>" +
-        "This free search interface is ready. Live web search can be connected later.";
+        "<strong>" + escapeHTML(title) + "</strong><br><br>" +
+        escapeHTML(message);
+    }
+
+    function askNexora() {
+      const input = document.getElementById("question");
+      const text = input.value.trim();
+
+      if (!text) {
+        showResult("Nexora", "Please type a question first.");
+        return;
+      }
+
+      const lower = text.toLowerCase();
+
+      if (
+        lower === "2+2" ||
+        lower === "2 + 2" ||
+        lower === "what is 2+2" ||
+        lower === "what is 2 + 2"
+      ) {
+        showResult("Nexora", "2 + 2 = 4");
+        return;
+      }
+
+      if (lower.includes("hello") || lower.includes("hi")) {
+        showResult(
+          "Nexora",
+          "Hello! Welcome to Nexora AI. Ask me something or explore one of the tools below."
+        );
+        return;
+      }
+
+      if (lower.includes("who are you")) {
+        showResult(
+          "Nexora",
+          "I am Nexora, your smart workspace assistant."
+        );
+        return;
+      }
+
+      showResult(
+        "Nexora Free Mode",
+        "I received your question: " + text +
+        ". This free version works without a paid AI API. More advanced AI responses can be connected later."
+      );
     }
 
     function handleEnter(event) {
       if (event.key === "Enter") {
-        searchNexora();
+        askNexora();
       }
     }
 
-    function showTool(toolName) {
-      const result = document.getElementById("result");
+    function openTool(tool) {
+      if (tool === "assistant") {
+        showResult(
+          "AI Assistant",
+          "Type a question in the box above and press Ask."
+        );
+      }
 
-      result.style.display = "block";
-      result.innerHTML =
-        "<b>" + escapeHTML(toolName) + "</b><br><br>" +
-        "This Nexora feature is ready as an interface. " +
-        "The full AI-powered version can be connected later.";
+      if (tool === "writer") {
+        showResult(
+          "AI Writer",
+          "Try a prompt like: Write a caption for my new project."
+        );
+      }
+
+      if (tool === "ideas") {
+        showResult(
+          "Idea Generator",
+          "Try a prompt like: Give me ideas for a school project."
+        );
+      }
+
+      if (tool === "study") {
+        showResult(
+          "Study Helper",
+          "Try a prompt like: Explain photosynthesis in simple words."
+        );
+      }
     }
 
     function escapeHTML(text) {
