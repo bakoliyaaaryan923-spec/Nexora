@@ -35,10 +35,10 @@
 
     .badge {
       background: #11182b;
+      color: #9defff;
       padding: 8px 12px;
       border-radius: 20px;
       font-size: 12px;
-      color: #9defff;
     }
 
     .hero {
@@ -58,28 +58,29 @@
 
     .hero p {
       color: #9ca8bc;
-      max-width: 500px;
+      max-width: 520px;
       margin: auto;
       line-height: 1.6;
     }
 
-    .chat {
-      max-width: 550px;
+    .search-section {
+      max-width: 650px;
       margin: 20px auto;
       padding: 20px;
     }
 
-    .chat-box {
+    .search-box {
+      display: flex;
+      gap: 8px;
       background: #0e1524;
       border: 1px solid #27344b;
       border-radius: 18px;
       padding: 8px;
-      display: flex;
-      gap: 8px;
     }
 
-    .chat-box input {
+    .search-box input {
       flex: 1;
+      min-width: 0;
       background: transparent;
       border: 0;
       outline: none;
@@ -88,25 +89,28 @@
       font-size: 15px;
     }
 
-    .chat-box button {
+    .search-box button {
       background: #6ee7ff;
       color: #061019;
       border: 0;
       border-radius: 13px;
-      padding: 14px 18px;
+      padding: 14px 20px;
       font-weight: bold;
       cursor: pointer;
     }
 
-    #answer {
+    #result {
       margin-top: 15px;
-      padding: 15px;
+      padding: 16px;
+      background: #0e1524;
+      border-radius: 15px;
       color: #cbd5e1;
-      line-height: 1.5;
+      line-height: 1.6;
+      display: none;
     }
 
     .tools {
-      max-width: 900px;
+      max-width: 950px;
       margin: 20px auto;
       padding: 20px;
     }
@@ -126,6 +130,13 @@
       border: 1px solid #292f40;
       border-radius: 18px;
       padding: 22px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: #6ee7ff;
     }
 
     .icon {
@@ -158,6 +169,14 @@
       .grid {
         grid-template-columns: 1fr;
       }
+
+      .search-box {
+        flex-direction: column;
+      }
+
+      .search-box button {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -177,17 +196,18 @@
     </p>
   </section>
 
-  <section class="chat">
-    <div class="chat-box">
+  <section class="search-section">
+    <div class="search-box">
       <input
-        id="question"
+        id="searchInput"
         type="text"
-        placeholder="Ask Nexora anything..."
+        placeholder="Search Nexora..."
+        onkeydown="handleEnter(event)"
       >
-      <button onclick="askAI()">Ask</button>
+      <button onclick="searchNexora()">Search</button>
     </div>
 
-    <div id="answer"></div>
+    <div id="result"></div>
   </section>
 
   <section class="tools">
@@ -195,25 +215,25 @@
 
     <div class="grid">
 
-      <div class="card">
+      <div class="card" onclick="showTool('AI Assistant')">
         <div class="icon">🤖</div>
         <h3>AI Assistant</h3>
-        <p>Ask questions and get quick answers from your smart workspace.</p>
+        <p>Ask questions and explore your ideas with Nexora.</p>
       </div>
 
-      <div class="card">
+      <div class="card" onclick="showTool('AI Writer')">
         <div class="icon">✍️</div>
         <h3>AI Writer</h3>
         <p>Create ideas, captions, descriptions and creative content.</p>
       </div>
 
-      <div class="card">
+      <div class="card" onclick="showTool('Idea Generator')">
         <div class="icon">💡</div>
         <h3>Idea Generator</h3>
         <p>Generate fresh ideas for videos, projects and businesses.</p>
       </div>
 
-      <div class="card">
+      <div class="card" onclick="showTool('Study Helper')">
         <div class="icon">📚</div>
         <h3>Study Helper</h3>
         <p>Make difficult topics easier to understand and learn.</p>
@@ -227,41 +247,46 @@
   </footer>
 
   <script>
-    async function askAI() {
-      const input = document.getElementById("question");
-      const answer = document.getElementById("answer");
+    function searchNexora() {
+      const input = document.getElementById("searchInput");
+      const result = document.getElementById("result");
       const text = input.value.trim();
 
       if (!text) {
-        answer.innerHTML = "Please type a question first.";
+        result.style.display = "block";
+        result.innerHTML = "Please enter something to search.";
         return;
       }
 
-      answer.innerHTML = "Nexora is thinking...";
+      result.style.display = "block";
+      result.innerHTML =
+        "<b>Nexora Search</b><br><br>" +
+        "You searched for: <b>" +
+        escapeHTML(text) +
+        "</b><br><br>" +
+        "This free search interface is ready. Live web search can be connected later.";
+    }
 
-      try {
-        const response = await fetch("/api/ask", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            question: text
-          })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.reply || "Something went wrong.");
-        }
-
-        answer.innerHTML = "<b>Nexora:</b> " + data.reply;
-        input.value = "";
-
-      } catch (error) {
-        answer.innerHTML = "<b>Nexora:</b> " + error.message;
+    function handleEnter(event) {
+      if (event.key === "Enter") {
+        searchNexora();
       }
+    }
+
+    function showTool(toolName) {
+      const result = document.getElementById("result");
+
+      result.style.display = "block";
+      result.innerHTML =
+        "<b>" + escapeHTML(toolName) + "</b><br><br>" +
+        "This Nexora feature is ready as an interface. " +
+        "The full AI-powered version can be connected later.";
+    }
+
+    function escapeHTML(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
     }
   </script>
 
