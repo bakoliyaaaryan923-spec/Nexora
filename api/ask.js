@@ -1,1 +1,1 @@
-API route
+export defa ult function handler(req, res) { res.json({ reply: "Hello from Nexora API" }); }
