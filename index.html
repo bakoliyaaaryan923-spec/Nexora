@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nexora AI</title>
+  <title>Nexora AI India</title>
+
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
 
   <style>
     * {
@@ -15,7 +18,7 @@
 
     body {
       background: #070b14;
-      color: white;
+      color: #fff;
       min-height: 100vh;
     }
 
@@ -43,12 +46,11 @@
 
     .hero {
       text-align: center;
-      padding: 55px 20px 35px;
+      padding: 50px 20px 30px;
     }
 
     .hero h1 {
       font-size: 42px;
-      line-height: 1.1;
       margin-bottom: 15px;
     }
 
@@ -58,13 +60,13 @@
 
     .hero p {
       color: #9ca8bc;
-      max-width: 520px;
+      max-width: 600px;
       margin: auto;
       line-height: 1.6;
     }
 
     .workspace {
-      max-width: 750px;
+      max-width: 760px;
       margin: 20px auto;
       padding: 20px;
     }
@@ -96,7 +98,7 @@
     }
 
     textarea {
-      min-height: 110px;
+      min-height: 180px;
       resize: vertical;
     }
 
@@ -108,10 +110,17 @@
       padding: 13px 18px;
       font-weight: bold;
       cursor: pointer;
+      margin: 4px;
     }
 
     button:hover {
       opacity: 0.9;
+    }
+
+    .secondary {
+      background: #182235;
+      color: #d9f9ff;
+      border: 1px solid #30405b;
     }
 
     .result {
@@ -124,6 +133,12 @@
       line-height: 1.6;
       white-space: pre-wrap;
       display: none;
+    }
+
+    .file-name {
+      color: #9defff;
+      margin: 8px 0 12px;
+      font-size: 14px;
     }
 
     .tools {
@@ -171,6 +186,10 @@
       line-height: 1.5;
     }
 
+    .hidden {
+      display: none;
+    }
+
     footer {
       text-align: center;
       padding: 40px 20px;
@@ -186,410 +205,630 @@
       .grid {
         grid-template-columns: 1fr;
       }
+
+      button {
+        width: calc(100% - 8px);
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <div class="logo">NEXORA AI</div>
-    <div class="badge">AI POWERED</div>
-  </header>
+<header>
+  <div class="logo">NEXORA AI</div>
+  <div class="badge">INDIA • AI WORKSPACE</div>
+</header>
 
-  <section class="hero">
-    <h1>Your Smart <span>AI</span> Assistant</h1>
+<section class="hero">
+  <h1>Your Smart <span>AI</span> Assistant</h1>
+  <p>
+    Create, write, learn, generate ideas and extract text from PDFs
+    with Nexora AI.
+  </p>
+</section>
 
-    <p>
-      Create, write, learn and explore with Nexora AI.
-      A simple futuristic AI workspace made for everyone.
+<section class="workspace">
+
+  <!-- AI ASSISTANT -->
+  <div class="panel" id="assistantPanel">
+    <h2>🤖 AI Assistant</h2>
+
+    <input
+      id="assistantInput"
+      type="text"
+      placeholder="Ask Nexora something..."
+      onkeydown="assistantEnter(event)"
+    >
+
+    <button onclick="askAssistant()">Ask</button>
+
+    <div class="result" id="assistantResult"></div>
+  </div>
+
+
+  <!-- AI WRITER -->
+  <div class="panel" id="writerPanel">
+    <h2>✍️ AI Writer</h2>
+
+    <input
+      id="writerTopic"
+      type="text"
+      placeholder="What should Nexora write about?"
+    >
+
+    <select id="writerType">
+      <option value="caption">Social Media Caption</option>
+      <option value="description">Description</option>
+      <option value="idea">Creative Idea</option>
+      <option value="paragraph">Short Paragraph</option>
+    </select>
+
+    <button onclick="generateWriter()">Generate</button>
+
+    <div class="result" id="writerResult"></div>
+  </div>
+
+
+  <!-- IDEA GENERATOR -->
+  <div class="panel" id="ideaPanel">
+    <h2>💡 Idea Generator</h2>
+
+    <input
+      id="ideaTopic"
+      type="text"
+      placeholder="Enter a topic..."
+    >
+
+    <button onclick="generateIdeas()">Generate Ideas</button>
+
+    <div class="result" id="ideaResult"></div>
+  </div>
+
+
+  <!-- STUDY HELPER -->
+  <div class="panel" id="studyPanel">
+    <h2>📚 Study Helper</h2>
+
+    <input
+      id="studyQuestion"
+      type="text"
+      placeholder="Enter a study question..."
+      onkeydown="studyEnter(event)"
+    >
+
+    <button onclick="studyHelp()">Explain</button>
+
+    <div class="result" id="studyResult"></div>
+  </div>
+
+
+  <!-- PDF TOOL -->
+  <div class="panel" id="pdfPanel">
+    <h2>📄 PDF to Editable Text</h2>
+
+    <p style="color:#8995a8; margin-bottom:15px;">
+      Upload a normal text-based PDF and Nexora will extract its text.
     </p>
-  </section>
 
-  <section class="workspace">
+    <input
+      id="pdfFile"
+      type="file"
+      accept="application/pdf"
+      onchange="showFileName()"
+    >
 
-    <!-- AI ASSISTANT -->
-    <div class="panel" id="assistantPanel">
-      <h2>🤖 AI Assistant</h2>
+    <div class="file-name" id="fileName"></div>
 
-      <input
-        id="assistantInput"
-        type="text"
-        placeholder="Ask Nexora something..."
-        onkeydown="assistantEnter(event)"
-      >
+    <button onclick="extractPDF()">Extract PDF Text</button>
 
-      <button onclick="askAssistant()">Ask</button>
+    <div id="pdfStatus" class="result"></div>
 
-      <div class="result" id="assistantResult"></div>
+    <textarea
+      id="pdfText"
+      class="hidden"
+      placeholder="Extracted PDF text will appear here..."
+    ></textarea>
+
+    <div id="pdfButtons" class="hidden">
+      <button onclick="copyPDFText()">Copy Text</button>
+      <button class="secondary" onclick="downloadPDFText()">
+        Download Text
+      </button>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- CARDS -->
+<section class="tools">
+  <h2>Explore Nexora</h2>
+
+  <div class="grid">
+
+    <div class="card" onclick="focusPanel('assistantPanel')">
+      <div class="icon">🤖</div>
+      <h3>AI Assistant</h3>
+      <p>Ask questions and solve basic calculations.</p>
     </div>
 
-
-    <!-- AI WRITER -->
-    <div class="panel" id="writerPanel">
-      <h2>✍️ AI Writer</h2>
-
-      <input
-        id="writerTopic"
-        type="text"
-        placeholder="What should Nexora write about?"
-      >
-
-      <select id="writerType">
-        <option value="caption">Social Media Caption</option>
-        <option value="description">Description</option>
-        <option value="idea">Creative Idea</option>
-        <option value="paragraph">Short Paragraph</option>
-      </select>
-
-      <button onclick="generateWriter()">Generate</button>
-
-      <div class="result" id="writerResult"></div>
+    <div class="card" onclick="focusPanel('writerPanel')">
+      <div class="icon">✍️</div>
+      <h3>AI Writer</h3>
+      <p>Create captions, descriptions and text.</p>
     </div>
 
-
-    <!-- IDEA GENERATOR -->
-    <div class="panel" id="ideaPanel">
-      <h2>💡 Idea Generator</h2>
-
-      <input
-        id="ideaTopic"
-        type="text"
-        placeholder="Enter a topic, e.g. YouTube, business, study..."
-      >
-
-      <button onclick="generateIdeas()">Generate Ideas</button>
-
-      <div class="result" id="ideaResult"></div>
+    <div class="card" onclick="focusPanel('ideaPanel')">
+      <div class="icon">💡</div>
+      <h3>Idea Generator</h3>
+      <p>Generate three starter ideas for any topic.</p>
     </div>
 
-
-    <!-- STUDY HELPER -->
-    <div class="panel" id="studyPanel">
-      <h2>📚 Study Helper</h2>
-
-      <input
-        id="studyQuestion"
-        type="text"
-        placeholder="Enter a study question..."
-        onkeydown="studyEnter(event)"
-      >
-
-      <button onclick="studyHelp()">Explain</button>
-
-      <div class="result" id="studyResult"></div>
+    <div class="card" onclick="focusPanel('studyPanel')">
+      <div class="icon">📚</div>
+      <h3>Study Helper</h3>
+      <p>Get simple study explanations.</p>
     </div>
 
-  </section>
-
-
-  <!-- TOOL CARDS -->
-  <section class="tools">
-    <h2>Explore Nexora</h2>
-
-    <div class="grid">
-
-      <div class="card" onclick="focusPanel('assistantPanel')">
-        <div class="icon">🤖</div>
-        <h3>AI Assistant</h3>
-        <p>Ask questions and try basic calculations.</p>
-      </div>
-
-      <div class="card" onclick="focusPanel('writerPanel')">
-        <div class="icon">✍️</div>
-        <h3>AI Writer</h3>
-        <p>Create captions, descriptions and creative text.</p>
-      </div>
-
-      <div class="card" onclick="focusPanel('ideaPanel')">
-        <div class="icon">💡</div>
-        <h3>Idea Generator</h3>
-        <p>Generate three starter ideas for any topic.</p>
-      </div>
-
-      <div class="card" onclick="focusPanel('studyPanel')">
-        <div class="icon">📚</div>
-        <h3>Study Helper</h3>
-        <p>Get simple explanations for study topics.</p>
-      </div>
-
+    <div class="card" onclick="focusPanel('pdfPanel')">
+      <div class="icon">📄</div>
+      <h3>PDF Tool</h3>
+      <p>Extract PDF text and edit it.</p>
     </div>
-  </section>
+
+  </div>
+</section>
 
 
-  <footer>
-    © 2026 Nexora AI — Built for the future
-  </footer>
+<footer>
+  © 2026 Nexora AI — Built for the future
+</footer>
 
 
-  <script>
+<script type="module">
 
-    function showResult(id, text) {
-      const box = document.getElementById(id);
-      box.style.display = "block";
-      box.textContent = text;
+  import * as pdfjsLib from
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+
+
+  window.showResult = function(id, text) {
+    const box = document.getElementById(id);
+    box.style.display = "block";
+    box.textContent = text;
+  };
+
+
+  /* AI ASSISTANT */
+
+  window.askAssistant = function() {
+    const input = document.getElementById("assistantInput");
+    const text = input.value.trim();
+
+    if (!text) {
+      showResult("assistantResult", "Please enter a question.");
+      return;
     }
 
+    const mathAnswer = calculateMath(text);
 
-    /* AI ASSISTANT */
-
-    function askAssistant() {
-      const input = document.getElementById("assistantInput");
-      const text = input.value.trim();
-
-      if (!text) {
-        showResult("assistantResult", "Please enter a question.");
-        return;
-      }
-
-      const mathAnswer = calculateMath(text);
-
-      if (mathAnswer !== null) {
-        showResult(
-          "assistantResult",
-          "Nexora:\n\n" + mathAnswer
-        );
-        return;
-      }
-
-      const lower = text.toLowerCase();
-
-      let answer =
-        "Nexora:\n\n" +
-        "You asked: " + text +
-        "\n\n" +
-        "This free version can handle basic calculations and built-in Nexora tools. " +
-        "A full AI model can be connected later.";
-
-      if (lower.includes("hello") || lower.includes("hi")) {
-        answer =
-          "Nexora:\n\nHello! 👋\nHow can I help you today?";
-      }
-
-      if (lower.includes("who are you")) {
-        answer =
-          "Nexora:\n\nI am Nexora AI, a simple AI workspace for writing, ideas, study and basic questions.";
-      }
-
-      if (lower.includes("what can you do")) {
-        answer =
-          "Nexora:\n\nI can help with:\n\n" +
-          "🤖 Basic questions and calculations\n" +
-          "✍️ Writing\n" +
-          "💡 Ideas\n" +
-          "📚 Study explanations";
-      }
-
-      showResult("assistantResult", answer);
+    if (mathAnswer !== null) {
+      showResult(
+        "assistantResult",
+        "Nexora:\n\n" + mathAnswer
+      );
+      return;
     }
 
+    const lower = text.toLowerCase();
 
-    function assistantEnter(event) {
-      if (event.key === "Enter") {
-        askAssistant();
-      }
+    let answer =
+      "Nexora:\n\n" +
+      "You asked: " + text +
+      "\n\n" +
+      "This free version supports basic calculations and Nexora's built-in tools.";
+
+    if (lower.includes("hello") || lower.includes("hi")) {
+      answer =
+        "Nexora:\n\nHello! 👋\nHow can I help you today?";
     }
 
+    if (lower.includes("who are you")) {
+      answer =
+        "Nexora:\n\nI am Nexora AI, a simple workspace for writing, ideas, study and basic questions.";
+    }
 
-    function calculateMath(text) {
-      let cleaned = text
-        .toLowerCase()
-        .replace(/what is/g, "")
-        .replace(/calculate/g, "")
-        .replace(/=/g, "")
-        .trim();
+    if (lower.includes("what can you do")) {
+      answer =
+        "Nexora:\n\nI can help with:\n\n" +
+        "🤖 Basic questions and calculations\n" +
+        "✍️ Writing\n" +
+        "💡 Ideas\n" +
+        "📚 Study explanations\n" +
+        "📄 PDF text extraction";
+    }
 
-      if (!/^[0-9+\-*/().\s]+$/.test(cleaned)) {
-        return null;
-      }
+    showResult("assistantResult", answer);
+  };
 
-      if (!/[+\-*/]/.test(cleaned)) {
-        return null;
-      }
 
-      try {
-        const answer = Function(
-          '"use strict"; return (' + cleaned + ')'
-        )();
+  window.assistantEnter = function(event) {
+    if (event.key === "Enter") {
+      askAssistant();
+    }
+  };
 
-        if (
-          typeof answer === "number" &&
-          Number.isFinite(answer)
-        ) {
-          return cleaned + " = " + answer;
-        }
-      } catch (error) {
-        return null;
-      }
 
+  function calculateMath(text) {
+    let cleaned = text
+      .toLowerCase()
+      .replace(/what is/g, "")
+      .replace(/calculate/g, "")
+      .replace(/=/g, "")
+      .trim();
+
+    if (!/^[0-9+\-*/().\s]+$/.test(cleaned)) {
       return null;
     }
 
-
-    /* AI WRITER */
-
-    function generateWriter() {
-      const topic =
-        document.getElementById("writerTopic").value.trim();
-
-      const type =
-        document.getElementById("writerType").value;
-
-      if (!topic) {
-        showResult(
-          "writerResult",
-          "Please enter a topic first."
-        );
-        return;
-      }
-
-      let output = "";
-
-      if (type === "caption") {
-        output =
-          "✨ Discover something new about " +
-          topic +
-          "!\n\n" +
-          "Learn, create and explore with Nexora AI. 🚀";
-      }
-
-      if (type === "description") {
-        output =
-          topic +
-          " is an interesting topic to explore. " +
-          "Start with the basics, discover useful information, " +
-          "and turn your ideas into something meaningful.";
-      }
-
-      if (type === "idea") {
-        output =
-          "💡 Creative idea about " +
-          topic +
-          ":\n\n" +
-          "Create a simple project that explains " +
-          topic +
-          " in a clear and interesting way.";
-      }
-
-      if (type === "paragraph") {
-        output =
-          topic +
-          " is a useful topic to explore. " +
-          "You can begin by understanding the main idea, " +
-          "learning the important points, and then applying " +
-          "what you learned through a small project.";
-      }
-
-      showResult("writerResult", output);
+    if (!/[+\-*/]/.test(cleaned)) {
+      return null;
     }
 
+    try {
+      const answer = Function(
+        '"use strict"; return (' + cleaned + ')'
+      )();
 
-    /* IDEA GENERATOR */
-
-    function generateIdeas() {
-      const topic =
-        document.getElementById("ideaTopic").value.trim();
-
-      if (!topic) {
-        showResult(
-          "ideaResult",
-          "Please enter a topic first."
-        );
-        return;
+      if (
+        typeof answer === "number" &&
+        Number.isFinite(answer)
+      ) {
+        return cleaned + " = " + answer;
       }
-
-      const ideas =
-        "💡 Idea 1\n" +
-        "Create a simple project about " +
-        topic +
-        " that beginners can understand easily.\n\n" +
-
-        "🚀 Idea 2\n" +
-        "Make a short video or presentation explaining " +
-        topic +
-        " with interesting examples.\n\n" +
-
-        "✨ Idea 3\n" +
-        "Build a small challenge or experiment around " +
-        topic +
-        " and share what you learn.";
-
-      showResult("ideaResult", ideas);
+    } catch (error) {
+      return null;
     }
 
+    return null;
+  }
 
-    /* STUDY HELPER */
 
-    function studyHelp() {
-      const question =
-        document.getElementById("studyQuestion").value.trim();
+  /* AI WRITER */
 
-      if (!question) {
-        showResult(
-          "studyResult",
-          "Please enter a study question."
-        );
-        return;
-      }
+  window.generateWriter = function() {
+    const topic =
+      document.getElementById("writerTopic").value.trim();
 
-      const mathAnswer = calculateMath(question);
+    const type =
+      document.getElementById("writerType").value;
 
-      if (mathAnswer !== null) {
-        showResult(
-          "studyResult",
-          "📚 Study Helper:\n\n" +
-          "Answer: " +
-          mathAnswer
-        );
-        return;
-      }
+    if (!topic) {
+      showResult(
+        "writerResult",
+        "Please enter a topic first."
+      );
+      return;
+    }
 
+    let output = "";
+
+    if (type === "caption") {
+      output =
+        "✨ Discover something new about " +
+        topic +
+        "!\n\n" +
+        "Learn, create and explore with Nexora AI. 🚀";
+    }
+
+    if (type === "description") {
+      output =
+        topic +
+        " is an interesting topic to explore. " +
+        "Start with the basics, discover useful information, " +
+        "and turn your ideas into something meaningful.";
+    }
+
+    if (type === "idea") {
+      output =
+        "💡 Creative idea about " +
+        topic +
+        ":\n\n" +
+        "Create a simple project that explains " +
+        topic +
+        " in a clear and interesting way.";
+    }
+
+    if (type === "paragraph") {
+      output =
+        topic +
+        " is a useful topic to explore. " +
+        "You can begin by understanding the main idea, " +
+        "learning the important points, and applying " +
+        "what you learned through a small project.";
+    }
+
+    showResult("writerResult", output);
+  };
+
+
+  /* IDEA GENERATOR */
+
+  window.generateIdeas = function() {
+    const topic =
+      document.getElementById("ideaTopic").value.trim();
+
+    if (!topic) {
+      showResult(
+        "ideaResult",
+        "Please enter a topic first."
+      );
+      return;
+    }
+
+    const ideas =
+      "💡 Idea 1\n" +
+      "Create a beginner-friendly project about " +
+      topic +
+      ".\n\n" +
+
+      "🚀 Idea 2\n" +
+      "Make a short video or presentation explaining " +
+      topic +
+      " with useful examples.\n\n" +
+
+      "✨ Idea 3\n" +
+      "Build a small challenge or experiment around " +
+      topic +
+      " and share what you learn.";
+
+    showResult("ideaResult", ideas);
+  };
+
+
+  /* STUDY HELPER */
+
+  window.studyHelp = function() {
+    const question =
+      document.getElementById("studyQuestion").value.trim();
+
+    if (!question) {
       showResult(
         "studyResult",
-        "📚 Study Helper:\n\n" +
-        "Let's break this topic down step by step:\n\n" +
-        "1. Identify the main idea.\n" +
-        "2. Learn the important terms.\n" +
-        "3. Look at a simple example.\n" +
-        "4. Practice the idea yourself.\n\n" +
-        "Your question was:\n" +
-        question
+        "Please enter a study question."
+      );
+      return;
+    }
+
+    const mathAnswer = calculateMath(question);
+
+    if (mathAnswer !== null) {
+      showResult(
+        "studyResult",
+        "📚 Study Helper:\n\nAnswer: " +
+        mathAnswer
+      );
+      return;
+    }
+
+    showResult(
+      "studyResult",
+      "📚 Study Helper:\n\n" +
+      "Let's understand this step by step:\n\n" +
+      "1. Identify the main idea.\n" +
+      "2. Learn the important terms.\n" +
+      "3. Look at a simple example.\n" +
+      "4. Practice the idea yourself.\n\n" +
+      "Your question:\n" +
+      question
+    );
+  };
+
+
+  window.studyEnter = function(event) {
+    if (event.key === "Enter") {
+      studyHelp();
+    }
+  };
+
+
+  /* PDF */
+
+  window.showFileName = function() {
+    const file =
+      document.getElementById("pdfFile").files[0];
+
+    const name =
+      document.getElementById("fileName");
+
+    if (!file) {
+      name.textContent = "";
+      return;
+    }
+
+    name.textContent =
+      "Selected: " + file.name;
+  };
+
+
+  window.extractPDF = async function() {
+    const fileInput =
+      document.getElementById("pdfFile");
+
+    const file = fileInput.files[0];
+
+    if (!file) {
+      showResult(
+        "pdfStatus",
+        "Please select a PDF first."
+      );
+      return;
+    }
+
+    if (file.type !== "application/pdf") {
+      showResult(
+        "pdfStatus",
+        "Please select a valid PDF file."
+      );
+      return;
+    }
+
+    showResult(
+      "pdfStatus",
+      "Reading PDF... Please wait."
+    );
+
+    document.getElementById("pdfText").classList.add("hidden");
+    document.getElementById("pdfButtons").classList.add("hidden");
+
+    try {
+      const buffer =
+        await file.arrayBuffer();
+
+      const pdf =
+        await pdfjsLib.getDocument({
+          data: buffer
+        }).promise;
+
+      let fullText = "";
+
+      for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+
+        const page =
+          await pdf.getPage(pageNumber);
+
+        const content =
+          await page.getTextContent();
+
+        const pageText =
+          content.items
+            .map(item => item.str)
+            .join(" ");
+
+        fullText +=
+          "\n\n--- Page " +
+          pageNumber +
+          " ---\n\n" +
+          pageText;
+      }
+
+      if (!fullText.trim()) {
+        throw new Error(
+          "No selectable text found."
+        );
+      }
+
+      const textArea =
+        document.getElementById("pdfText");
+
+      textArea.value =
+        fullText.trim();
+
+      textArea.classList.remove("hidden");
+
+      document
+        .getElementById("pdfButtons")
+        .classList.remove("hidden");
+
+      showResult(
+        "pdfStatus",
+        "PDF text extracted successfully. You can edit it below."
+      );
+
+    } catch (error) {
+
+      showResult(
+        "pdfStatus",
+        "PDF could not be read. This may be a scanned or protected PDF."
+      );
+
+      console.error(error);
+    }
+  };
+
+
+  window.copyPDFText = async function() {
+    const text =
+      document.getElementById("pdfText").value;
+
+    if (!text.trim()) {
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(text);
+
+      showResult(
+        "pdfStatus",
+        "Text copied successfully."
+      );
+
+    } catch (error) {
+
+      showResult(
+        "pdfStatus",
+        "Copy failed. Please select the text manually."
       );
     }
+  };
 
 
-    function studyEnter(event) {
-      if (event.key === "Enter") {
-        studyHelp();
-      }
+  window.downloadPDFText = function() {
+    const text =
+      document.getElementById("pdfText").value;
+
+    if (!text.trim()) {
+      return;
     }
 
+    const blob =
+      new Blob(
+        [text],
+        { type: "text/plain;charset=utf-8" }
+      );
 
-    /* CARD NAVIGATION */
+    const url =
+      URL.createObjectURL(blob);
 
-    function focusPanel(id) {
-      const panel = document.getElementById(id);
+    const link =
+      document.createElement("a");
 
-      panel.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
+    link.href = url;
+    link.download = "nexora-pdf-text.txt";
 
-      const input = panel.querySelector("input");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
 
-      if (input) {
-        setTimeout(function() {
-          input.focus();
-        }, 400);
-      }
+    URL.revokeObjectURL(url);
+  };
+
+
+  /* CARD NAVIGATION */
+
+  window.focusPanel = function(id) {
+    const panel =
+      document.getElementById(id);
+
+    panel.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+    const input =
+      panel.querySelector("input");
+
+    if (input) {
+      setTimeout(function() {
+        input.focus();
+      }, 400);
     }
+  };
 
-  </script>
+</script>
 
 </body>
 </html>
-
-
-
-
- 
