@@ -43,7 +43,7 @@
 
     .hero {
       text-align: center;
-      padding: 50px 20px 30px;
+      padding: 55px 20px 35px;
     }
 
     .hero h1 {
@@ -58,87 +58,62 @@
 
     .hero p {
       color: #9ca8bc;
-      max-width: 560px;
+      max-width: 520px;
       margin: auto;
       line-height: 1.6;
     }
 
-    .workspace {
-      max-width: 850px;
+    .search-section {
+      max-width: 700px;
       margin: 20px auto;
       padding: 20px;
     }
 
-    .panel {
+    .search-box {
+      display: flex;
+      gap: 8px;
       background: #0e1524;
       border: 1px solid #27344b;
-      border-radius: 20px;
-      padding: 20px;
+      border-radius: 18px;
+      padding: 8px;
     }
 
-    .panel h2 {
-      margin-bottom: 15px;
-    }
-
-    .input,
-    textarea,
-    select {
-      width: 100%;
-      background: #080e1b;
-      color: white;
-      border: 1px solid #29364d;
-      border-radius: 12px;
-      padding: 14px;
+    .search-box input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: 0;
       outline: none;
+      color: white;
+      padding: 14px;
       font-size: 15px;
-      margin-bottom: 12px;
     }
 
-    textarea {
-      min-height: 130px;
-      resize: vertical;
-    }
-
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    button {
+    .search-box button {
       background: #6ee7ff;
       color: #061019;
       border: 0;
-      border-radius: 12px;
-      padding: 12px 18px;
+      border-radius: 13px;
+      padding: 14px 20px;
       font-weight: bold;
       cursor: pointer;
     }
 
-    button.secondary {
-      background: #182338;
-      color: #dcecff;
-    }
-
-    button:hover {
-      opacity: 0.9;
-    }
-
-    #output {
-      display: none;
-      margin-top: 18px;
-      background: #080e1b;
-      border: 1px solid #29364d;
-      border-radius: 15px;
+    #result {
+      margin-top: 15px;
       padding: 18px;
-      color: #d8e2f0;
-      line-height: 1.7;
+      background: #0e1524;
+      border: 1px solid #27344b;
+      border-radius: 15px;
+      color: #cbd5e1;
+      line-height: 1.6;
+      display: none;
       white-space: pre-wrap;
     }
 
     .tools {
       max-width: 950px;
-      margin: 10px auto;
+      margin: 20px auto;
       padding: 20px;
     }
 
@@ -181,8 +156,307 @@
       line-height: 1.5;
     }
 
+    .writer {
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 20px;
+      display: none;
+    }
+
+    .writer-box {
+      background: #0e1524;
+      border: 1px solid #27344b;
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .writer-box h2 {
+      margin-bottom: 15px;
+    }
+
+    .writer-box input,
+    .writer-box select {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #27344b;
+      background: #070b14;
+      color: white;
+      outline: none;
+    }
+
+    .writer-box button {
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      border-radius: 12px;
+      background: #6ee7ff;
+      color: #061019;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #writerResult {
+      margin-top: 15px;
+      padding: 15px;
+      background: #070b14;
+      border-radius: 12px;
+      color: #cbd5e1;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
     footer {
       text-align: center;
       padding: 40px 20px;
       color: #68758a;
-     
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 34px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .search-box {
+        flex-direction: column;
+      }
+
+      .search-box button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">NEXORA AI</div>
+    <div class="badge">AI POWERED</div>
+  </header>
+
+  <section class="hero">
+    <h1>Your Smart <span>AI</span> Assistant</h1>
+    <p>
+      Create, write, learn and explore with Nexora AI.
+      A simple futuristic AI workspace made for everyone.
+    </p>
+  </section>
+
+  <section class="search-section">
+    <div class="search-box">
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Ask Nexora anything..."
+        onkeydown="handleEnter(event)"
+      >
+      <button onclick="askNexora()">Ask</button>
+    </div>
+
+    <div id="result"></div>
+  </section>
+
+  <section class="writer" id="writer">
+    <div class="writer-box">
+      <h2>✍️ AI Writer</h2>
+
+      <input
+        id="writerTopic"
+        type="text"
+        placeholder="What should Nexora write about?"
+      >
+
+      <select id="writerType">
+        <option value="caption">Social Media Caption</option>
+        <option value="description">Description</option>
+        <option value="idea">Creative Idea</option>
+        <option value="short">Short Paragraph</option>
+      </select>
+
+      <button onclick="generateWriter()">Generate</button>
+
+      <div id="writerResult"></div>
+    </div>
+  </section>
+
+  <section class="tools">
+    <h2>Explore Nexora</h2>
+
+    <div class="grid">
+
+      <div class="card" onclick="showTool('AI Assistant')">
+        <div class="icon">🤖</div>
+        <h3>AI Assistant</h3>
+        <p>Ask questions and get useful answers.</p>
+      </div>
+
+      <div class="card" onclick="showWriter()">
+        <div class="icon">✍️</div>
+        <h3>AI Writer</h3>
+        <p>Create captions, descriptions and ideas.</p>
+      </div>
+
+      <div class="card" onclick="showTool('Idea Generator')">
+        <div class="icon">💡</div>
+        <h3>Idea Generator</h3>
+        <p>Generate fresh ideas for projects and content.</p>
+      </div>
+
+      <div class="card" onclick="showTool('Study Helper')">
+        <div class="icon">📚</div>
+        <h3>Study Helper</h3>
+        <p>Make simple study questions easier to understand.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Nexora AI — Built for the future
+  </footer>
+
+  <script>
+    function showResult(message) {
+      const result = document.getElementById("result");
+      result.style.display = "block";
+      result.textContent = message;
+    }
+
+    function askNexora() {
+      const input = document.getElementById("searchInput");
+      const text = input.value.trim();
+
+      if (!text) {
+        showResult("Please enter a question.");
+        return;
+      }
+
+      const answer = calculateSimpleMath(text);
+
+      if (answer !== null) {
+        showResult("Nexora:\n\n" + answer);
+        return;
+      }
+
+      showResult(
+        "Nexora:\n\n" +
+        "You asked: " + text +
+        "\n\nThis free Nexora version can answer basic calculations and provide built-in features. " +
+        "A full AI model can be connected later."
+      );
+    }
+
+    function calculateSimpleMath(text) {
+      const cleaned = text
+        .toLowerCase()
+        .replace(/what is/g, "")
+        .replace(/calculate/g, "")
+        .replace(/=/g, "")
+        .trim();
+
+      if (!/^[0-9+\-*/().\s]+$/.test(cleaned)) {
+        return null;
+      }
+
+      if (!/[+\-*/]/.test(cleaned)) {
+        return null;
+      }
+
+      try {
+        const result = Function(
+          '"use strict"; return (' + cleaned + ')'
+        )();
+
+        if (typeof result === "number" && Number.isFinite(result)) {
+          return cleaned + " = " + result;
+        }
+      } catch (error) {
+        return null;
+      }
+
+      return null;
+    }
+
+    function handleEnter(event) {
+      if (event.key === "Enter") {
+        askNexora();
+      }
+    }
+
+    function showTool(toolName) {
+      if (toolName === "AI Assistant") {
+        document.getElementById("searchInput").focus();
+        showResult(
+          "AI Assistant is ready.\n\nTry asking something like:\n2+2\n10*5\n100/4"
+        );
+        return;
+      }
+
+      showResult(
+        toolName +
+        " is ready as a free Nexora feature."
+      );
+    }
+
+    function showWriter() {
+      const writer = document.getElementById("writer");
+      writer.style.display = "block";
+      writer.scrollIntoView({ behavior: "smooth" });
+    }
+
+    function generateWriter() {
+      const topic = document.getElementById("writerTopic").value.trim();
+      const type = document.getElementById("writerType").value;
+      const output = document.getElementById("writerResult");
+
+      if (!topic) {
+        output.textContent = "Please enter a topic first.";
+        return;
+      }
+
+      let text = "";
+
+      if (type === "caption") {
+        text =
+          "✨ Discover something new about " + topic +
+          "!\n\n" +
+          "Learn, create and explore with Nexora AI. 🚀";
+      }
+
+      if (type === "description") {
+        text =
+          topic +
+          " is an interesting topic with plenty of possibilities to explore. " +
+          "Nexora AI can help you turn ideas about " +
+          topic +
+          " into clear and useful content.";
+      }
+
+      if (type === "idea") {
+        text =
+          "💡 Creative idea about " + topic + ":\n\n" +
+          "Create a simple project that explains " +
+          topic +
+          " in an interesting and easy-to-understand way.";
+      }
+
+      if (type === "short") {
+        text =
+          topic +
+          " is a useful topic to explore. Start with the basic idea, " +
+          "learn the important points, and then build your understanding step by step.";
+      }
+
+      output.textContent = text;
+    }
+  </script>
+
+</body>
+</html>
