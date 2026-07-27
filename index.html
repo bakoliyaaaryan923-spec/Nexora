@@ -63,52 +63,67 @@
       line-height: 1.6;
     }
 
-    .search-section {
-      max-width: 700px;
+    .workspace {
+      max-width: 750px;
       margin: 20px auto;
       padding: 20px;
     }
 
-    .search-box {
-      display: flex;
-      gap: 8px;
+    .panel {
       background: #0e1524;
       border: 1px solid #27344b;
       border-radius: 18px;
-      padding: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
     }
 
-    .search-box input {
-      flex: 1;
-      min-width: 0;
-      background: transparent;
-      border: 0;
-      outline: none;
+    .panel h2 {
+      margin-bottom: 15px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      background: #070b14;
       color: white;
+      border: 1px solid #27344b;
+      border-radius: 12px;
       padding: 14px;
+      outline: none;
+      margin-bottom: 12px;
       font-size: 15px;
     }
 
-    .search-box button {
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    button {
       background: #6ee7ff;
       color: #061019;
       border: 0;
-      border-radius: 13px;
-      padding: 14px 20px;
+      border-radius: 12px;
+      padding: 13px 18px;
       font-weight: bold;
       cursor: pointer;
     }
 
-    #result {
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .result {
       margin-top: 15px;
-      padding: 18px;
-      background: #0e1524;
-      border: 1px solid #27344b;
-      border-radius: 15px;
+      background: #070b14;
+      border: 1px solid #202838;
+      border-radius: 12px;
+      padding: 15px;
       color: #cbd5e1;
       line-height: 1.6;
-      display: none;
       white-space: pre-wrap;
+      display: none;
     }
 
     .tools {
@@ -156,57 +171,6 @@
       line-height: 1.5;
     }
 
-    .writer {
-      max-width: 700px;
-      margin: 20px auto;
-      padding: 20px;
-      display: none;
-    }
-
-    .writer-box {
-      background: #0e1524;
-      border: 1px solid #27344b;
-      border-radius: 18px;
-      padding: 20px;
-    }
-
-    .writer-box h2 {
-      margin-bottom: 15px;
-    }
-
-    .writer-box input,
-    .writer-box select {
-      width: 100%;
-      margin-bottom: 12px;
-      padding: 14px;
-      border-radius: 12px;
-      border: 1px solid #27344b;
-      background: #070b14;
-      color: white;
-      outline: none;
-    }
-
-    .writer-box button {
-      width: 100%;
-      padding: 14px;
-      border: 0;
-      border-radius: 12px;
-      background: #6ee7ff;
-      color: #061019;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    #writerResult {
-      margin-top: 15px;
-      padding: 15px;
-      background: #070b14;
-      border-radius: 12px;
-      color: #cbd5e1;
-      line-height: 1.6;
-      white-space: pre-wrap;
-    }
-
     footer {
       text-align: center;
       padding: 40px 20px;
@@ -222,14 +186,6 @@
       .grid {
         grid-template-columns: 1fr;
       }
-
-      .search-box {
-        flex-direction: column;
-      }
-
-      .search-box button {
-        width: 100%;
-      }
     }
   </style>
 </head>
@@ -243,28 +199,34 @@
 
   <section class="hero">
     <h1>Your Smart <span>AI</span> Assistant</h1>
+
     <p>
       Create, write, learn and explore with Nexora AI.
       A simple futuristic AI workspace made for everyone.
     </p>
   </section>
 
-  <section class="search-section">
-    <div class="search-box">
+  <section class="workspace">
+
+    <!-- AI ASSISTANT -->
+    <div class="panel" id="assistantPanel">
+      <h2>🤖 AI Assistant</h2>
+
       <input
-        id="searchInput"
+        id="assistantInput"
         type="text"
-        placeholder="Ask Nexora anything..."
-        onkeydown="handleEnter(event)"
+        placeholder="Ask Nexora something..."
+        onkeydown="assistantEnter(event)"
       >
-      <button onclick="askNexora()">Ask</button>
+
+      <button onclick="askAssistant()">Ask</button>
+
+      <div class="result" id="assistantResult"></div>
     </div>
 
-    <div id="result"></div>
-  </section>
 
-  <section class="writer" id="writer">
-    <div class="writer-box">
+    <!-- AI WRITER -->
+    <div class="panel" id="writerPanel">
       <h2>✍️ AI Writer</h2>
 
       <input
@@ -277,84 +239,160 @@
         <option value="caption">Social Media Caption</option>
         <option value="description">Description</option>
         <option value="idea">Creative Idea</option>
-        <option value="short">Short Paragraph</option>
+        <option value="paragraph">Short Paragraph</option>
       </select>
 
       <button onclick="generateWriter()">Generate</button>
 
-      <div id="writerResult"></div>
+      <div class="result" id="writerResult"></div>
     </div>
+
+
+    <!-- IDEA GENERATOR -->
+    <div class="panel" id="ideaPanel">
+      <h2>💡 Idea Generator</h2>
+
+      <input
+        id="ideaTopic"
+        type="text"
+        placeholder="Enter a topic, e.g. YouTube, business, study..."
+      >
+
+      <button onclick="generateIdeas()">Generate Ideas</button>
+
+      <div class="result" id="ideaResult"></div>
+    </div>
+
+
+    <!-- STUDY HELPER -->
+    <div class="panel" id="studyPanel">
+      <h2>📚 Study Helper</h2>
+
+      <input
+        id="studyQuestion"
+        type="text"
+        placeholder="Enter a study question..."
+        onkeydown="studyEnter(event)"
+      >
+
+      <button onclick="studyHelp()">Explain</button>
+
+      <div class="result" id="studyResult"></div>
+    </div>
+
   </section>
 
+
+  <!-- TOOL CARDS -->
   <section class="tools">
     <h2>Explore Nexora</h2>
 
     <div class="grid">
 
-      <div class="card" onclick="showTool('AI Assistant')">
+      <div class="card" onclick="focusPanel('assistantPanel')">
         <div class="icon">🤖</div>
         <h3>AI Assistant</h3>
-        <p>Ask questions and get useful answers.</p>
+        <p>Ask questions and try basic calculations.</p>
       </div>
 
-      <div class="card" onclick="showWriter()">
+      <div class="card" onclick="focusPanel('writerPanel')">
         <div class="icon">✍️</div>
         <h3>AI Writer</h3>
-        <p>Create captions, descriptions and ideas.</p>
+        <p>Create captions, descriptions and creative text.</p>
       </div>
 
-      <div class="card" onclick="showTool('Idea Generator')">
+      <div class="card" onclick="focusPanel('ideaPanel')">
         <div class="icon">💡</div>
         <h3>Idea Generator</h3>
-        <p>Generate fresh ideas for projects and content.</p>
+        <p>Generate three starter ideas for any topic.</p>
       </div>
 
-      <div class="card" onclick="showTool('Study Helper')">
+      <div class="card" onclick="focusPanel('studyPanel')">
         <div class="icon">📚</div>
         <h3>Study Helper</h3>
-        <p>Make simple study questions easier to understand.</p>
+        <p>Get simple explanations for study topics.</p>
       </div>
 
     </div>
   </section>
 
+
   <footer>
     © 2026 Nexora AI — Built for the future
   </footer>
 
+
   <script>
-    function showResult(message) {
-      const result = document.getElementById("result");
-      result.style.display = "block";
-      result.textContent = message;
+
+    function showResult(id, text) {
+      const box = document.getElementById(id);
+      box.style.display = "block";
+      box.textContent = text;
     }
 
-    function askNexora() {
-      const input = document.getElementById("searchInput");
+
+    /* AI ASSISTANT */
+
+    function askAssistant() {
+      const input = document.getElementById("assistantInput");
       const text = input.value.trim();
 
       if (!text) {
-        showResult("Please enter a question.");
+        showResult("assistantResult", "Please enter a question.");
         return;
       }
 
-      const answer = calculateSimpleMath(text);
+      const mathAnswer = calculateMath(text);
 
-      if (answer !== null) {
-        showResult("Nexora:\n\n" + answer);
+      if (mathAnswer !== null) {
+        showResult(
+          "assistantResult",
+          "Nexora:\n\n" + mathAnswer
+        );
         return;
       }
 
-      showResult(
+      const lower = text.toLowerCase();
+
+      let answer =
         "Nexora:\n\n" +
         "You asked: " + text +
-        "\n\nThis free Nexora version can answer basic calculations and provide built-in features. " +
-        "A full AI model can be connected later."
-      );
+        "\n\n" +
+        "This free version can handle basic calculations and built-in Nexora tools. " +
+        "A full AI model can be connected later.";
+
+      if (lower.includes("hello") || lower.includes("hi")) {
+        answer =
+          "Nexora:\n\nHello! 👋\nHow can I help you today?";
+      }
+
+      if (lower.includes("who are you")) {
+        answer =
+          "Nexora:\n\nI am Nexora AI, a simple AI workspace for writing, ideas, study and basic questions.";
+      }
+
+      if (lower.includes("what can you do")) {
+        answer =
+          "Nexora:\n\nI can help with:\n\n" +
+          "🤖 Basic questions and calculations\n" +
+          "✍️ Writing\n" +
+          "💡 Ideas\n" +
+          "📚 Study explanations";
+      }
+
+      showResult("assistantResult", answer);
     }
 
-    function calculateSimpleMath(text) {
-      const cleaned = text
+
+    function assistantEnter(event) {
+      if (event.key === "Enter") {
+        askAssistant();
+      }
+    }
+
+
+    function calculateMath(text) {
+      let cleaned = text
         .toLowerCase()
         .replace(/what is/g, "")
         .replace(/calculate/g, "")
@@ -370,12 +408,15 @@
       }
 
       try {
-        const result = Function(
+        const answer = Function(
           '"use strict"; return (' + cleaned + ')'
         )();
 
-        if (typeof result === "number" && Number.isFinite(result)) {
-          return cleaned + " = " + result;
+        if (
+          typeof answer === "number" &&
+          Number.isFinite(answer)
+        ) {
+          return cleaned + " = " + answer;
         }
       } catch (error) {
         return null;
@@ -384,79 +425,171 @@
       return null;
     }
 
-    function handleEnter(event) {
-      if (event.key === "Enter") {
-        askNexora();
-      }
-    }
 
-    function showTool(toolName) {
-      if (toolName === "AI Assistant") {
-        document.getElementById("searchInput").focus();
+    /* AI WRITER */
+
+    function generateWriter() {
+      const topic =
+        document.getElementById("writerTopic").value.trim();
+
+      const type =
+        document.getElementById("writerType").value;
+
+      if (!topic) {
         showResult(
-          "AI Assistant is ready.\n\nTry asking something like:\n2+2\n10*5\n100/4"
+          "writerResult",
+          "Please enter a topic first."
         );
         return;
       }
 
-      showResult(
-        toolName +
-        " is ready as a free Nexora feature."
-      );
-    }
-
-    function showWriter() {
-      const writer = document.getElementById("writer");
-      writer.style.display = "block";
-      writer.scrollIntoView({ behavior: "smooth" });
-    }
-
-    function generateWriter() {
-      const topic = document.getElementById("writerTopic").value.trim();
-      const type = document.getElementById("writerType").value;
-      const output = document.getElementById("writerResult");
-
-      if (!topic) {
-        output.textContent = "Please enter a topic first.";
-        return;
-      }
-
-      let text = "";
+      let output = "";
 
       if (type === "caption") {
-        text =
-          "✨ Discover something new about " + topic +
+        output =
+          "✨ Discover something new about " +
+          topic +
           "!\n\n" +
           "Learn, create and explore with Nexora AI. 🚀";
       }
 
       if (type === "description") {
-        text =
+        output =
           topic +
-          " is an interesting topic with plenty of possibilities to explore. " +
-          "Nexora AI can help you turn ideas about " +
-          topic +
-          " into clear and useful content.";
+          " is an interesting topic to explore. " +
+          "Start with the basics, discover useful information, " +
+          "and turn your ideas into something meaningful.";
       }
 
       if (type === "idea") {
-        text =
-          "💡 Creative idea about " + topic + ":\n\n" +
+        output =
+          "💡 Creative idea about " +
+          topic +
+          ":\n\n" +
           "Create a simple project that explains " +
           topic +
-          " in an interesting and easy-to-understand way.";
+          " in a clear and interesting way.";
       }
 
-      if (type === "short") {
-        text =
+      if (type === "paragraph") {
+        output =
           topic +
-          " is a useful topic to explore. Start with the basic idea, " +
-          "learn the important points, and then build your understanding step by step.";
+          " is a useful topic to explore. " +
+          "You can begin by understanding the main idea, " +
+          "learning the important points, and then applying " +
+          "what you learned through a small project.";
       }
 
-      output.textContent = text;
+      showResult("writerResult", output);
     }
+
+
+    /* IDEA GENERATOR */
+
+    function generateIdeas() {
+      const topic =
+        document.getElementById("ideaTopic").value.trim();
+
+      if (!topic) {
+        showResult(
+          "ideaResult",
+          "Please enter a topic first."
+        );
+        return;
+      }
+
+      const ideas =
+        "💡 Idea 1\n" +
+        "Create a simple project about " +
+        topic +
+        " that beginners can understand easily.\n\n" +
+
+        "🚀 Idea 2\n" +
+        "Make a short video or presentation explaining " +
+        topic +
+        " with interesting examples.\n\n" +
+
+        "✨ Idea 3\n" +
+        "Build a small challenge or experiment around " +
+        topic +
+        " and share what you learn.";
+
+      showResult("ideaResult", ideas);
+    }
+
+
+    /* STUDY HELPER */
+
+    function studyHelp() {
+      const question =
+        document.getElementById("studyQuestion").value.trim();
+
+      if (!question) {
+        showResult(
+          "studyResult",
+          "Please enter a study question."
+        );
+        return;
+      }
+
+      const mathAnswer = calculateMath(question);
+
+      if (mathAnswer !== null) {
+        showResult(
+          "studyResult",
+          "📚 Study Helper:\n\n" +
+          "Answer: " +
+          mathAnswer
+        );
+        return;
+      }
+
+      showResult(
+        "studyResult",
+        "📚 Study Helper:\n\n" +
+        "Let's break this topic down step by step:\n\n" +
+        "1. Identify the main idea.\n" +
+        "2. Learn the important terms.\n" +
+        "3. Look at a simple example.\n" +
+        "4. Practice the idea yourself.\n\n" +
+        "Your question was:\n" +
+        question
+      );
+    }
+
+
+    function studyEnter(event) {
+      if (event.key === "Enter") {
+        studyHelp();
+      }
+    }
+
+
+    /* CARD NAVIGATION */
+
+    function focusPanel(id) {
+      const panel = document.getElementById(id);
+
+      panel.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+      const input = panel.querySelector("input");
+
+      if (input) {
+        setTimeout(function() {
+          input.focus();
+        }, 400);
+      }
+    }
+
   </script>
 
 </body>
 </html>
+
+
+
+
+ 
