@@ -1,331 +1,447 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070b14">
+<title>Nexora AI — Smart AI Workspace</title>
 
-  <title>Nexora AI</title>
-  <meta
-    name="description"
-    content="Nexora AI — ask questions, write, solve and create from one workspace."
-  >
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Inter,Arial,sans-serif;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+body{
+  background:#070b14;
+  color:#f8fafc;
+  min-height:100vh;
+}
 
-    body {
-      background:
-        radial-gradient(circle at top, #10233b 0%, #070b14 42%);
-      color: #fff;
-      min-height: 100vh;
-    }
+header{
+  height:72px;
+  padding:0 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid #202838;
+  background:rgba(7,11,20,.92);
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(12px);
+}
 
-    header {
-      height: 70px;
-      padding: 0 22px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #202838;
-      background: rgba(7, 11, 20, 0.92);
-    }
+.logo{
+  font-size:23px;
+  font-weight:800;
+  letter-spacing:.5px;
+  color:#6ee7ff;
+}
 
-    .logo {
-      color: #6ee7ff;
-      font-size: 23px;
-      font-weight: 800;
-    }
+.status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#b8c4d8;
+  font-size:13px;
+}
 
-    .badge {
-      background: #11182b;
-      color: #9defff;
-      border: 1px solid #27344b;
-      padding: 7px 11px;
-      border-radius: 20px;
-      font-size: 12px;
-    }
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#35d07f;
+}
 
-    .hero {
-      text-align: center;
-      padding: 65px 20px 30px;
-    }
+.hero{
+  text-align:center;
+  padding:48px 20px 24px;
+}
 
-    .hero h1 {
-      font-size: clamp(36px, 7vw, 60px);
-      margin-bottom: 16px;
-    }
+.hero h1{
+  font-size:clamp(34px,6vw,58px);
+  line-height:1.05;
+  margin-bottom:14px;
+}
 
-    .hero h1 span {
-      color: #6ee7ff;
-    }
+.hero h1 span{
+  color:#6ee7ff;
+}
 
-    .hero p {
-      color: #9ca8bc;
-      max-width: 650px;
-      margin: auto;
-      line-height: 1.6;
-    }
+.hero p{
+  color:#8f9db3;
+  max-width:650px;
+  margin:auto;
+  line-height:1.6;
+}
 
-    .workspace {
-      width: min(900px, calc(100% - 28px));
-      margin: 25px auto;
-    }
+.app{
+  width:min(1000px,94%);
+  margin:20px auto 50px;
+}
 
-    .chat-panel {
-      background: #0e1524;
-      border: 1px solid #27344b;
-      border-radius: 22px;
-      padding: 16px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-    }
+.chat{
+  background:#0d1422;
+  border:1px solid #26344a;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 20px 70px rgba(0,0,0,.28);
+}
 
-    .chat-top {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 5px 14px;
-    }
+.chatHeader{
+  padding:18px 20px;
+  border-bottom:1px solid #202c40;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
 
-    .ready {
-      color: #7eeaff;
-      font-size: 12px;
-    }
+.chatTitle{
+  font-weight:700;
+}
 
-    #chat {
-      min-height: 260px;
-      max-height: 520px;
-      overflow-y: auto;
-      padding: 8px;
-    }
+.chatSub{
+  color:#8190a7;
+  font-size:12px;
+  margin-top:4px;
+}
 
-    .welcome {
-      text-align: center;
-      color: #8995a8;
-      padding: 65px 15px;
-      line-height: 1.7;
-    }
+.toolsBtn{
+  background:#172236;
+  color:#dffaff;
+  border:1px solid #30415b;
+  border-radius:11px;
+  padding:10px 14px;
+  cursor:pointer;
+}
 
-    .message {
-      display: flex;
-      margin: 12px 0;
-    }
+.toolsBtn:hover{
+  border-color:#6ee7ff;
+}
 
-    .message.user {
-      justify-content: flex-end;
-    }
+.messages{
+  min-height:420px;
+  max-height:650px;
+  overflow-y:auto;
+  padding:24px;
+}
 
-    .bubble {
-      max-width: 85%;
-      padding: 13px 15px;
-      border-radius: 16px;
-      line-height: 1.6;
-      white-space: pre-wrap;
-    }
+.welcome{
+  text-align:center;
+  padding:70px 20px;
+  color:#8f9db3;
+}
 
-    .user .bubble {
-      background: #183247;
-      border: 1px solid #2d526d;
-    }
+.welcomeIcon{
+  font-size:46px;
+  margin-bottom:14px;
+}
 
-    .ai .bubble {
-      background: #101827;
-      border: 1px solid #202e43;
-      color: #dce5f0;
-    }
+.message{
+  display:flex;
+  margin-bottom:22px;
+}
 
-    .composer {
-      background: #080e19;
-      border: 1px solid #27344b;
-      border-radius: 18px;
-      padding: 10px;
-      margin-top: 10px;
-    }
+.message.user{
+  justify-content:flex-end;
+}
 
-    textarea {
-      width: 100%;
-      min-height: 80px;
-      resize: vertical;
-      border: 0;
-      outline: 0;
-      background: transparent;
-      color: white;
-      padding: 8px;
-      font-size: 15px;
-    }
+.bubble{
+  max-width:82%;
+  padding:15px 17px;
+  border-radius:18px;
+  line-height:1.65;
+  white-space:pre-wrap;
+}
 
-    .actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+.user .bubble{
+  background:#173447;
+  border:1px solid #28546a;
+}
 
-    .left,
-    .right {
-      display: flex;
-      gap: 7px;
-      flex-wrap: wrap;
-    }
+.assistant .bubble{
+  background:#111b2b;
+  border:1px solid #273750;
+}
 
-    button {
-      border: 1px solid #30415a;
-      background: #111c2d;
-      color: #dce8f5;
-      border-radius: 11px;
-      padding: 10px 14px;
-      font-weight: 600;
-      cursor: pointer;
-    }
+.label{
+  display:block;
+  font-size:11px;
+  color:#6ee7ff;
+  font-weight:700;
+  margin-bottom:6px;
+  letter-spacing:.5px;
+}
 
-    button:hover {
-      border-color: #6ee7ff;
-    }
+.composer{
+  border-top:1px solid #202c40;
+  padding:16px;
+}
 
-    .send {
-      background: #6ee7ff;
-      color: #061019;
-      border-color: #6ee7ff;
-    }
+textarea{
+  width:100%;
+  min-height:90px;
+  max-height:220px;
+  resize:vertical;
+  background:#070b14;
+  color:#fff;
+  border:1px solid #2a3a52;
+  border-radius:15px;
+  padding:15px;
+  outline:none;
+  font-size:15px;
+}
 
-    .tools-wrap {
-      position: relative;
-    }
+textarea:focus{
+  border-color:#6ee7ff;
+}
 
-    .tools-menu {
-      display: none;
-      position: absolute;
-      bottom: 48px;
-      left: 0;
-      width: 245px;
-      background: #0c1422;
-      border: 1px solid #27344b;
-      border-radius: 15px;
-      padding: 8px;
-      z-index: 20;
-      box-shadow: 0 20px 50px rgba(0,0,0,.4);
-    }
+.actions{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:10px;
+  gap:10px;
+}
 
-    .tools-menu.open {
-      display: block;
-    }
+.hint{
+  color:#66758c;
+  font-size:12px;
+}
 
-    .tool {
-      width: 100%;
-      text-align: left;
-      border: 0;
-      background: transparent;
-      padding: 11px;
-      margin: 2px 0;
-    }
+.send{
+  background:#6ee7ff;
+  color:#061019;
+  border:0;
+  border-radius:12px;
+  padding:12px 20px;
+  font-weight:800;
+  cursor:pointer;
+}
 
-    .tool:hover {
-      background: #142034;
-    }
+.send:hover{
+  opacity:.9;
+}
 
-    .tool small {
-      display: block;
-      color: #8995a8;
-      margin-top: 3px;
-      font-weight: normal;
-    }
+.secondary{
+  background:#172236;
+  color:#dffaff;
+  border:1px solid #30415b;
+  border-radius:12px;
+  padding:12px 16px;
+  cursor:pointer;
+}
 
-    .quick {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 16px;
-    }
+.toolMenu{
+  display:none;
+  position:absolute;
+  right:24px;
+  top:64px;
+  width:260px;
+  background:#0e1727;
+  border:1px solid #2b3b54;
+  border-radius:16px;
+  padding:10px;
+  box-shadow:0 18px 50px rgba(0,0,0,.45);
+  z-index:50;
+}
 
-    .quick button {
-      text-align: left;
-      min-height: 70px;
-    }
+.toolMenu.show{
+  display:block;
+}
 
-    .quick span {
-      display: block;
-      color: #8995a8;
-      font-size: 12px;
-      margin-top: 5px;
-      font-weight: normal;
-    }
+.toolItem{
+  width:100%;
+  text-align:left;
+  background:transparent;
+  border:0;
+  color:#dce7f5;
+  padding:12px;
+  border-radius:10px;
+  cursor:pointer;
+}
 
-    footer {
-      text-align: center;
-      padding: 40px 20px;
-      color: #68758a;
-      font-size: 13px;
-    }
+.toolItem:hover{
+  background:#172236;
+}
 
-    @media (max-width: 700px) {
-      .quick {
-        grid-template-columns: repeat(2, 1fr);
-      }
+.toolPanel{
+  display:none;
+  margin-top:18px;
+  background:#0d1422;
+  border:1px solid #26344a;
+  border-radius:20px;
+  padding:20px;
+}
 
-      .bubble {
-        max-width: 94%;
-      }
-    }
+.toolPanel.show{
+  display:block;
+}
 
-    @media (max-width: 480px) {
-      .quick {
-        grid-template-columns: 1fr;
-      }
+.toolPanel h2{
+  margin-bottom:15px;
+}
 
-      .actions {
-        align-items: stretch;
-      }
+input,select{
+  width:100%;
+  background:#070b14;
+  color:white;
+  border:1px solid #2a3a52;
+  border-radius:12px;
+  padding:13px;
+  margin-bottom:10px;
+  outline:none;
+}
 
-      .left,
-      .right {
-        width: 100%;
-      }
+.toolOutput{
+  margin-top:14px;
+  padding:15px;
+  background:#070b14;
+  border:1px solid #202c40;
+  border-radius:12px;
+  color:#d4deeb;
+  line-height:1.6;
+  white-space:pre-wrap;
+  display:none;
+}
 
-      .left button,
-      .right button {
-        flex: 1;
-      }
-    }
-  </style>
+.pdfText{
+  width:100%;
+  min-height:230px;
+  margin-top:14px;
+  background:#070b14;
+  color:#fff;
+  border:1px solid #2a3a52;
+  border-radius:12px;
+  padding:14px;
+  display:none;
+}
+
+footer{
+  text-align:center;
+  padding:35px 20px;
+  color:#647187;
+  font-size:13px;
+}
+
+@media(max-width:600px){
+  header{
+    padding:0 15px;
+  }
+
+  .hero{
+    padding-top:35px;
+  }
+
+  .messages{
+    min-height:360px;
+    padding:16px;
+  }
+
+  .bubble{
+    max-width:92%;
+  }
+
+  .hint{
+    display:none;
+  }
+
+  .actions{
+    justify-content:flex-end;
+  }
+
+  .toolMenu{
+    right:12px;
+  }
+}
+</style>
 </head>
 
 <body>
 
 <header>
   <div class="logo">NEXORA AI</div>
-  <div class="badge">AI POWERED</div>
+
+  <div class="status">
+    <span class="dot"></span>
+    Ready
+  </div>
 </header>
 
 <section class="hero">
-  <h1>Ask <span>anything.</span></h1>
-
+  <h1>Your Smart <span>AI</span> Assistant</h1>
   <p>
-    Chat, write, solve, learn and create from one simple AI workspace.
+    Ask questions, calculate, write, learn, generate ideas and work with PDFs
+    from one simple workspace.
   </p>
 </section>
 
-<main class="workspace">
+<main class="app">
 
-  <section class="chat-panel">
+  <section class="chat">
 
-    <div class="chat-top">
-      <strong>Nexora AI</strong>
-      <span class="ready">● Ready</span>
+    <div class="chatHeader">
+
+      <div>
+        <div class="chatTitle">🤖 Nexora</div>
+        <div class="chatSub">One conversation. Multiple tools.</div>
+      </div>
+
+      <div style="position:relative">
+
+        <button class="toolsBtn" onclick="toggleTools()">
+          🔎 Tools
+        </button>
+
+        <div class="toolMenu" id="toolMenu">
+
+          <button class="toolItem" onclick="openTool('writer')">
+            ✍️ AI Writer
+          </button>
+
+          <button class="toolItem" onclick="openTool('ideas')">
+            💡 Idea Generator
+          </button>
+
+          <button class="toolItem" onclick="openTool('study')">
+            📚 Study Helper
+          </button>
+
+          <button class="toolItem" onclick="openTool('pdf')">
+            📄 PDF Text Tool
+          </button>
+
+          <button class="toolItem" onclick="clearChat()">
+            🗑️ Clear Conversation
+          </button>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <div id="chat">
+    <div class="messages" id="messages">
 
       <div class="welcome" id="welcome">
-        <h2>How can I help?</h2>
+
+        <div class="welcomeIcon">✨</div>
+
+        <h2 style="margin-bottom:10px;color:#e8f8ff">
+          Welcome to Nexora AI
+        </h2>
 
         <p>
-          Ask Nexora a question, ask it to write something,
-          solve a problem, or explore an idea.
+          Ask something like:
+          <br>
+          <b style="color:#dcefff">
+            Bharat ki rajdhani kya hai?
+          </b>
         </p>
+
       </div>
 
     </div>
@@ -333,61 +449,23 @@
     <div class="composer">
 
       <textarea
-        id="prompt"
+        id="question"
         placeholder="Ask Nexora anything..."
         onkeydown="handleEnter(event)"
       ></textarea>
 
       <div class="actions">
 
-        <div class="left">
-
-          <div class="tools-wrap">
-
-            <button onclick="toggleTools()">🔎 Tools</button>
-
-            <div class="tools-menu" id="toolsMenu">
-
-              <button class="tool" onclick="chooseMode('chat')">
-                💬 Chat
-                <small>Ask anything</small>
-              </button>
-
-              <button class="tool" onclick="chooseMode('write')">
-                ✍️ Write
-                <small>Create or rewrite text</small>
-              </button>
-
-              <button class="tool" onclick="chooseMode('image')">
-                🖼️ Create Image
-                <small>Describe an image</small>
-              </button>
-
-              <button class="tool" onclick="chooseMode('study')">
-                📚 Learn
-                <small>Explain difficult topics</small>
-              </button>
-
-              <button class="tool" onclick="chooseMode('math')">
-                🧮 Solve
-                <small>Math and reasoning</small>
-              </button>
-
-              <button class="tool" onclick="chooseMode('ideas')">
-                💡 Ideas
-                <small>Generate ideas</small>
-              </button>
-
-            </div>
-
-          </div>
-
-          <button onclick="clearChat()">Clear</button>
-
+        <div class="hint">
+          Enter = send • Shift + Enter = new line
         </div>
 
-        <div class="right">
-          <button class="send" id="sendButton" onclick="sendMessage()">
+        <div>
+          <button class="secondary" onclick="clearInput()">
+            Clear
+          </button>
+
+          <button class="send" onclick="sendMessage()">
             ➤ Send
           </button>
         </div>
@@ -398,256 +476,846 @@
 
   </section>
 
-  <div class="quick">
 
-    <button onclick="quickAsk('भारत की राजधानी क्या है?')">
-      🧠 <strong>Ask</strong>
-      <span>General question</span>
+  <!-- WRITER -->
+
+  <section class="toolPanel" id="writerTool">
+
+    <h2>✍️ AI Writer</h2>
+
+    <input
+      id="writerTopic"
+      placeholder="What should Nexora write about?"
+    >
+
+    <select id="writerType">
+
+      <option value="caption">
+        Social Media Caption
+      </option>
+
+      <option value="description">
+        Description
+      </option>
+
+      <option value="paragraph">
+        Short Paragraph
+      </option>
+
+      <option value="idea">
+        Creative Idea
+      </option>
+
+    </select>
+
+    <button class="send" onclick="generateWriter()">
+      Generate
     </button>
 
-    <button onclick="quickAsk('Explain artificial intelligence in simple words.')">
-      📚 <strong>Learn</strong>
-      <span>Explain a topic</span>
+    <div class="toolOutput" id="writerOutput"></div>
+
+  </section>
+
+
+  <!-- IDEAS -->
+
+  <section class="toolPanel" id="ideasTool">
+
+    <h2>💡 Idea Generator</h2>
+
+    <input
+      id="ideaTopic"
+      placeholder="Enter a topic..."
+    >
+
+    <button class="send" onclick="generateIdeas()">
+      Generate Ideas
     </button>
 
-    <button onclick="quickAsk('Write a short professional introduction for me.')">
-      ✍️ <strong>Write</strong>
-      <span>Create text</span>
+    <div class="toolOutput" id="ideaOutput"></div>
+
+  </section>
+
+
+  <!-- STUDY -->
+
+  <section class="toolPanel" id="studyTool">
+
+    <h2>📚 Study Helper</h2>
+
+    <input
+      id="studyTopic"
+      placeholder="Enter a study question..."
+    >
+
+    <button class="send" onclick="studyHelp()">
+      Explain
     </button>
 
-    <button onclick="quickAsk('What is 125 multiplied by 8?')">
-      🧮 <strong>Solve</strong>
-      <span>Try a calculation</span>
+    <div class="toolOutput" id="studyOutput"></div>
+
+  </section>
+
+
+  <!-- PDF -->
+
+  <section class="toolPanel" id="pdfTool">
+
+    <h2>📄 PDF Text Tool</h2>
+
+    <p style="color:#8995a8;margin-bottom:14px">
+      Upload a text-based PDF to extract its selectable text.
+    </p>
+
+    <input
+      id="pdfFile"
+      type="file"
+      accept="application/pdf"
+    >
+
+    <button class="send" onclick="extractPDF()">
+      Extract Text
     </button>
 
-  </div>
+    <div class="toolOutput" id="pdfOutput"></div>
+
+    <textarea
+      class="pdfText"
+      id="pdfText"
+      placeholder="Extracted PDF text will appear here..."
+    ></textarea>
+
+    <div id="pdfActions" style="display:none;margin-top:10px">
+
+      <button class="send" onclick="copyPDF()">
+        Copy
+      </button>
+
+      <button class="secondary" onclick="downloadPDF()">
+        Download TXT
+      </button>
+
+    </div>
+
+  </section>
 
 </main>
 
 <footer>
-  © 2026 Nexora AI — One box. Every task.
+  © 2026 Nexora AI — Built for the future
 </footer>
+
 
 <script>
 
-  let currentMode = "chat";
+const messages = document.getElementById("messages");
+const question = document.getElementById("question");
 
-  function toggleTools() {
-    document
-      .getElementById("toolsMenu")
-      .classList.toggle("open");
+
+function toggleTools(){
+
+  document
+    .getElementById("toolMenu")
+    .classList.toggle("show");
+
+}
+
+
+function openTool(name){
+
+  document
+    .getElementById("toolMenu")
+    .classList.remove("show");
+
+  document
+    .querySelectorAll(".toolPanel")
+    .forEach(panel => {
+      panel.classList.remove("show");
+    });
+
+  const panel =
+    document.getElementById(name + "Tool");
+
+  if(panel){
+
+    panel.classList.add("show");
+
+    panel.scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
+
   }
 
-  function chooseMode(mode) {
+}
 
-    currentMode = mode;
 
-    const names = {
-      chat: "Chat",
-      write: "Write",
-      image: "Create Image",
-      study: "Learn",
-      math: "Solve",
-      ideas: "Ideas"
-    };
+function clearInput(){
 
-    addAIMessage(
-      "Mode selected: " +
-      names[mode] +
-      ".\n\nTell me what you want to do."
+  question.value = "";
+
+  question.focus();
+
+}
+
+
+function clearChat(){
+
+  messages.innerHTML = `
+
+    <div class="welcome" id="welcome">
+
+      <div class="welcomeIcon">✨</div>
+
+      <h2 style="margin-bottom:10px;color:#e8f8ff">
+        Welcome to Nexora AI
+      </h2>
+
+      <p>
+        Ask something like:
+        <br>
+        <b style="color:#dcefff">
+          Bharat ki rajdhani kya hai?
+        </b>
+      </p>
+
+    </div>
+
+  `;
+
+}
+
+
+function addMessage(type,text){
+
+  const welcome =
+    document.getElementById("welcome");
+
+  if(welcome){
+    welcome.remove();
+  }
+
+  const row =
+    document.createElement("div");
+
+  row.className =
+    "message " + type;
+
+  const bubble =
+    document.createElement("div");
+
+  bubble.className = "bubble";
+
+  const label =
+    document.createElement("span");
+
+  label.className = "label";
+
+  label.textContent =
+    type === "user" ? "YOU" : "NEXORA";
+
+  bubble.appendChild(label);
+
+  const content =
+    document.createElement("div");
+
+  content.textContent = text;
+
+  bubble.appendChild(content);
+
+  row.appendChild(bubble);
+
+  messages.appendChild(row);
+
+  messages.scrollTop =
+    messages.scrollHeight;
+
+}
+
+
+function handleEnter(event){
+
+  if(event.key === "Enter" && !event.shiftKey){
+
+    event.preventDefault();
+
+    sendMessage();
+
+  }
+
+}
+
+
+function calculateMath(text){
+
+  let cleaned =
+    text
+      .toLowerCase()
+      .replace(/what is/g,"")
+      .replace(/calculate/g,"")
+      .replace(/=/g,"")
+      .trim();
+
+  if(!/^[0-9+\-*/().\s]+$/.test(cleaned)){
+    return null;
+  }
+
+  if(!/[+\-*/]/.test(cleaned)){
+    return null;
+  }
+
+  try{
+
+    const result =
+      Function(
+        '"use strict"; return (' +
+        cleaned +
+        ')'
+      )();
+
+    if(
+      typeof result === "number" &&
+      Number.isFinite(result)
+    ){
+
+      return cleaned + " = " + result;
+
+    }
+
+  }catch(error){
+
+    return null;
+
+  }
+
+  return null;
+
+}
+
+
+function builtInAnswer(text){
+
+  const lower =
+    text.toLowerCase().trim();
+
+
+  const math =
+    calculateMath(text);
+
+  if(math){
+    return "Answer:\n\n" + math;
+  }
+
+
+  if(
+    lower.includes("bharat ki rajdhani") ||
+    lower.includes("capital of india") ||
+    lower.includes("भारत की राजधानी")
+  ){
+
+    return `
+भारत की राजधानी नई दिल्ली है।
+
+नई दिल्ली भारत के राष्ट्रीय राजधानी क्षेत्र में स्थित है। यह भारत की केंद्र सरकार, संसद और कई प्रमुख सरकारी संस्थानों का महत्वपूर्ण केंद्र है।
+
+अगर आप चाहें तो Nexora आपको नई दिल्ली का इतिहास, प्रमुख स्थान, भूगोल या भारत की राजधानी से जुड़े और तथ्य भी समझा सकता है।
+`.trim();
+
+  }
+
+
+  if(
+    lower === "hello" ||
+    lower === "hi" ||
+    lower.includes("hello nexora")
+  ){
+
+    return `
+Hello! 👋
+
+मैं Nexora AI हूँ।
+
+आप मुझसे calculations, writing, ideas, study topics और सामान्य questions के बारे में पूछ सकते हैं।
+`.trim();
+
+  }
+
+
+  if(
+    lower.includes("who are you") ||
+    lower.includes("tum kaun ho") ||
+    lower.includes("आप कौन हो")
+  ){
+
+    return `
+मैं Nexora AI हूँ — एक smart workspace जिसमें chat, writing, ideas, study और PDF tools एक ही interface में रखे गए हैं।
+`.trim();
+
+  }
+
+
+  if(
+    lower.includes("what can you do") ||
+    lower.includes("tum kya kar sakte ho")
+  ){
+
+    return `
+Nexora में आप:
+
+🤖 Questions पूछ सकते हैं
+🧮 Basic calculations कर सकते हैं
+✍️ Text और captions बना सकते हैं
+💡 Ideas generate कर सकते हैं
+📚 Study topics समझ सकते हैं
+📄 PDF का selectable text निकाल सकते हैं
+
+Tools menu से इन सुविधाओं को खोल सकते हैं।
+`.trim();
+
+  }
+
+
+  return `
+मैंने आपका सवाल समझा:
+
+"${text}"
+
+अभी Nexora का Free Mode बिना external AI API के चल रहा है। इसलिए यह built-in tools, calculations और predefined smart answers दे सकता है।
+
+जब AI backend connect होगा, तब यही chat interface अधिक general questions के लिए AI-generated answers भी दिखा सकेगा।
+`.trim();
+
+}
+
+
+function sendMessage(){
+
+  const text =
+    question.value.trim();
+
+  if(!text){
+    return;
+  }
+
+  addMessage("user",text);
+
+  question.value = "";
+
+  setTimeout(function(){
+
+    const answer =
+      builtInAnswer(text);
+
+    addMessage(
+      "assistant",
+      answer
     );
 
+  },300);
+
+}
+
+
+/* WRITER */
+
+function generateWriter(){
+
+  const topic =
     document
-      .getElementById("toolsMenu")
-      .classList.remove("open");
+      .getElementById("writerTopic")
+      .value
+      .trim();
+
+  const type =
+    document
+      .getElementById("writerType")
+      .value;
+
+  const output =
+    document
+      .getElementById("writerOutput");
+
+  if(!topic){
+
+    output.style.display = "block";
+
+    output.textContent =
+      "Please enter a topic first.";
+
+    return;
+
+  }
+
+  let result = "";
+
+
+  if(type === "caption"){
+
+    result =
+      "✨ Discover something new about " +
+      topic +
+      "!\n\n" +
+      "Learn, create and explore with Nexora AI. 🚀";
+
+  }
+
+
+  if(type === "description"){
+
+    result =
+      topic +
+      " is an interesting topic to explore. " +
+      "Start with the basics, discover useful information, " +
+      "and turn your ideas into something meaningful.";
+
+  }
+
+
+  if(type === "paragraph"){
+
+    result =
+      topic +
+      " is a useful topic to explore. " +
+      "You can begin by understanding the main idea, " +
+      "learning the important points and applying " +
+      "what you learn through a simple project.";
+
+  }
+
+
+  if(type === "idea"){
+
+    result =
+      "💡 Creative idea:\n\n" +
+      "Create a simple project around " +
+      topic +
+      " that beginners can understand easily.";
+
+  }
+
+
+  output.style.display = "block";
+
+  output.textContent = result;
+
+}
+
+
+/* IDEAS */
+
+function generateIdeas(){
+
+  const topic =
+    document
+      .getElementById("ideaTopic")
+      .value
+      .trim();
+
+  const output =
+    document
+      .getElementById("ideaOutput");
+
+  if(!topic){
+
+    output.style.display = "block";
+
+    output.textContent =
+      "Please enter a topic first.";
+
+    return;
+
+  }
+
+
+  output.style.display = "block";
+
+  output.textContent =
+
+`💡 Idea 1
+
+Create a beginner-friendly project about ${topic}.
+
+🚀 Idea 2
+
+Make a short video or presentation explaining ${topic} with useful examples.
+
+✨ Idea 3
+
+Build a small challenge or experiment around ${topic} and share what you learn.`;
+
+}
+
+
+/* STUDY */
+
+function studyHelp(){
+
+  const topic =
+    document
+      .getElementById("studyTopic")
+      .value
+      .trim();
+
+  const output =
+    document
+      .getElementById("studyOutput");
+
+  if(!topic){
+
+    output.style.display = "block";
+
+    output.textContent =
+      "Please enter a study question.";
+
+    return;
+
+  }
+
+
+  const math =
+    calculateMath(topic);
+
+  output.style.display = "block";
+
+
+  if(math){
+
+    output.textContent =
+      "📚 Answer:\n\n" + math;
+
+    return;
+
+  }
+
+
+  output.textContent =
+
+`📚 Study Helper
+
+Question:
+${topic}
+
+Simple study method:
+
+1. Identify the main concept.
+2. Understand the important terms.
+3. Look at a simple example.
+4. Try solving a similar question yourself.
+
+Tip: Ask Nexora a more specific question for a more focused explanation.`;
+
+}
+
+
+/* PDF */
+
+async function extractPDF(){
+
+  const input =
+    document.getElementById("pdfFile");
+
+  const file =
+    input.files[0];
+
+  const output =
+    document.getElementById("pdfOutput");
+
+  const textArea =
+    document.getElementById("pdfText");
+
+  if(!file){
+
+    output.style.display = "block";
+
+    output.textContent =
+      "Please select a PDF first.";
+
+    return;
+
+  }
+
+
+  output.style.display = "block";
+
+  output.textContent =
+    "Reading PDF...";
+
+
+  try{
+
+    if(!window.pdfjsLib){
+
+      await loadPDFLibrary();
+
+    }
+
+
+    const buffer =
+      await file.arrayBuffer();
+
+    const pdf =
+      await window.pdfjsLib
+        .getDocument({
+          data:buffer
+        })
+        .promise;
+
+
+    let fullText = "";
+
+
+    for(
+      let pageNumber = 1;
+      pageNumber <= pdf.numPages;
+      pageNumber++
+    ){
+
+      const page =
+        await pdf.getPage(pageNumber);
+
+      const content =
+        await page.getTextContent();
+
+      const pageText =
+        content.items
+          .map(item => item.str)
+          .join(" ");
+
+      fullText +=
+        "\n\n--- Page " +
+        pageNumber +
+        " ---\n\n" +
+        pageText;
+
+    }
+
+
+    if(!fullText.trim()){
+
+      throw new Error(
+        "No selectable text found."
+      );
+
+    }
+
+
+    textArea.value =
+      fullText.trim();
+
+    textArea.style.display =
+      "block";
 
     document
-      .getElementById("prompt")
-      .focus();
+      .getElementById("pdfActions")
+      .style.display = "block";
+
+
+    output.textContent =
+      "PDF text extracted successfully. You can edit it below.";
+
+  }catch(error){
+
+    output.textContent =
+      "PDF could not be read. This may be a scanned, protected or image-only PDF.";
+
+    console.error(error);
+
   }
 
-  function quickAsk(text) {
-    document.getElementById("prompt").value = text;
-    sendMessage();
+}
+
+
+function loadPDFLibrary(){
+
+  return new Promise(function(resolve,reject){
+
+    const script =
+      document.createElement("script");
+
+    script.src =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
+
+    script.type = "module";
+
+    script.onload =
+      function(){
+
+        setTimeout(function(){
+
+          if(window.pdfjsLib){
+
+            resolve();
+
+          }else{
+
+            reject(
+              new Error(
+                "PDF library unavailable"
+              )
+            );
+
+          }
+
+        },500);
+
+      };
+
+    script.onerror =
+      reject;
+
+    document.head.appendChild(script);
+
+  });
+
+}
+
+
+async function copyPDF(){
+
+  const text =
+    document
+      .getElementById("pdfText")
+      .value;
+
+  if(!text.trim()){
+    return;
   }
 
-  function handleEnter(event) {
 
-    if (event.key === "Enter" && !event.shiftKey) {
+  try{
 
-      event.preventDefault();
+    await navigator
+      .clipboard
+      .writeText(text);
 
-      sendMessage();
-    }
+    document
+      .getElementById("pdfOutput")
+      .textContent =
+      "Text copied successfully.";
+
+  }catch(error){
+
+    document
+      .getElementById("pdfOutput")
+      .textContent =
+      "Copy failed. Please select the text manually.";
+
   }
 
-  function removeWelcome() {
+}
 
-    const welcome =
-      document.getElementById("welcome");
 
-    if (welcome) {
-      welcome.remove();
-    }
+function downloadPDF(){
+
+  const text =
+    document
+      .getElementById("pdfText")
+      .value;
+
+  if(!text.trim()){
+    return;
   }
 
-  function addUserMessage(text) {
 
-    removeWelcome();
-
-    const chat =
-      document.getElementById("chat");
-
-    const row =
-      document.createElement("div");
-
-    row.className =
-      "message user";
-
-    const bubble =
-      document.createElement("div");
-
-    bubble.className =
-      "bubble";
-
-    bubble.textContent =
-      text;
-
-    row.appendChild(bubble);
-
-    chat.appendChild(row);
-
-    chat.scrollTop =
-      chat.scrollHeight;
-  }
-
-  function addAIMessage(text) {
-
-    removeWelcome();
-
-    const chat =
-      document.getElementById("chat");
-
-    const row =
-      document.createElement("div");
-
-    row.className =
-      "message ai";
-
-    const bubble =
-      document.createElement("div");
-
-    bubble.className =
-      "bubble";
-
-    bubble.textContent =
-      text;
-
-    row.appendChild(bubble);
-
-    chat.appendChild(row);
-
-    chat.scrollTop =
-      chat.scrollHeight;
-  }
-
-  async function sendMessage() {
-
-    const input =
-      document.getElementById("prompt");
-
-    const button =
-      document.getElementById("sendButton");
-
-    const question =
-      input.value.trim();
-
-    if (!question) {
-
-      addAIMessage(
-        "Please enter a question first."
-      );
-
-      return;
-    }
-
-    addUserMessage(question);
-
-    input.value = "";
-
-    button.disabled = true;
-
-    button.textContent = "Thinking...";
-
-    try {
-
-      const response =
-        await fetch("/api/ask", {
-
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json"
-          },
-
-          body: JSON.stringify({
-            question: question,
-            mode: currentMode
-          })
-
-        });
-
-      const data =
-        await response.json();
-
-      if (!response.ok) {
-
-        throw new Error(
-          data.reply ||
-          "Request failed."
-        );
-      }
-
-      addAIMessage(
-        data.reply ||
-        "No response received."
-      );
-
-    } catch (error) {
-
-      addAIMessage(
-        "Nexora could not connect to the AI service.\n\n" +
-        "Please check the API configuration and try again."
-      );
-
-      console.error(error);
-
-    } finally {
-
-      button.disabled = false;
-
-      button.textContent = "➤ Send";
-    }
-  }
-
-  function clearChat() {
-
-    document.getElementById("chat").innerHTML =
-      `
-      <div class="welcome" id="welcome">
-        <h2>How can I help?</h2>
-
-        <p>
-          Ask Nexora a question, ask it to write something,
-          solve a problem, or explore an idea.
-        </p>
-      </div>
-      `;
-
-    document.getElementById("prompt").value = "";
-  }
-
-</script>
-
-</body>
-</html>
+  const blob =
+    ne
