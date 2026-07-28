@@ -1,598 +1,507 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nexora AI</title>  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexora AI</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:#0b0d12;
+  color:#f5f7fb;
+  min-height:100vh;
+}
+button,textarea{font:inherit}
 
-    body {
-      font-family: Inter, Arial, sans-serif;
-      background: #0b0d12;
-      color: #f5f7fb;
-      min-height: 100vh;
-    }
+.app{min-height:100vh;display:flex}
 
-    button,
-    textarea {
-      font: inherit;
-    }
+.sidebar{
+  width:250px;
+  background:#10131a;
+  border-right:1px solid #252a34;
+  padding:18px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
 
-    .app {
-      min-height: 100vh;
-      display: flex;
-    }
+.logo{
+  font-size:21px;
+  font-weight:800;
+  padding:8px;
+}
+.logo span{color:#887cff}
 
-    /* SIDEBAR */
-    .sidebar {
-      width: 260px;
-      background: #10131a;
-      border-right: 1px solid #242832;
-      padding: 20px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
+.new-chat{
+  background:#191c24;
+  color:#fff;
+  border:1px solid #303541;
+  border-radius:12px;
+  padding:12px;
+  cursor:pointer;
+  text-align:left;
+}
+.new-chat:hover{background:#222631}
 
-    .logo {
-      font-size: 22px;
-      font-weight: 800;
-      padding: 8px 10px;
-    }
+.history-title{
+  color:#777e8c;
+  font-size:11px;
+  padding:6px 8px 0;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
 
-    .logo span {
-      color: #8b7cff;
-    }
+.history{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  overflow:auto;
+}
 
-    .new-chat {
-      border: 1px solid #303542;
-      background: #171a22;
-      color: white;
-      border-radius: 12px;
-      padding: 12px;
-      cursor: pointer;
-      text-align: left;
-    }
+.history-item{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#cfd3dc;
+  padding:10px;
+  border-radius:9px;
+  text-align:left;
+  cursor:pointer;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.history-item:hover{background:#1b1f28}
 
-    .new-chat:hover {
-      background: #20242e;
-    }
+.sidebar-bottom{
+  margin-top:auto;
+  color:#666d7a;
+  font-size:11px;
+  padding:8px;
+}
 
-    .history-title {
-      color: #858b98;
-      font-size: 12px;
-      padding: 8px 10px 2px;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-    }
+.main{
+  flex:1;
+  min-width:0;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
 
-    .history {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      overflow-y: auto;
-    }
+.topbar{
+  height:62px;
+  border-bottom:1px solid #252a34;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 22px;
+  background:#0d0f14;
+}
 
-    .history-item {
-      border: 0;
-      background: transparent;
-      color: #cdd1da;
-      padding: 10px;
-      border-radius: 9px;
-      text-align: left;
-      cursor: pointer;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+.brand{font-weight:700}
 
-    .history-item:hover {
-      background: #191d26;
-    }
+.status{
+  color:#62e4a1;
+  font-size:12px;
+}
 
-    .sidebar-bottom {
-      margin-top: auto;
-      color: #777d89;
-      font-size: 12px;
-      padding: 10px;
-    }
+.content{
+  width:min(880px,94%);
+  margin:auto;
+  padding:55px 0 170px;
+}
 
-    /* MAIN */
-    .main {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+.hero{text-align:center;margin-bottom:32px}
 
-    .topbar {
-      height: 64px;
-      border-bottom: 1px solid #242832;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 22px;
-      background: rgba(11,13,18,.9);
-    }
+.hero h1{
+  font-size:clamp(34px,6vw,58px);
+  margin-bottom:12px;
+  line-height:1.05;
+  background:linear-gradient(90deg,#fff,#a9a0ff);
+  -webkit-background-clip:text;
+  color:transparent;
+}
 
-    .brand {
-      font-weight: 700;
-    }
+.hero p{
+  color:#949ba9;
+  font-size:15px;
+}
 
-    .status {
-      color: #63e6a6;
-      font-size: 13px;
-    }
+.chat{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
 
-    .content {
-      width: min(900px, 94%);
-      margin: auto;
-      padding: 55px 0 150px;
-    }
+.welcome{
+  text-align:center;
+  color:#8d94a2;
+  padding:28px 10px;
+}
 
-    .hero {
-      text-align: center;
-      margin-bottom: 35px;
-    }
+.welcome strong{
+  display:block;
+  color:#fff;
+  font-size:20px;
+  margin-bottom:8px;
+}
 
-    .hero h1 {
-      font-size: clamp(32px, 6vw, 58px);
-      line-height: 1.05;
-      margin-bottom: 14px;
-      background: linear-gradient(90deg, #ffffff, #aaa0ff);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
+.message{
+  max-width:82%;
+  padding:14px 16px;
+  border-radius:16px;
+  line-height:1.55;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
 
-    .hero p {
-      color: #9ca3b1;
-      font-size: 16px;
-    }
+.user{
+  margin-left:auto;
+  background:#6256d8;
+  border-bottom-right-radius:5px;
+}
 
-    .chat {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
+.assistant{
+  margin-right:auto;
+  background:#171a22;
+  border:1px solid #292e38;
+  border-bottom-left-radius:5px;
+}
 
-    .message {
-      max-width: 82%;
-      padding: 15px 17px;
-      border-radius: 17px;
-      line-height: 1.55;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-    }
+.tools{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+  margin-top:24px;
+}
 
-    .user {
-      margin-left: auto;
-      background: #5f52d9;
-      color: white;
-      border-bottom-right-radius: 5px;
-    }
+.tool{
+  background:#14171e;
+  color:#e9ebf0;
+  border:1px solid #292e38;
+  border-radius:12px;
+  padding:13px 8px;
+  cursor:pointer;
+}
 
-    .assistant {
-      margin-right: auto;
-      background: #171a22;
-      border: 1px solid #292e39;
-      color: #e8ebf1;
-      border-bottom-left-radius: 5px;
-    }
+.tool:hover{
+  background:#1b1f28;
+  border-color:#655bd7;
+}
 
-    .welcome {
-      text-align: center;
-      padding: 35px 20px;
-      color: #9ca3b1;
-    }
+.tool small{
+  display:block;
+  color:#7f8694;
+  margin-top:4px;
+}
 
-    .welcome strong {
-      color: white;
-      display: block;
-      margin-bottom: 12px;
-      font-size: 20px;
-    }
+.composer-wrap{
+  position:fixed;
+  left:250px;
+  right:0;
+  bottom:0;
+  padding:14px 20px 18px;
+  background:linear-gradient(transparent,#0b0d12 24%);
+}
 
-    /* TOOLS */
-    .tools {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 25px;
-    }
+.composer{
+  width:min(880px,94%);
+  margin:auto;
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  padding:9px;
+  background:#151820;
+  border:1px solid #303541;
+  border-radius:17px;
+  box-shadow:0 12px 40px rgba(0,0,0,.35);
+}
 
-    .tool {
-      background: #13161d;
-      border: 1px solid #282d37;
-      color: #e8ebf1;
-      border-radius: 13px;
-      padding: 13px 8px;
-      cursor: pointer;
-    }
+textarea{
+  flex:1;
+  min-height:46px;
+  max-height:150px;
+  resize:none;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#fff;
+  padding:12px;
+}
 
-    .tool:hover {
-      border-color: #665bdc;
-      background: #181b24;
-    }
+textarea::placeholder{color:#707785}
 
-    .tool small {
-      display: block;
-      color: #858b98;
-      margin-top: 4px;
-    }
+.clear{
+  border:0;
+  background:transparent;
+  color:#838a97;
+  cursor:pointer;
+  padding:11px;
+}
+.clear:hover{color:#fff}
 
-    /* INPUT */
-    .composer-wrap {
-      position: fixed;
-      left: 260px;
-      right: 0;
-      bottom: 0;
-      padding: 15px 20px 20px;
-      background: linear-gradient(transparent, #0b0d12 25%);
-    }
+.send{
+  width:47px;
+  height:46px;
+  border:0;
+  border-radius:12px;
+  background:#6b5fe5;
+  color:#fff;
+  cursor:pointer;
+  font-size:18px;
+}
+.send:hover{background:#796df0}
 
-    .composer {
-      width: min(900px, 94%);
-      margin: auto;
-      background: #151820;
-      border: 1px solid #303542;
-      border-radius: 18px;
-      padding: 10px;
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-      box-shadow: 0 12px 40px rgba(0,0,0,.35);
-    }
+.notice{
+  text-align:center;
+  color:#555c68;
+  font-size:10px;
+  margin-top:7px;
+}
 
-    textarea {
-      flex: 1;
-      resize: none;
-      min-height: 46px;
-      max-height: 160px;
-      background: transparent;
-      border: 0;
-      outline: 0;
-      color: white;
-      padding: 12px;
-    }
+@media(max-width:760px){
+  .sidebar{display:none}
+  .composer-wrap{left:0}
+  .content{padding-top:35px}
+  .tools{grid-template-columns:repeat(2,1fr)}
+  .message{max-width:92%}
+}
+</style></head><body><div class="app"><aside class="sidebar">  <div class="logo">NEXORA <span>AI</span></div><button class="new-chat" onclick="newChat()">＋ New chat</button>
 
-    textarea::placeholder {
-      color: #737987;
-    }
-
-    .send {
-      width: 48px;
-      height: 46px;
-      border: 0;
-      border-radius: 13px;
-      background: #6b5ee8;
-      color: white;
-      cursor: pointer;
-      font-size: 19px;
-    }
-
-    .send:hover {
-      background: #7a6df0;
-    }
-
-    .clear {
-      border: 0;
-      background: transparent;
-      color: #888e9a;
-      cursor: pointer;
-      padding: 10px;
-    }
-
-    .clear:hover {
-      color: white;
-    }
-
-    .notice {
-      text-align: center;
-      color: #666c78;
-      font-size: 11px;
-      margin-top: 8px;
-    }
-
-    @media (max-width: 760px) {
-      .sidebar {
-        display: none;
-      }
-
-      .composer-wrap {
-        left: 0;
-      }
-
-      .content {
-        padding-top: 35px;
-      }
-
-      .tools {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .message {
-        max-width: 92%;
-      }
-    }
-  </style></head><body><div class="app">  <aside class="sidebar">
-    <div class="logo">NEXORA <span>AI</span></div><button class="new-chat" onclick="newChat()">
-  ＋ New chat
-</button>
-
-<div class="history-title">History</div>
-
-<div id="history" class="history"></div>
-
-<div class="sidebar-bottom">
-  AI POWERED<br />
-  One box. Every task.
-</div>
-
-  </aside>  <main class="main"><header class="topbar">
+  <div class="history-title">History</div>  <div id="history" class="history"></div>  <div class="sidebar-bottom">
+    AI WORKSPACE<br>
+    One box. Every task.
+  </div></aside><main class="main"><header class="topbar">
   <div class="brand">Nexora AI</div>
   <div class="status">● Ready</div>
-</header>
-
-<section class="content">
-
-  <div class="hero">
+</header><section class="content">  <div class="hero">
     <h1>Ask anything.</h1>
-    <p>Chat, write, solve, learn and create from one simple AI workspace.</p>
-  </div>
+    <p>Chat, write, solve and learn from one simple AI workspace.</p>
+  </div>  <div id="chat" class="chat"><div id="welcome" class="welcome">
+  <strong>Welcome to Nexora AI</strong>
+  Ask something to get started.
+</div>
 
-  <div id="chat" class="chat">
+  </div>  <div class="tools"><button class="tool" onclick="chooseTool('ask')">
+  🧠 Ask
+  <small>General question</small>
+</button>
 
-    <div class="welcome" id="welcome">
-      <strong>Welcome to Nexora AI</strong>
-      Ask a question or choose a tool below.
-    </div>
+<button class="tool" onclick="chooseTool('learn')">
+  📚 Learn
+  <small>Explain a topic</small>
+</button>
 
-  </div>
+<button class="tool" onclick="chooseTool('write')">
+  ✍️ Write
+  <small>Create text</small>
+</button>
 
-  <div class="tools">
+<button class="tool" onclick="chooseTool('solve')">
+  🧮 Solve
+  <small>Calculate</small>
+</button>
 
-    <button class="tool" onclick="useTool('ask')">
-      🧠 Ask
-      <small>General question</small>
-    </button>
-
-    <button class="tool" onclick="useTool('learn')">
-      📚 Learn
-      <small>Explain a topic</small>
-    </button>
-
-    <button class="tool" onclick="useTool('write')">
-      ✍️ Write
-      <small>Create text</small>
-    </button>
-
-    <button class="tool" onclick="useTool('solve')">
-      🧮 Solve
-      <small>Try a calculation</small>
-    </button>
-
-  </div>
-
-</section>
-
-  </main></div><div class="composer-wrap">  <div class="composer"><textarea
+  </div></section></main>
+</div><div class="composer-wrap">  <div class="composer"><textarea
   id="question"
   placeholder="Ask Nexora anything..."
   rows="1"
   onkeydown="handleKey(event)"
 ></textarea>
 
-<button class="clear" onclick="clearChat()" title="Clear">
-  Clear
-</button>
+<button class="clear" onclick="clearChat()">Clear</button>
 
-<button class="send" onclick="sendMessage()" title="Send">
-  ➤
-</button>
+<button class="send" onclick="sendMessage()">➤</button>
 
   </div>  <div class="notice">
-    © 2026 Nexora AI — One box. Every task.
+    © 2026 Nexora AI
   </div></div><script>
 
-  const chat = document.getElementById("chat");
-  const questionBox = document.getElementById("question");
-  const historyBox = document.getElementById("history");
+const chat=document.getElementById("chat");
+const box=document.getElementById("question");
+const history=document.getElementById("history");
 
-  let messages = [];
+function addMessage(text,type){
 
-  function addMessage(text, type) {
+  const welcome=document.getElementById("welcome");
+  if(welcome) welcome.remove();
 
-    const welcome = document.getElementById("welcome");
+  const message=document.createElement("div");
 
-    if (welcome) {
-      welcome.remove();
+  message.className="message "+type;
+  message.textContent=text;
+
+  chat.appendChild(message);
+
+  window.scrollTo({
+    top:document.body.scrollHeight,
+    behavior:"smooth"
+  });
+
+  return message;
+}
+
+function addHistory(text){
+
+  const item=document.createElement("button");
+
+  item.className="history-item";
+  item.textContent=text;
+
+  item.onclick=()=>{
+    box.value=text;
+    box.focus();
+  };
+
+  history.prepend(item);
+}
+
+function newChat(){
+
+  chat.innerHTML=`
+    <div id="welcome" class="welcome">
+      <strong>Welcome to Nexora AI</strong>
+      Ask something to get started.
+    </div>
+  `;
+
+  box.value="";
+  box.focus();
+}
+
+function clearChat(){
+  newChat();
+}
+
+function handleKey(event){
+
+  if(event.key==="Enter" && !event.shiftKey){
+    event.preventDefault();
+    sendMessage();
+  }
+}
+
+function chooseTool(type){
+
+  const prompts={
+    ask:"Ask me anything...",
+    learn:"Explain this topic in simple language: ",
+    write:"Help me write: ",
+    solve:"Solve this: "
+  };
+
+  box.value=prompts[type]||"";
+  box.focus();
+}
+
+function calculate(text){
+
+  const value=text
+    .replace(/×/g,"*")
+    .replace(/÷/g,"/")
+    .replace(/\s/g,"");
+
+  if(!/^[0-9+\-*/().%]+$/.test(value)) return null;
+
+  try{
+
+    const result=Function(
+      '"use strict";return ('+value+')'
+    )();
+
+    if(typeof result==="number" && Number.isFinite(result)){
+      return result;
     }
 
-    const div = document.createElement("div");
+  }catch(error){}
 
-    div.className = "message " + type;
-    div.textContent = text;
+  return null;
+}
 
-    chat.appendChild(div);
+function localAnswer(question){
 
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: "smooth"
+  const q=question.toLowerCase().trim();
+
+  const result=calculate(question);
+
+  if(result!==null){
+    return "Answer: "+result;
+  }
+
+  if(
+    q.includes("bharat ki rajdhani") ||
+    q.includes("india ki capital") ||
+    q.includes("capital of india")
+  ){
+    return "भारत की राजधानी नई दिल्ली (New Delhi) है।";
+  }
+
+  if(
+    q.includes("rajasthan ki rajdhani") ||
+    q.includes("rajasthan capital")
+  ){
+    return "राजस्थान की राजधानी जयपुर (Jaipur) है।";
+  }
+
+  if(q==="hello" || q==="hi" || q==="नमस्ते"){
+    return "नमस्ते! मैं Nexora AI हूँ। अपना सवाल पूछिए।";
+  }
+
+  return null;
+}
+
+async function sendMessage(){
+
+  const question=box.value.trim();
+
+  if(!question) return;
+
+  addMessage(question,"user");
+  addHistory(question);
+
+  box.value="";
+
+  const local=localAnswer(question);
+
+  if(local){
+
+    setTimeout(()=>{
+      addMessage(local,"assistant");
+    },250);
+
+    return;
+  }
+
+  const reply=addMessage("Nexora is thinking...","assistant");
+
+  try{
+
+    const response=await fetch("/api/ask",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        question:question
+      })
     });
 
-    return div;
-  }
+    const data=await response.json();
 
-  function saveHistory(question) {
-
-    const item = document.createElement("button");
-
-    item.className = "history-item";
-    item.textContent = question;
-
-    item.onclick = function() {
-      questionBox.value = question;
-      questionBox.focus();
-    };
-
-    historyBox.prepend(item);
-  }
-
-  function newChat() {
-
-    chat.innerHTML = `
-      <div class="welcome" id="welcome">
-        <strong>Welcome to Nexora AI</strong>
-        Ask a question or choose a tool below.
-      </div>
-    `;
-
-    messages = [];
-    questionBox.value = "";
-    questionBox.focus();
-  }
-
-  function clearChat() {
-    newChat();
-  }
-
-  function handleKey(event) {
-
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      sendMessage();
-    }
-  }
-
-  function useTool(tool) {
-
-    const prompts = {
-      ask: "Ask me anything...",
-      learn: "Explain a topic to me in simple language.",
-      write: "Help me write something...",
-      solve: "Solve this problem..."
-    };
-
-    questionBox.value = prompts[tool] || "";
-    questionBox.focus();
-  }
-
-  function basicCalculator(input) {
-
-    const cleaned = input
-      .replace(/×/g, "*")
-      .replace(/÷/g, "/")
-      .replace(/\s/g, "");
-
-    if (!/^[0-9+\-*/().%]+$/.test(cleaned)) {
-      return null;
+    if(!response.ok){
+      throw new Error(data.reply||"AI service error");
     }
 
-    try {
+    reply.textContent=data.reply||"No response received.";
 
-      const result = Function(
-        '"use strict"; return (' + cleaned + ')'
-      )();
+  }catch(error){
 
-      if (typeof result === "number" && Number.isFinite(result)) {
-        return String(result);
-      }
+    reply.textContent=
+      "AI service is currently unavailable. Please try again later.";
 
-    } catch (e) {}
-
-    return null;
+    console.error(error);
   }
-
-  function localAnswer(question) {
-
-    const q = question.toLowerCase().trim();
-
-    const calculation = basicCalculator(question);
-
-    if (calculation !== null) {
-      return "Answer: " + calculation;
-    }
-
-    if (
-      q.includes("bharat ki rajdhani") ||
-      q.includes("india ki capital") ||
-      q.includes("capital of india")
-    ) {
-
-      return "भारत की राजधानी नई दिल्ली (New Delhi) है।\n\nनई दिल्ली भारत का राष्ट्रीय राजधानी क्षेत्र है और यहाँ भारत की संसद, राष्ट्रपति भवन, सर्वोच्च न्यायालय तथा केंद्र सरकार के कई प्रमुख कार्यालय स्थित हैं।";
-    }
-
-    if (q === "hello" || q === "hi" || q === "नमस्ते") {
-      return "नमस्ते! मैं Nexora AI हूँ। अपना सवाल पूछिए।";
-    }
-
-    return null;
-  }
-
-  async function sendMessage() {
-
-    const question = questionBox.value.trim();
-
-    if (!question) return;
-
-    addMessage(question, "user");
-
-    saveHistory(question);
-
-    questionBox.value = "";
-
-    const local = localAnswer(question);
-
-    if (local) {
-
-      setTimeout(function() {
-        addMessage(local, "assistant");
-      }, 250);
-
-      return;
-    }
-
-    const thinking = addMessage("Nexora is thinking...", "assistant");
-
-    try {
-
-      const response = await fetch("/api/ask", {
-
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-          question: question
-        })
-
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.reply || "AI service error");
-      }
-
-      thinking.textContent =
-        data.reply || "No response received.";
-
-    } catch (error) {
-
-      thinking.textContent =
-        "Nexora could not connect to the AI service.\n\n" +
-        "Basic features are still available. " +
-        "Try a simple calculation such as 25+25.";
-
-      console.error(error);
-    }
-  }
+}
 
 </script></body>
 </html>
