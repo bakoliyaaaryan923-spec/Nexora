@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#070b14">
+
   <title>Nexora AI</title>
+  <meta
+    name="description"
+    content="Nexora AI — ask questions, write, solve and create from one workspace."
+  >
 
   <style>
     * {
@@ -15,7 +19,8 @@
     }
 
     body {
-      background: #070b14;
+      background:
+        radial-gradient(circle at top, #10233b 0%, #070b14 42%);
       color: #fff;
       min-height: 100vh;
     }
@@ -24,44 +29,35 @@
       height: 70px;
       padding: 0 22px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       border-bottom: 1px solid #202838;
-      position: sticky;
-      top: 0;
-      background: #070b14;
-      z-index: 10;
+      background: rgba(7, 11, 20, 0.92);
     }
 
     .logo {
+      color: #6ee7ff;
       font-size: 23px;
       font-weight: 800;
-      color: #6ee7ff;
     }
 
-    .status {
-      color: #b9c5d8;
-      font-size: 13px;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #35d07f;
+    .badge {
+      background: #11182b;
+      color: #9defff;
+      border: 1px solid #27344b;
+      padding: 7px 11px;
+      border-radius: 20px;
+      font-size: 12px;
     }
 
     .hero {
       text-align: center;
-      padding: 45px 20px 25px;
+      padding: 65px 20px 30px;
     }
 
     .hero h1 {
-      font-size: clamp(35px, 7vw, 58px);
-      margin-bottom: 14px;
+      font-size: clamp(36px, 7vw, 60px);
+      margin-bottom: 16px;
     }
 
     .hero h1 span {
@@ -69,81 +65,53 @@
     }
 
     .hero p {
-      color: #8f9db3;
+      color: #9ca8bc;
       max-width: 650px;
       margin: auto;
       line-height: 1.6;
     }
 
-    .app {
-      width: min(1000px, 94%);
-      margin: 20px auto 50px;
+    .workspace {
+      width: min(900px, calc(100% - 28px));
+      margin: 25px auto;
     }
 
-    .chat {
-      background: #0d1422;
-      border: 1px solid #26344a;
+    .chat-panel {
+      background: #0e1524;
+      border: 1px solid #27344b;
       border-radius: 22px;
-      overflow: hidden;
+      padding: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
     }
 
-    .chat-header {
-      padding: 18px;
-      border-bottom: 1px solid #202c40;
+    .chat-top {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      padding: 6px 5px 14px;
     }
 
-    .chat-title {
-      font-weight: 700;
-    }
-
-    .chat-sub {
-      color: #8190a7;
+    .ready {
+      color: #7eeaff;
       font-size: 12px;
-      margin-top: 4px;
     }
 
-    button {
-      cursor: pointer;
-    }
-
-    .tools-btn,
-    .clear-btn {
-      background: #172236;
-      color: #dffaff;
-      border: 1px solid #30415b;
-      border-radius: 11px;
-      padding: 10px 14px;
-    }
-
-    .tools-btn:hover,
-    .clear-btn:hover {
-      border-color: #6ee7ff;
-    }
-
-    .messages {
-      min-height: 420px;
-      max-height: 650px;
+    #chat {
+      min-height: 260px;
+      max-height: 520px;
       overflow-y: auto;
-      padding: 22px;
+      padding: 8px;
     }
 
     .welcome {
       text-align: center;
-      padding: 75px 20px;
-      color: #8f9db3;
-    }
-
-    .welcome-icon {
-      font-size: 46px;
-      margin-bottom: 15px;
+      color: #8995a8;
+      padding: 65px 15px;
+      line-height: 1.7;
     }
 
     .message {
       display: flex;
-      margin-bottom: 20px;
+      margin: 12px 0;
     }
 
     .message.user {
@@ -151,193 +119,175 @@
     }
 
     .bubble {
-      max-width: 82%;
-      padding: 15px 17px;
-      border-radius: 17px;
-      line-height: 1.65;
+      max-width: 85%;
+      padding: 13px 15px;
+      border-radius: 16px;
+      line-height: 1.6;
       white-space: pre-wrap;
     }
 
     .user .bubble {
-      background: #173447;
-      border: 1px solid #28546a;
+      background: #183247;
+      border: 1px solid #2d526d;
     }
 
-    .assistant .bubble {
-      background: #111b2b;
-      border: 1px solid #273750;
-    }
-
-    .label {
-      display: block;
-      color: #6ee7ff;
-      font-size: 11px;
-      font-weight: bold;
-      margin-bottom: 6px;
+    .ai .bubble {
+      background: #101827;
+      border: 1px solid #202e43;
+      color: #dce5f0;
     }
 
     .composer {
-      padding: 16px;
-      border-top: 1px solid #202c40;
+      background: #080e19;
+      border: 1px solid #27344b;
+      border-radius: 18px;
+      padding: 10px;
+      margin-top: 10px;
     }
 
     textarea {
       width: 100%;
-      min-height: 90px;
+      min-height: 80px;
       resize: vertical;
-      background: #070b14;
+      border: 0;
+      outline: 0;
+      background: transparent;
       color: white;
-      border: 1px solid #2a3a52;
-      border-radius: 15px;
-      padding: 15px;
+      padding: 8px;
       font-size: 15px;
-      outline: none;
-    }
-
-    textarea:focus {
-      border-color: #6ee7ff;
     }
 
     .actions {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
-      margin-top: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .hint {
-      color: #66758c;
-      font-size: 12px;
+    .left,
+    .right {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
     }
 
-    .send-btn {
-      background: #6ee7ff;
-      color: #061019;
-      border: 0;
-      border-radius: 12px;
-      padding: 12px 20px;
-      font-weight: 800;
+    button {
+      border: 1px solid #30415a;
+      background: #111c2d;
+      color: #dce8f5;
+      border-radius: 11px;
+      padding: 10px 14px;
+      font-weight: 600;
       cursor: pointer;
     }
 
-    .send-btn:hover {
-      opacity: 0.9;
+    button:hover {
+      border-color: #6ee7ff;
     }
 
-    .tool-menu {
+    .send {
+      background: #6ee7ff;
+      color: #061019;
+      border-color: #6ee7ff;
+    }
+
+    .tools-wrap {
+      position: relative;
+    }
+
+    .tools-menu {
       display: none;
       position: absolute;
-      right: 0;
-      top: 48px;
-      width: 250px;
-      background: #0e1727;
-      border: 1px solid #2b3b54;
+      bottom: 48px;
+      left: 0;
+      width: 245px;
+      background: #0c1422;
+      border: 1px solid #27344b;
       border-radius: 15px;
-      padding: 9px;
-      z-index: 30;
+      padding: 8px;
+      z-index: 20;
+      box-shadow: 0 20px 50px rgba(0,0,0,.4);
     }
 
-    .tool-menu.show {
+    .tools-menu.open {
       display: block;
     }
 
-    .tool-item {
+    .tool {
       width: 100%;
       text-align: left;
-      background: transparent;
       border: 0;
-      color: #dce7f5;
-      padding: 12px;
-      border-radius: 9px;
-      font-size: 14px;
+      background: transparent;
+      padding: 11px;
+      margin: 2px 0;
     }
 
-    .tool-item:hover {
-      background: #172236;
+    .tool:hover {
+      background: #142034;
     }
 
-    .tool-panel {
-      display: none;
-      margin-top: 18px;
-      background: #0d1422;
-      border: 1px solid #26344a;
-      border-radius: 20px;
-      padding: 20px;
-    }
-
-    .tool-panel.show {
+    .tool small {
       display: block;
+      color: #8995a8;
+      margin-top: 3px;
+      font-weight: normal;
     }
 
-    .tool-panel h2 {
-      margin-bottom: 15px;
+    .quick {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 16px;
     }
 
-    input,
-    select {
-      width: 100%;
-      background: #070b14;
-      color: white;
-      border: 1px solid #2a3a52;
-      border-radius: 12px;
-      padding: 13px;
-      margin-bottom: 10px;
-      outline: none;
+    .quick button {
+      text-align: left;
+      min-height: 70px;
     }
 
-    .output {
-      display: none;
-      margin-top: 14px;
-      padding: 15px;
-      background: #070b14;
-      border: 1px solid #202c40;
-      border-radius: 12px;
-      color: #d4deeb;
-      line-height: 1.6;
-      white-space: pre-wrap;
-    }
-
-    .pdf-text {
-      display: none;
-      width: 100%;
-      min-height: 230px;
-      margin-top: 14px;
-      background: #070b14;
-      color: white;
-      border: 1px solid #2a3a52;
-      border-radius: 12px;
-      padding: 14px;
-      resize: vertical;
+    .quick span {
+      display: block;
+      color: #8995a8;
+      font-size: 12px;
+      margin-top: 5px;
+      font-weight: normal;
     }
 
     footer {
       text-align: center;
-      padding: 35px 20px;
-      color: #647187;
+      padding: 40px 20px;
+      color: #68758a;
       font-size: 13px;
     }
 
-    @media (max-width: 600px) {
-      header {
-        padding: 0 14px;
-      }
-
-      .messages {
-        min-height: 360px;
-        padding: 15px;
+    @media (max-width: 700px) {
+      .quick {
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .bubble {
-        max-width: 92%;
+        max-width: 94%;
       }
+    }
 
-      .hint {
-        display: none;
+    @media (max-width: 480px) {
+      .quick {
+        grid-template-columns: 1fr;
       }
 
       .actions {
-        justify-content: flex-end;
+        align-items: stretch;
+      }
+
+      .left,
+      .right {
+        width: 100%;
+      }
+
+      .left button,
+      .right button {
+        flex: 1;
       }
     }
   </style>
@@ -347,165 +297,99 @@
 
 <header>
   <div class="logo">NEXORA AI</div>
-
-  <div class="status">
-    <span class="dot"></span>
-    Ready
-  </div>
+  <div class="badge">AI POWERED</div>
 </header>
 
-
 <section class="hero">
-  <h1>Your Smart <span>AI</span> Assistant</h1>
+  <h1>Ask <span>anything.</span></h1>
 
   <p>
-    Ask questions, calculate, write, learn, generate ideas
-    and work with PDFs from one simple workspace.
+    Chat, write, solve, learn and create from one simple AI workspace.
   </p>
 </section>
 
+<main class="workspace">
 
-<main class="app">
+  <section class="chat-panel">
 
-  <section class="chat">
-
-    <div class="chat-header">
-
-      <div>
-        <div class="chat-title">🤖 Nexora</div>
-
-        <div class="chat-sub">
-          One conversation. Multiple tools.
-        </div>
-      </div>
-
-
-      <div style="position:relative">
-
-        <button
-          type="button"
-          class="tools-btn"
-          id="toolsButton"
-        >
-          🔎 Tools
-        </button>
-
-        <div
-          class="tool-menu"
-          id="toolMenu"
-        >
-
-          <button
-            type="button"
-            class="tool-item"
-            data-tool="writer"
-          >
-            ✍️ AI Writer
-          </button>
-
-          <button
-            type="button"
-            class="tool-item"
-            data-tool="ideas"
-          >
-            💡 Idea Generator
-          </button>
-
-          <button
-            type="button"
-            class="tool-item"
-            data-tool="study"
-          >
-            📚 Study Helper
-          </button>
-
-          <button
-            type="button"
-            class="tool-item"
-            data-tool="pdf"
-          >
-            📄 PDF Text Tool
-          </button>
-
-          <button
-            type="button"
-            class="tool-item"
-            id="clearMenuButton"
-          >
-            🗑️ Clear Conversation
-          </button>
-
-        </div>
-
-      </div>
-
+    <div class="chat-top">
+      <strong>Nexora AI</strong>
+      <span class="ready">● Ready</span>
     </div>
 
+    <div id="chat">
 
-    <div
-      class="messages"
-      id="messages"
-    >
-
-      <div
-        class="welcome"
-        id="welcome"
-      >
-
-        <div class="welcome-icon">✨</div>
-
-        <h2
-          style="margin-bottom:10px;color:#e8f8ff"
-        >
-          Welcome to Nexora AI
-        </h2>
+      <div class="welcome" id="welcome">
+        <h2>How can I help?</h2>
 
         <p>
-          Ask something like:
-          <br><br>
-
-          <b style="color:#dcefff">
-            Bharat ki rajdhani kya hai?
-          </b>
+          Ask Nexora a question, ask it to write something,
+          solve a problem, or explore an idea.
         </p>
-
       </div>
 
     </div>
-
 
     <div class="composer">
 
       <textarea
-        id="question"
+        id="prompt"
         placeholder="Ask Nexora anything..."
+        onkeydown="handleEnter(event)"
       ></textarea>
-
 
       <div class="actions">
 
-        <div class="hint">
-          Enter = send • Shift + Enter = new line
+        <div class="left">
+
+          <div class="tools-wrap">
+
+            <button onclick="toggleTools()">🔎 Tools</button>
+
+            <div class="tools-menu" id="toolsMenu">
+
+              <button class="tool" onclick="chooseMode('chat')">
+                💬 Chat
+                <small>Ask anything</small>
+              </button>
+
+              <button class="tool" onclick="chooseMode('write')">
+                ✍️ Write
+                <small>Create or rewrite text</small>
+              </button>
+
+              <button class="tool" onclick="chooseMode('image')">
+                🖼️ Create Image
+                <small>Describe an image</small>
+              </button>
+
+              <button class="tool" onclick="chooseMode('study')">
+                📚 Learn
+                <small>Explain difficult topics</small>
+              </button>
+
+              <button class="tool" onclick="chooseMode('math')">
+                🧮 Solve
+                <small>Math and reasoning</small>
+              </button>
+
+              <button class="tool" onclick="chooseMode('ideas')">
+                💡 Ideas
+                <small>Generate ideas</small>
+              </button>
+
+            </div>
+
+          </div>
+
+          <button onclick="clearChat()">Clear</button>
+
         </div>
 
-        <div>
-
-          <button
-            type="button"
-            class="clear-btn"
-            id="clearInputButton"
-          >
-            Clear
-          </button>
-
-          <button
-            type="button"
-            class="send-btn"
-            id="sendButton"
-          >
+        <div class="right">
+          <button class="send" id="sendButton" onclick="sendMessage()">
             ➤ Send
           </button>
-
         </div>
 
       </div>
@@ -514,217 +398,90 @@
 
   </section>
 
+  <div class="quick">
 
-  <!-- WRITER -->
-
-  <section
-    class="tool-panel"
-    id="writerTool"
-  >
-
-    <h2>✍️ AI Writer</h2>
-
-    <input
-      id="writerTopic"
-      placeholder="What should Nexora write about?"
-    >
-
-    <select id="writerType">
-
-      <option value="caption">
-        Social Media Caption
-      </option>
-
-      <option value="description">
-        Description
-      </option>
-
-      <option value="paragraph">
-        Short Paragraph
-      </option>
-
-      <option value="idea">
-        Creative Idea
-      </option>
-
-    </select>
-
-    <button
-      type="button"
-      class="send-btn"
-      id="writerButton"
-    >
-      Generate
+    <button onclick="quickAsk('भारत की राजधानी क्या है?')">
+      🧠 <strong>Ask</strong>
+      <span>General question</span>
     </button>
 
-    <div
-      class="output"
-      id="writerOutput"
-    ></div>
-
-  </section>
-
-
-  <!-- IDEAS -->
-
-  <section
-    class="tool-panel"
-    id="ideasTool"
-  >
-
-    <h2>💡 Idea Generator</h2>
-
-    <input
-      id="ideaTopic"
-      placeholder="Enter a topic..."
-    >
-
-    <button
-      type="button"
-      class="send-btn"
-      id="ideasButton"
-    >
-      Generate Ideas
+    <button onclick="quickAsk('Explain artificial intelligence in simple words.')">
+      📚 <strong>Learn</strong>
+      <span>Explain a topic</span>
     </button>
 
-    <div
-      class="output"
-      id="ideaOutput"
-    ></div>
-
-  </section>
-
-
-  <!-- STUDY -->
-
-  <section
-    class="tool-panel"
-    id="studyTool"
-  >
-
-    <h2>📚 Study Helper</h2>
-
-    <input
-      id="studyTopic"
-      placeholder="Enter a study question..."
-    >
-
-    <button
-      type="button"
-      class="send-btn"
-      id="studyButton"
-    >
-      Explain
+    <button onclick="quickAsk('Write a short professional introduction for me.')">
+      ✍️ <strong>Write</strong>
+      <span>Create text</span>
     </button>
 
-    <div
-      class="output"
-      id="studyOutput"
-    ></div>
-
-  </section>
-
-
-  <!-- PDF -->
-
-  <section
-    class="tool-panel"
-    id="pdfTool"
-  >
-
-    <h2>📄 PDF Text Tool</h2>
-
-    <p
-      style="color:#8995a8;margin-bottom:14px"
-    >
-      Upload a text-based PDF to extract selectable text.
-    </p>
-
-    <input
-      id="pdfFile"
-      type="file"
-      accept="application/pdf"
-    >
-
-    <button
-      type="button"
-      class="send-btn"
-      id="pdfButton"
-    >
-      Extract Text
+    <button onclick="quickAsk('What is 125 multiplied by 8?')">
+      🧮 <strong>Solve</strong>
+      <span>Try a calculation</span>
     </button>
 
-    <div
-      class="output"
-      id="pdfOutput"
-    ></div>
-
-    <textarea
-      class="pdf-text"
-      id="pdfText"
-      placeholder="Extracted PDF text will appear here..."
-    ></textarea>
-
-    <div
-      id="pdfActions"
-      style="display:none;margin-top:10px"
-    >
-
-      <button
-        type="button"
-        class="send-btn"
-        id="copyPdfButton"
-      >
-        Copy
-      </button>
-
-      <button
-        type="button"
-        class="clear-btn"
-        id="downloadPdfButton"
-      >
-        Download TXT
-      </button>
-
-    </div>
-
-  </section>
+  </div>
 
 </main>
 
-
 <footer>
-  © 2026 Nexora AI — Built for the future
+  © 2026 Nexora AI — One box. Every task.
 </footer>
-
 
 <script>
 
-(function () {
+  let currentMode = "chat";
 
-  "use strict";
+  function toggleTools() {
+    document
+      .getElementById("toolsMenu")
+      .classList.toggle("open");
+  }
 
+  function chooseMode(mode) {
 
-  const messages =
-    document.getElementById("messages");
+    currentMode = mode;
 
-  const question =
-    document.getElementById("question");
+    const names = {
+      chat: "Chat",
+      write: "Write",
+      image: "Create Image",
+      study: "Learn",
+      math: "Solve",
+      ideas: "Ideas"
+    };
 
-  const sendButton =
-    document.getElementById("sendButton");
+    addAIMessage(
+      "Mode selected: " +
+      names[mode] +
+      ".\n\nTell me what you want to do."
+    );
 
-  const clearInputButton =
-    document.getElementById("clearInputButton");
+    document
+      .getElementById("toolsMenu")
+      .classList.remove("open");
 
-  const toolsButton =
-    document.getElementById("toolsButton");
+    document
+      .getElementById("prompt")
+      .focus();
+  }
 
-  const toolMenu =
-    document.getElementById("toolMenu");
+  function quickAsk(text) {
+    document.getElementById("prompt").value = text;
+    sendMessage();
+  }
 
+  function handleEnter(event) {
 
-  function addMessage(type, text) {
+    if (event.key === "Enter" && !event.shiftKey) {
+
+      event.preventDefault();
+
+      sendMessage();
+    }
+  }
+
+  function removeWelcome() {
 
     const welcome =
       document.getElementById("welcome");
@@ -732,14 +489,20 @@
     if (welcome) {
       welcome.remove();
     }
+  }
 
+  function addUserMessage(text) {
+
+    removeWelcome();
+
+    const chat =
+      document.getElementById("chat");
 
     const row =
       document.createElement("div");
 
     row.className =
-      "message " + type;
-
+      "message user";
 
     const bubble =
       document.createElement("div");
@@ -747,524 +510,144 @@
     bubble.className =
       "bubble";
 
-
-    const label =
-      document.createElement("span");
-
-    label.className =
-      "label";
-
-    label.textContent =
-      type === "user"
-        ? "YOU"
-        : "NEXORA";
-
-
-    const content =
-      document.createElement("div");
-
-    content.textContent = text;
-
-
-    bubble.appendChild(label);
-    bubble.appendChild(content);
+    bubble.textContent =
+      text;
 
     row.appendChild(bubble);
 
-    messages.appendChild(row);
+    chat.appendChild(row);
 
-
-    messages.scrollTop =
-      messages.scrollHeight;
-
+    chat.scrollTop =
+      chat.scrollHeight;
   }
 
+  function addAIMessage(text) {
 
-  function calculateMath(text) {
+    removeWelcome();
 
-    let cleaned =
-      text
-        .toLowerCase()
-        .replace(/what is/g, "")
-        .replace(/calculate/g, "")
-        .replace(/solve/g, "")
-        .replace(/=/g, "")
-        .trim();
+    const chat =
+      document.getElementById("chat");
 
+    const row =
+      document.createElement("div");
 
-    if (
-      !/^[0-9+\-*/().\s]+$/.test(cleaned)
-    ) {
-      return null;
+    row.className =
+      "message ai";
+
+    const bubble =
+      document.createElement("div");
+
+    bubble.className =
+      "bubble";
+
+    bubble.textContent =
+      text;
+
+    row.appendChild(bubble);
+
+    chat.appendChild(row);
+
+    chat.scrollTop =
+      chat.scrollHeight;
+  }
+
+  async function sendMessage() {
+
+    const input =
+      document.getElementById("prompt");
+
+    const button =
+      document.getElementById("sendButton");
+
+    const question =
+      input.value.trim();
+
+    if (!question) {
+
+      addAIMessage(
+        "Please enter a question first."
+      );
+
+      return;
     }
 
+    addUserMessage(question);
 
-    if (!/[+\-*/]/.test(cleaned)) {
-      return null;
-    }
+    input.value = "";
 
+    button.disabled = true;
+
+    button.textContent = "Thinking...";
 
     try {
 
-      const result =
-        Function(
-          '"use strict"; return (' +
-          cleaned +
-          ')'
-        )();
+      const response =
+        await fetch("/api/ask", {
 
+          method: "POST",
 
-      if (
-        typeof result === "number" &&
-        Number.isFinite(result)
-      ) {
+          headers: {
+            "Content-Type": "application/json"
+          },
 
-        return (
-          cleaned +
-          " = " +
-          result
+          body: JSON.stringify({
+            question: question,
+            mode: currentMode
+          })
+
+        });
+
+      const data =
+        await response.json();
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.reply ||
+          "Request failed."
         );
-
       }
+
+      addAIMessage(
+        data.reply ||
+        "No response received."
+      );
 
     } catch (error) {
 
-      return null;
+      addAIMessage(
+        "Nexora could not connect to the AI service.\n\n" +
+        "Please check the API configuration and try again."
+      );
 
+      console.error(error);
+
+    } finally {
+
+      button.disabled = false;
+
+      button.textContent = "➤ Send";
     }
-
-
-    return null;
-
   }
 
+  function clearChat() {
 
-  function getBuiltInAnswer(text) {
+    document.getElementById("chat").innerHTML =
+      `
+      <div class="welcome" id="welcome">
+        <h2>How can I help?</h2>
 
-    const lower =
-      text
-        .toLowerCase()
-        .trim();
+        <p>
+          Ask Nexora a question, ask it to write something,
+          solve a problem, or explore an idea.
+        </p>
+      </div>
+      `;
 
-
-    const math =
-      calculateMath(text);
-
-
-    if (math) {
-
-      return (
-        "उत्तर:\n\n" +
-        math
-      );
-
-    }
-
-
-    if (
-      lower.includes("bharat ki rajdhani") ||
-      lower.includes("capital of india") ||
-      lower.includes("भारत की राजधानी")
-    ) {
-
-      return (
-`भारत की राजधानी नई दिल्ली है।
-
-नई दिल्ली भारत के राष्ट्रीय राजधानी क्षेत्र में स्थित है। यह भारत की केंद्र सरकार, संसद और कई प्रमुख सरकारी संस्थानों का महत्वपूर्ण केंद्र है।
-
-नई दिल्ली से जुड़े और तथ्य:
-• यह भारत का प्रमुख प्रशासनिक केंद्र है।
-• भारतीय संसद नई दिल्ली में स्थित है।
-• राष्ट्रपति भवन भी नई दिल्ली में है।
-• इंडिया गेट नई दिल्ली का प्रसिद्ध स्थल है।
-
-आप Nexora से भारत, इतिहास, भूगोल और सामान्य ज्ञान के बारे में भी सवाल पूछ सकते हैं।`
-      );
-
-    }
-
-
-    if (
-      lower === "hello" ||
-      lower === "hi" ||
-      lower.includes("hello nexora")
-    ) {
-
-      return (
-`नमस्ते! 👋
-
-मैं Nexora AI हूँ।
-
-आप मुझसे सामान्य सवाल, calculations, writing, ideas और study topics के बारे में पूछ सकते हैं।`
-      );
-
-    }
-
-
-    if (
-      lower.includes("who are you") ||
-      lower.includes("tum kaun ho") ||
-      lower.includes("आप कौन हो")
-    ) {
-
-      return (
-`मैं Nexora AI हूँ — एक smart workspace जिसमें chat, calculations, writing, ideas, study और PDF tools एक ही जगह पर हैं।`
-      );
-
-    }
-
-
-    if (
-      lower.includes("what can you do") ||
-      lower.includes("tum kya kar sakte ho")
-    ) {
-
-      return (
-`Nexora में आप:
-
-🤖 Questions पूछ सकते हैं
-🧮 Basic calculations कर सकते हैं
-✍️ Text और captions बना सकते हैं
-💡 Ideas generate कर सकते हैं
-📚 Study topics समझ सकते हैं
-📄 PDF का selectable text निकाल सकते हैं
-
-ऊपर 🔎 Tools में बाकी features मिलेंगे।`
-      );
-
-    }
-
-
-    return (
-`मैंने आपका सवाल समझा:
-
-"${text}"
-
-अभी यह Nexora का Free Mode है, इसलिए यह बिना paid AI API के built-in answers और tools इस्तेमाल करता है।
-
-General AI answers के लिए बाद में secure AI backend जोड़ना होगा।`
-    );
-
+    document.getElementById("prompt").value = "";
   }
 
+</script>
 
-  function sendMessage() {
-
-    const text =
-      question.value.trim();
-
-
-    if (!text) {
-
-      question.focus();
-
-      return;
-
-    }
-
-
-    addMessage(
-      "user",
-      text
-    );
-
-
-    question.value = "";
-
-
-    const typingId =
-      "typing-" + Date.now();
-
-
-    const row =
-      document.createElement("div");
-
-    row.className =
-      "message assistant";
-
-    row.id =
-      typingId;
-
-
-    const bubble =
-      document.createElement("div");
-
-    bubble.className =
-      "bubble";
-
-
-    const label =
-      document.createElement("span");
-
-    label.className =
-      "label";
-
-    label.textContent =
-      "NEXORA";
-
-
-    const content =
-      document.createElement("div");
-
-    content.textContent =
-      "Thinking...";
-
-
-    bubble.appendChild(label);
-    bubble.appendChild(content);
-
-    row.appendChild(bubble);
-
-    messages.appendChild(row);
-
-
-    messages.scrollTop =
-      messages.scrollHeight;
-
-
-    setTimeout(function () {
-
-      const answer =
-        getBuiltInAnswer(text);
-
-
-      const typing =
-        document.getElementById(
-          typingId
-        );
-
-
-      if (typing) {
-
-        typing.querySelector(
-          ".bubble div:last-child"
-        ).textContent =
-          answer;
-
-      }
-
-      messages.scrollTop =
-        messages.scrollHeight;
-
-    }, 350);
-
-  }
-
-
-  sendButton.addEventListener(
-    "click",
-    sendMessage
-  );
-
-
-  question.addEventListener(
-    "keydown",
-    function (event) {
-
-      if (
-        event.key === "Enter" &&
-        !event.shiftKey
-      ) {
-
-        event.preventDefault();
-
-        sendMessage();
-
-      }
-
-    }
-  );
-
-
-  clearInputButton.addEventListener(
-    "click",
-    function () {
-
-      question.value = "";
-
-      question.focus();
-
-    }
-  );
-
-
-  toolsButton.addEventListener(
-    "click",
-    function (event) {
-
-      event.stopPropagation();
-
-      toolMenu.classList.toggle(
-        "show"
-      );
-
-    }
-  );
-
-
-  document
-    .querySelectorAll(".tool-item[data-tool]")
-    .forEach(function (button) {
-
-      button.addEventListener(
-        "click",
-        function () {
-
-          const name =
-            button.getAttribute(
-              "data-tool"
-            );
-
-
-          toolMenu.classList.remove(
-            "show"
-          );
-
-
-          document
-            .querySelectorAll(".tool-panel")
-            .forEach(function (panel) {
-
-              panel.classList.remove(
-                "show"
-              );
-
-            });
-
-
-          const panel =
-            document.getElementById(
-              name + "Tool"
-            );
-
-
-          if (panel) {
-
-            panel.classList.add(
-              "show"
-            );
-
-            panel.scrollIntoView({
-              behavior: "smooth",
-              block: "center"
-            });
-
-          }
-
-        }
-      );
-
-    });
-
-
-  document
-    .getElementById("clearMenuButton")
-    .addEventListener(
-      "click",
-      function () {
-
-        toolMenu.classList.remove(
-          "show"
-        );
-
-
-        messages.innerHTML = `
-
-          <div
-            class="welcome"
-            id="welcome"
-          >
-
-            <div class="welcome-icon">
-              ✨
-            </div>
-
-            <h2
-              style="margin-bottom:10px;color:#e8f8ff"
-            >
-              Welcome to Nexora AI
-            </h2>
-
-            <p>
-              Ask something like:
-              <br><br>
-
-              <b style="color:#dcefff">
-                Bharat ki rajdhani kya hai?
-              </b>
-            </p>
-
-          </div>
-
-        `;
-
-      }
-    );
-
-
-  document.addEventListener(
-    "click",
-    function (event) {
-
-      if (
-        !toolMenu.contains(event.target) &&
-        event.target !== toolsButton
-      ) {
-
-        toolMenu.classList.remove(
-          "show"
-        );
-
-      }
-
-    }
-  );
-
-
-  /* WRITER */
-
-  document
-    .getElementById("writerButton")
-    .addEventListener(
-      "click",
-      function () {
-
-        const topic =
-          document
-            .getElementById("writerTopic")
-            .value
-            .trim();
-
-
-        const type =
-          document
-            .getElementById("writerType")
-            .value;
-
-
-        const output =
-          document.getElementById(
-            "writerOutput"
-          );
-
-
-        output.style.display =
-          "block";
-
-
-        if (!topic) {
-
-          output.textContent =
-            "Please enter a topic first.";
-
-          return;
-
-        }
-
-
-        if (type === "caption") {
-
-          output.textContent =
-`✨ Discover something new about ${topic}!
-
-Lea
+</body>
+</html>
