@@ -8,21 +8,39 @@ export function routeSkill(question = "") {
     /^[0-9+\-*/().%\s×÷^]+$/.test(q) ||
     q.includes("calculate") ||
     q.includes("calculator") ||
-    q.includes("गणना") ||
-    q.includes("कितना")
+    q.includes("गणना")
   ) {
     return "calculator";
   }
 
-  // YouTube / Creator tools
+  // Knowledge — इसे Learning से पहले रखें
+  if (
+    q.includes("bharat ki rajdhani") ||
+    q.includes("capital of india") ||
+    q.includes("भारत की राजधानी") ||
+    q.includes("rajasthan ki rajdhani") ||
+    q.includes("rajasthan capital") ||
+    q.includes("राजस्थान की राजधानी") ||
+    q.includes("india") ||
+    q.includes("भारत") ||
+    q.includes("rajasthan") ||
+    q.includes("राजस्थान")
+  ) {
+    return "knowledge";
+  }
+
+  // YouTube / Creator
   if (
     q.includes("youtube") ||
     q.includes("video") ||
     q.includes("title") ||
     q.includes("description") ||
+    q.includes("discription") ||
     q.includes("hashtag") ||
     q.includes("caption") ||
-    q.includes("thumbnail")
+    q.includes("thumbnail") ||
+    q.includes("टाइटल") ||
+    q.includes("डिस्क्रिप्शन")
   ) {
     return "creator";
   }
@@ -51,18 +69,5 @@ export function routeSkill(question = "") {
     return "writing";
   }
 
-  // Knowledge
-  if (
-    q.includes("capital") ||
-    q.includes("राजधानी") ||
-    q.includes("भारत") ||
-    q.includes("राजस्थान") ||
-    q.includes("india") ||
-    q.includes("rajasthan")
-  ) {
-    return "knowledge";
-  }
-
-  // General
   return "general";
 }
