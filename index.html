@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Nexora AI</title>
 
 <style>
@@ -19,7 +20,8 @@ body{
   min-height:100vh;
 }
 
-button,textarea{
+button,
+textarea{
   font:inherit;
 }
 
@@ -27,6 +29,8 @@ button,textarea{
   min-height:100vh;
   display:flex;
 }
+
+/* SIDEBAR */
 
 .sidebar{
   width:250px;
@@ -75,6 +79,7 @@ button,textarea{
   flex-direction:column;
   gap:4px;
   overflow:auto;
+  max-height:220px;
 }
 
 .history-item{
@@ -101,6 +106,8 @@ button,textarea{
   font-size:11px;
   padding:8px;
 }
+
+/* MAIN */
 
 .main{
   flex:1;
@@ -196,6 +203,64 @@ button,textarea{
   margin-bottom:7px;
 }
 
+/* SKILLS PANEL */
+
+.skills-panel{
+  margin-top:30px;
+}
+
+.skills-panel-title{
+  font-size:20px;
+  margin-bottom:5px;
+}
+
+.skills-panel-subtitle{
+  color:#858c99;
+  font-size:13px;
+  margin-bottom:14px;
+}
+
+.skills-panel-list{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.skill-card{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  text-align:left;
+  padding:13px;
+  border:1px solid #292e38;
+  border-radius:13px;
+  background:#14171e;
+  color:#fff;
+  cursor:pointer;
+}
+
+.skill-card:hover{
+  background:#1c2029;
+  border-color:#675cdc;
+}
+
+.skill-icon{
+  font-size:24px;
+}
+
+.skill-info strong{
+  display:block;
+  font-size:14px;
+}
+
+.skill-info small{
+  display:block;
+  color:#7d8492;
+  margin-top:3px;
+}
+
+/* TOOLS */
+
 .tools{
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -222,6 +287,8 @@ button,textarea{
   color:#7d8492;
   margin-top:4px;
 }
+
+/* COMPOSER */
 
 .composer-wrap{
   position:fixed;
@@ -290,7 +357,10 @@ textarea::placeholder{
   margin-top:7px;
 }
 
+/* MOBILE */
+
 @media(max-width:760px){
+
   .sidebar{
     display:none;
   }
@@ -307,9 +377,21 @@ textarea::placeholder{
     grid-template-columns:repeat(2,1fr);
   }
 
+  .skills-panel-list{
+    grid-template-columns:repeat(2,1fr);
+  }
+
   .message{
     max-width:93%;
   }
+}
+
+@media(max-width:450px){
+
+  .skills-panel-list{
+    grid-template-columns:1fr;
+  }
+
 }
 </style>
 </head>
@@ -336,7 +418,7 @@ textarea::placeholder{
 
   <div class="sidebar-bottom">
     FREE LOCAL MODE<br>
-    Persistent Browser History
+    Modular Skills Engine
   </div>
 
 </aside>
@@ -354,6 +436,7 @@ textarea::placeholder{
 
 <div class="hero">
   <h1>Ask anything.</h1>
+
   <p>
     Modular AI-style workspace running directly in your browser.
   </p>
@@ -362,10 +445,15 @@ textarea::placeholder{
 
 <div id="chat" class="chat">
 
-<div id="welcome" class="welcome">
-  <strong>Welcome to Nexora AI</strong>
-  Ask a question or choose a skill below.
-</div>
+  <div id="welcome" class="welcome">
+
+    <strong>
+      Welcome to Nexora AI
+    </strong>
+
+    Ask a question or choose a skill below.
+
+  </div>
 
 </div>
 
@@ -394,6 +482,15 @@ textarea::placeholder{
 
 </div>
 
+
+<!-- Skills Center -->
+
+<div
+  id="skillsPanel"
+  class="skills-panel"
+></div>
+
+
 </section>
 
 </main>
@@ -411,11 +508,17 @@ textarea::placeholder{
   rows="1"
 ></textarea>
 
-<button class="clear" onclick="newChat()">
+<button
+  class="clear"
+  onclick="newChat()"
+>
   Clear
 </button>
 
-<button class="send" onclick="sendMessage()">
+<button
+  class="send"
+  onclick="sendMessage()"
+>
   ➤
 </button>
 
@@ -430,7 +533,11 @@ textarea::placeholder{
 
 <script type="module">
 
-import { processQuestion } from "./src/core.js";
+import { processQuestion }
+from "./src/core.js";
+
+import { createSkillsPanel }
+from "./src/skills-panel.js";
 
 
 const chat =
@@ -442,14 +549,59 @@ const questionBox =
 const historyBox =
   document.getElementById("history");
 
+const skillsPanel =
+  document.getElementById("skillsPanel");
+
 
 const HISTORY_KEY =
-  "nexora_history_v1";
+  "nexora_history_v2";
+
+
+/* SKILLS CENTER */
+
+createSkillsPanel(
+  skillsPanel,
+
+  function(skill){
+
+    const prompts = {
+
+      calculator:
+        "25 × 12",
+
+      knowledge:
+        "भारत की राजधानी क्या है?",
+
+      learning:
+        "AI क्या है? आसान भाषा में समझाओ।",
+
+      writing:
+        "AI पर paragraph लिखो",
+
+      creator:
+        "YouTube title generate करो: AI",
+
+      general:
+        "Hello"
+
+    };
+
+    questionBox.value =
+      prompts[skill.id] || "";
+
+    questionBox.focus();
+
+  }
+);
 
 
 /* MESSAGE */
 
-function addMessage(text,type,skill=""){
+function addMessage(
+  text,
+  type,
+  skill = ""
+){
 
   const welcome =
     document.getElementById("welcome");
@@ -458,6 +610,7 @@ function addMessage(text,type,skill=""){
     welcome.remove();
   }
 
+
   const div =
     document.createElement("div");
 
@@ -465,7 +618,10 @@ function addMessage(text,type,skill=""){
     "message " + type;
 
 
-  if(type === "assistant" && skill){
+  if(
+    type === "assistant" &&
+    skill
+  ){
 
     const label =
       document.createElement("div");
@@ -490,6 +646,7 @@ function addMessage(text,type,skill=""){
 
   chat.appendChild(div);
 
+
   div.scrollIntoView({
     behavior:"smooth",
     block:"end"
@@ -503,21 +660,27 @@ function saveHistory(question){
 
   const old =
     JSON.parse(
-      localStorage.getItem(HISTORY_KEY) || "[]"
+      localStorage.getItem(
+        HISTORY_KEY
+      ) || "[]"
     );
+
 
   old.push({
     question,
     time:Date.now()
   });
 
+
   const limited =
     old.slice(-50);
+
 
   localStorage.setItem(
     HISTORY_KEY,
     JSON.stringify(limited)
   );
+
 
   renderHistory();
 }
@@ -529,34 +692,45 @@ function renderHistory(){
 
   historyBox.innerHTML = "";
 
+
   const saved =
     JSON.parse(
-      localStorage.getItem(HISTORY_KEY) || "[]"
+      localStorage.getItem(
+        HISTORY_KEY
+      ) || "[]"
     );
 
-  saved.reverse().forEach(item => {
 
-    const button =
-      document.createElement("button");
+  saved
+    .reverse()
+    .forEach(item => {
 
-    button.className =
-      "history-item";
+      const button =
+        document.createElement("button");
 
-    button.textContent =
-      item.question;
 
-    button.onclick = () => {
+      button.className =
+        "history-item";
 
-      questionBox.value =
+
+      button.textContent =
         item.question;
 
-      questionBox.focus();
 
-    };
+      button.onclick =
+        function(){
 
-    historyBox.appendChild(button);
+          questionBox.value =
+            item.question;
 
-  });
+          questionBox.focus();
+
+        };
+
+
+      historyBox.appendChild(button);
+
+    });
 }
 
 
@@ -566,18 +740,30 @@ window.newChat =
 function(){
 
   chat.innerHTML = `
-    <div id="welcome" class="welcome">
-      <strong>Welcome to Nexora AI</strong>
+
+    <div
+      id="welcome"
+      class="welcome"
+    >
+
+      <strong>
+        Welcome to Nexora AI
+      </strong>
+
       Ask a question or choose a skill below.
+
     </div>
+
   `;
 
+
   questionBox.value = "";
+
   questionBox.focus();
 };
 
 
-/* TOOLS */
+/* TOOL PROMPTS */
 
 window.toolPrompt =
 function(type){
@@ -598,6 +784,7 @@ function(type){
 
   };
 
+
   questionBox.value =
     prompts[type] || "";
 
@@ -612,6 +799,7 @@ function(){
 
   const question =
     questionBox.value.trim();
+
 
   if(!question){
     return;
@@ -637,12 +825,17 @@ function(){
 
 
     addMessage(
+
       result.answer ||
       "कोई local answer नहीं मिला।",
+
       "assistant",
+
       result.skillName ||
       result.skill
+
     );
+
 
   }catch(error){
 
@@ -651,21 +844,28 @@ function(){
       error
     );
 
+
     addMessage(
+
       "Local engine में समस्या आई।",
+
       "assistant",
+
       "System"
+
     );
+
   }
 
 };
 
 
-/* ENTER */
+/* ENTER KEY */
 
 questionBox.addEventListener(
   "keydown",
-  event => {
+
+  function(event){
 
     if(
       event.key === "Enter" &&
@@ -675,6 +875,7 @@ questionBox.addEventListener(
       event.preventDefault();
 
       window.sendMessage();
+
     }
 
   }
