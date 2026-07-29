@@ -2,6 +2,8 @@ import { routeSkill } from "./router.js";
 import { getSkill } from "./skills.js";
 import { calculate, calculatePercentage } from "./calculator.js";
 import { findKnowledge } from "./knowledge.js";
+import { explainTopic } from "./learning.js";
+
 import {
   generateTitle,
   generateDescription,
@@ -25,6 +27,7 @@ export function processQuestion(question = "") {
 
     if (percent) {
       const result = calculatePercentage(percent[1], percent[2]);
+
       if (result !== null) {
         answer = `🧮 Answer: ${result}`;
       }
@@ -39,12 +42,17 @@ export function processQuestion(question = "") {
     }
   }
 
-  // Local knowledge
+  // Knowledge
   if (answer === null && skillName === "knowledge") {
     answer = findKnowledge(text);
   }
 
-  // Creator tools
+  // Learning
+  if (answer === null && skillName === "learning") {
+    answer = explainTopic(text);
+  }
+
+  // Creator
   if (answer === null && skillName === "creator") {
     const q = text.toLowerCase();
 
