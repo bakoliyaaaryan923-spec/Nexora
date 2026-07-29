@@ -1,35 +1,24 @@
-export const skills = {
-  calculator: {
-    name: "Calculator",
-    description: "Calculations and percentages"
-  },
+import { findSkill } from "./skills-center.js";
 
-  creator: {
-    name: "Creator",
-    description: "YouTube titles, descriptions, ideas and hashtags"
-  },
+export function getSkill(id) {
+  const skill = findSkill(id);
 
-  learning: {
-    name: "Learning",
-    description: "Simple topic explanations"
-  },
-
-  writing: {
-    name: "Writing",
-    description: "Writing assistance"
-  },
-
-  knowledge: {
-    name: "Knowledge",
-    description: "Local knowledge and common facts"
-  },
-
-  general: {
-    name: "General",
-    description: "General local assistant"
+  if (skill) {
+    return skill;
   }
-};
 
-export function getSkill(name) {
-  return skills[name] || skills.general;
+  return {
+    id: "general",
+    name: "General",
+    icon: "🧠",
+    description: "General help"
+  };
+}
+
+export function getSkillName(id) {
+  return getSkill(id).name;
+}
+
+export function getSkillIcon(id) {
+  return getSkill(id).icon;
 }
