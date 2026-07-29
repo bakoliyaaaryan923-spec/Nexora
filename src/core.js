@@ -3,6 +3,7 @@ import { getSkill } from "./skills.js";
 import { calculate, calculatePercentage } from "./calculator.js";
 import { findKnowledge } from "./knowledge.js";
 import { explainTopic } from "./learning.js";
+import { generateWriting } from "./writing.js";
 
 import {
   generateTitle,
@@ -14,6 +15,17 @@ import {
 
 export function processQuestion(question = "") {
   const text = question.trim();
+
+  if (!text) {
+    return {
+      skill: "general",
+      skillName: "General",
+      answer: "कृपया कोई सवाल लिखें।",
+      question: text,
+      timestamp: Date.now()
+    };
+  }
+
   const skillName = routeSkill(text);
   const skill = getSkill(skillName);
 
@@ -26,7 +38,10 @@ export function processQuestion(question = "") {
     );
 
     if (percent) {
-      const result = calculatePercentage(percent[1], percent[2]);
+      const result = calculatePercentage(
+        percent[1],
+        percent[2]
+      );
 
       if (result !== null) {
         answer = `🧮 Answer: ${result}`;
@@ -56,28 +71,48 @@ export function processQuestion(question = "") {
   if (answer === null && skillName === "creator") {
     const q = text.toLowerCase();
 
-    if (q.includes("title") || q.includes("टाइटल")) {
+    if (
+      q.includes("title") ||
+      q.includes("टाइटल")
+    ) {
       answer = generateTitle(text);
+
     } else if (
       q.includes("description") ||
       q.includes("discription") ||
       q.includes("डिस्क्रिप्शन")
     ) {
       answer = generateDescription(text);
+
     } else if (
       q.includes("hashtag") ||
       q.includes("hashtags") ||
       q.includes("हैशटैग")
     ) {
       answer = generateHashtags(text);
+
     } else if (
       q.includes("caption") ||
       q.includes("कैप्शन")
     ) {
       answer = generateCaption(text);
+
     } else {
       answer = generateIdeas(text);
     }
+  }
+
+  // Writing
+  if (answer === null && skillName === "writing") {
+    answer = generateWriting(text);
+  }
+
+  // Fallback
+  if (answer === null) {
+    answer =
+      "मैं अभी Free Local Mode में चल रहा हूँ।\n\n" +
+      "इस सवाल के लिए अभी local knowledge या skill उपलब्ध नहीं है।\n\n" +
+      "आप calculator, knowledge, learning, writing या creator features आज़मा सकते हैं।";
   }
 
   return {
