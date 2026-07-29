@@ -1,268 +1,584 @@
-import { routeSkill } from "./router.js";
-import { getSkill } from "./skills.js";
-import { calculate, calculatePercentage } from "./calculator.js";
-import { findKnowledge } from "./knowledge.js";
-import { explainTopic } from "./learning.js";
-import { generateWriting } from "./writing.js";
-import { generalAnswer } from "./general.js";
-
-import {
-  generateTitle,
-  generateDescription,
-  generateIdeas,
-  generateHashtags,
-  generateCaption
-} from "./creator.js";
-
-import {
-  findCustomSkill,
-  runCustomSkill
-} from "./skill-builder.js";
+/* =========================
+   NEXORA AI CORE v4
+   Local skills + Backend routing
+========================= */
 
 
-export function processQuestion(question = "") {
+/* =========================
+   LOCAL KNOWLEDGE
+========================= */
 
-  const text = question.trim();
+const knowledge = [
 
-  if (!text) {
-    return {
-      skill: "general",
-      skillName: "General",
-      answer: "कृपया कोई सवाल लिखें।",
-      question: text,
-      timestamp: Date.now()
-    };
+  {
+    keys: [
+      "भारत की राजधानी",
+      "भारत का राजधानी",
+      "capital of india"
+    ],
+    answer:
+      "भारत की राजधानी नई दिल्ली (New Delhi) है।\n\n" +
+      "3 महत्वपूर्ण बातें:\n" +
+      "1. यहाँ भारत की संसद स्थित है।\n" +
+      "2. राष्ट्रपति भवन नई दिल्ली में है।\n" +
+      "3. यह भारत के केंद्रीय शासन का प्रमुख केंद्र है।"
+  },
+
+  {
+    keys: [
+      "राजस्थान की राजधानी",
+      "capital of rajasthan"
+    ],
+    answer:
+      "राजस्थान की राजधानी जयपुर है।"
+  },
+
+  {
+    keys: [
+      "ai क्या है",
+      "ai kya hai",
+      "artificial intelligence kya hai"
+    ],
+    answer:
+      "AI यानी Artificial Intelligence ऐसी technology है जिसमें computer systems ऐसे काम कर सकते हैं जिनमें आमतौर पर human intelligence की जरूरत होती है।\n\n" +
+      "उदाहरण:\n" +
+      "• भाषा समझना\n" +
+      "• तस्वीरों में चीजें पहचानना\n" +
+      "• सवालों के जवाब देना\n" +
+      "• patterns पहचानना"
+  },
+
+  {
+    keys: [
+      "कंप्यूटर क्या है",
+      "computer kya hai",
+      "what is computer"
+    ],
+    answer:
+      "कंप्यूटर एक electronic device है जो data को process करके useful information देता है।"
+  },
+
+  {
+    keys: [
+      "पानी का formula",
+      "water formula",
+      "h2o"
+    ],
+    answer:
+      "पानी का chemical formula H₂O है। इसमें दो Hydrogen atoms और एक Oxygen atom होता है।"
+  },
+
+  {
+    keys: [
+      "सौर मंडल क्या है",
+      "solar system kya hai",
+      "solar system"
+    ],
+    answer:
+      "सौर मंडल सूर्य और उसके चारों ओर घूमने वाले ग्रहों, उपग्रहों, asteroids और अन्य खगोलीय पिंडों का समूह है।"
+  },
+
+  {
+    keys: [
+      "संविधान कब लागू हुआ",
+      "भारत का संविधान कब लागू हुआ",
+      "constitution kab lagu hua",
+      "constitution of india"
+    ],
+    answer:
+      "भारत का संविधान 26 जनवरी 1950 को लागू हुआ था। इसी कारण हर साल 26 जनवरी को गणतंत्र दिवस मनाया जाता है।"
   }
 
-
-  /*
-   * CUSTOM SKILLS
-   * इन्हें पहले check किया जाता है,
-   * ताकि future में नए modules आसानी से जुड़ सकें।
-   */
-
-  const customSkill =
-    findCustomSkill(text);
-
-  if (customSkill) {
-
-    const customAnswer =
-      runCustomSkill(
-        customSkill,
-        text
-      );
-
-    if (customAnswer !== null) {
-
-      return {
-        skill: customSkill.id,
-        skillName:
-          `${customSkill.icon} ${customSkill.name}`,
-        answer: customAnswer,
-        question: text,
-        timestamp: Date.now()
-      };
-
-    }
-  }
+];
 
 
-  /*
-   * NORMAL SKILL ROUTER
-   */
+/* =========================
+   TEXT NORMALIZER
+========================= */
 
-  const skillName =
-    routeSkill(text);
+function normalize(text){
 
-  const skill =
-    getSkill(skillName);
+  return String(text || "")
+    .toLowerCase()
+    .replace(/[?!.,।,;:]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
-
-  let answer = null;
-
-
-  /*
-   * CALCULATOR
-   */
-
-  if (skillName === "calculator") {
-
-    const percent =
-      text.match(
-        /(\d+(?:\.\d+)?)\s*%\s*(?:of|का|की|के)\s*(\d+(?:\.\d+)?)/i
-      );
+}
 
 
-    if (percent) {
+/* =========================
+   FIND LOCAL KNOWLEDGE
+========================= */
 
-      const result =
-        calculatePercentage(
-          percent[1],
-          percent[2]
-        );
+function findKnowledge(question){
 
-      if (result !== null) {
-        answer =
-          `🧮 Answer: ${result}`;
+  const q =
+    normalize(question);
+
+
+  for(const item of knowledge){
+
+    for(const key of item.keys){
+
+      const k =
+        normalize(key);
+
+
+      if(
+        q.includes(k) ||
+        k.includes(q)
+      ){
+
+        return item.answer;
+
       }
+
     }
 
+  }
 
-    if (answer === null) {
 
-      const result =
-        calculate(text);
+  return null;
 
-      if (result !== null) {
-        answer =
-          `🧮 Answer: ${result}`;
-      }
+}
+
+
+/* =========================
+   CALCULATOR
+========================= */
+
+function calculate(question){
+
+  let expression =
+    String(question || "")
+      .toLowerCase()
+      .trim();
+
+
+  expression =
+    expression
+      .replace(/×/g, "*")
+      .replace(/÷/g, "/")
+      .replace(/−/g, "-")
+      .replace(/,/g, "");
+
+
+  /*
+   * केवल simple arithmetic allow करें।
+   * किसी arbitrary JavaScript code को execute
+   * नहीं करना है।
+   */
+
+  if(
+    !/^[0-9+\-*/().%\s]+$/.test(
+      expression
+    )
+  ){
+
+    return null;
+
+  }
+
+
+  if(
+    !/[0-9]/.test(expression)
+  ){
+
+    return null;
+
+  }
+
+
+  try{
+
+    const result =
+      Function(
+        `"use strict"; return (${expression})`
+      )();
+
+
+    if(
+      typeof result === "number" &&
+      Number.isFinite(result)
+    ){
+
+      return String(result);
+
     }
+
+  }catch(error){
+
+    return null;
+
   }
 
 
-  /*
-   * KNOWLEDGE
-   */
+  return null;
 
-  if (
-    answer === null &&
-    skillName === "knowledge"
-  ) {
+}
 
-    answer =
-      findKnowledge(text);
+
+/* =========================
+   WRITING
+========================= */
+
+function writingAnswer(question){
+
+  const q =
+    normalize(question);
+
+
+  if(
+    q.includes("paragraph") ||
+    q.includes("पैराग्राफ") ||
+    q.includes("अनुच्छेद")
+  ){
+
+    return (
+      "AI यानी Artificial Intelligence आधुनिक technology का एक महत्वपूर्ण हिस्सा है। " +
+      "यह computers को information समझने, patterns पहचानने और कुछ ऐसे काम करने में सक्षम बनाती है " +
+      "जिनमें सामान्यतः human intelligence की आवश्यकता होती है। " +
+      "आज AI का उपयोग education, communication, research, business और कई अन्य क्षेत्रों में किया जा रहा है।"
+    );
+
   }
 
 
-  /*
-   * LEARNING
-   */
+  if(
+    q.includes("caption") ||
+    q.includes("कैप्शन")
+  ){
 
-  if (
-    answer === null &&
-    skillName === "learning"
-  ) {
+    return (
+      "✨ Technology के साथ आगे बढ़ें!\n\n" +
+      "नई technology सीखें, नई possibilities explore करें और smart तरीके से आगे बढ़ें।\n\n" +
+      "#Technology #NexoraAI #AI"
+    );
 
-    answer =
-      explainTopic(text);
   }
 
 
-  /*
-   * CREATOR
-   */
+  return null;
 
-  if (
-    answer === null &&
-    skillName === "creator"
-  ) {
-
-    const q =
-      text.toLowerCase();
+}
 
 
-    if (
+/* =========================
+   CREATOR
+========================= */
+
+function creatorAnswer(question){
+
+  const q =
+    normalize(question);
+
+
+  if(
+    q.includes("youtube") &&
+    (
       q.includes("title") ||
       q.includes("टाइटल")
-    ) {
+    )
+  ){
 
-      answer =
-        generateTitle(text);
+    const topic =
+      String(question)
+        .replace(/youtube/ig, "")
+        .replace(/title/ig, "")
+        .replace(/generate/ig, "")
+        .replace(/करो/g, "")
+        .replace(/: /g, " ")
+        .trim();
 
-    }
 
-    else if (
-      q.includes("description") ||
-      q.includes("discription") ||
-      q.includes("डिस्क्रिप्शन")
-    ) {
+    const subject =
+      topic || "AI";
 
-      answer =
-        generateDescription(text);
 
-    }
+    return (
+      "🎬 YouTube Title Ideas\n\n" +
+      "1. " + subject + " — पूरी जानकारी आसान भाषा में\n" +
+      "2. " + subject + " के बारे में 5 जरूरी बातें\n" +
+      "3. " + subject + " कैसे काम करता है? आसान तरीका\n" +
+      "4. " + subject + ": Complete Beginner Guide\n" +
+      "5. " + subject + " की पूरी जानकारी | Hindi"
+    );
 
-    else if (
-      q.includes("hashtag") ||
-      q.includes("hashtags") ||
-      q.includes("हैशटैग")
-    ) {
+  }
 
-      answer =
-        generateHashtags(text);
 
-    }
+  if(
+    q.includes("description") ||
+    q.includes("डिस्क्रिप्शन") ||
+    q.includes("discription")
+  ){
 
-    else if (
-      q.includes("caption") ||
-      q.includes("कैप्शन")
-    ) {
+    return (
+      "📝 YouTube Description\n\n" +
+      "इस वीडियो में हम इस topic को आसान भाषा में समझेंगे। " +
+      "वीडियो पसंद आए तो Like, Share और Subscribe जरूर करें।\n\n" +
+      "#NexoraAI #YouTube #Hindi"
+    );
 
-      answer =
-        generateCaption(text);
+  }
 
-    }
 
-    else {
+  return null;
 
-      answer =
-        generateIdeas(text);
-    }
+}
+
+
+/* =========================
+   GENERAL LOCAL RESPONSES
+========================= */
+
+function generalAnswer(question){
+
+  const q =
+    normalize(question);
+
+
+  if(
+    q === "hello" ||
+    q === "hi" ||
+    q === "hey" ||
+    q === "नमस्ते" ||
+    q === "नमस्कार"
+  ){
+
+    return (
+      "नमस्ते! मैं Nexora AI हूँ। " +
+      "आप मुझसे सवाल पूछ सकते हैं, topics समझ सकते हैं, " +
+      "writing करा सकते हैं या calculations कर सकते हैं।"
+    );
+
+  }
+
+
+  if(
+    q.includes("nexora ai kya hai") ||
+    q.includes("nexora ai क्या है")
+  ){
+
+    return (
+      "Nexora AI एक modular AI workspace है जिसमें local tools " +
+      "और secure AI backend को एक साथ इस्तेमाल किया जा सकता है।"
+    );
+
+  }
+
+
+  return null;
+
+}
+
+
+/* =========================
+   MAIN PROCESSOR
+========================= */
+
+export function processQuestion(question){
+
+  const text =
+    String(question || "").trim();
+
+
+  if(!text){
+
+    return {
+      answer:"",
+      skill:"general",
+      skillName:"General"
+    };
+
+  }
+
+
+  /* Calculator */
+
+  const calculation =
+    calculate(text);
+
+
+  if(calculation !== null){
+
+    return {
+
+      answer:
+        "🧮 Answer: " +
+        calculation,
+
+      skill:
+        "calculator",
+
+      skillName:
+        "Calculator"
+
+    };
+
+  }
+
+
+  /* Local knowledge */
+
+  const localKnowledge =
+    findKnowledge(text);
+
+
+  if(localKnowledge){
+
+    return {
+
+      answer:
+        localKnowledge,
+
+      skill:
+        "knowledge",
+
+      skillName:
+        "Knowledge"
+
+    };
+
+  }
+
+
+  /* Writing */
+
+  const writing =
+    writingAnswer(text);
+
+
+  if(writing){
+
+    return {
+
+      answer:
+        writing,
+
+      skill:
+        "writing",
+
+      skillName:
+        "Writing"
+
+    };
+
+  }
+
+
+  /* Creator */
+
+  const creator =
+    creatorAnswer(text);
+
+
+  if(creator){
+
+    return {
+
+      answer:
+        creator,
+
+      skill:
+        "creator",
+
+      skillName:
+        "Creator"
+
+    };
+
+  }
+
+
+  /* General */
+
+  const general =
+    generalAnswer(text);
+
+
+  if(general){
+
+    return {
+
+      answer:
+        general,
+
+      skill:
+        "general",
+
+      skillName:
+        "General"
+
+    };
+
   }
 
 
   /*
-   * WRITING
+   * IMPORTANT:
+   *
+   * Unknown question के लिए
+   * fake local answer नहीं देंगे।
+   *
+   * index.html इसे देखकर
+   * /api/ask को call करेगा।
    */
-
-  if (
-    answer === null &&
-    skillName === "writing"
-  ) {
-
-    answer =
-      generateWriting(text);
-  }
-
-
-  /*
-   * GENERAL
-   */
-
-  if (
-    answer === null &&
-    skillName === "general"
-  ) {
-
-    answer =
-      generalAnswer(text);
-  }
-
-
-  /*
-   * FINAL FALLBACK
-   */
-
-  if (answer === null) {
-
-    answer =
-      generalAnswer(text);
-  }
-
 
   return {
 
-    skill: skillName,
+    answer:null,
 
-    skillName:
-      skill.name,
+    skill:"backend",
 
-    answer,
+    skillName:"AI Backend",
 
-    question: text,
-
-    timestamp: Date.now()
+    needsBackend:true
 
   };
+
+}
+
+
+/* =========================
+   OPTIONAL HELPERS
+========================= */
+
+export function getLocalSkills(){
+
+  return [
+
+    {
+      id:"calculator",
+      name:"Calculator"
+    },
+
+    {
+      id:"knowledge",
+      name:"Knowledge"
+    },
+
+    {
+      id:"learning",
+      name:"Learning"
+    },
+
+    {
+      id:"writing",
+      name:"Writing"
+    },
+
+    {
+      id:"creator",
+      name:"Creator"
+    },
+
+    {
+      id:"general",
+      name:"General"
+    }
+
+  ];
+
 }
