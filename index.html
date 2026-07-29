@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Nexora AI v7</title>
+<title>Nexora AI</title>
 
 <style>
 *{
@@ -20,8 +19,7 @@ body{
   min-height:100vh;
 }
 
-button,
-textarea{
+button,textarea{
   font:inherit;
 }
 
@@ -29,8 +27,6 @@ textarea{
   min-height:100vh;
   display:flex;
 }
-
-/* SIDEBAR */
 
 .sidebar{
   width:250px;
@@ -105,8 +101,6 @@ textarea{
   font-size:11px;
   padding:8px;
 }
-
-/* MAIN */
 
 .main{
   flex:1;
@@ -202,8 +196,6 @@ textarea{
   margin-bottom:7px;
 }
 
-/* TOOLS */
-
 .tools{
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -230,8 +222,6 @@ textarea{
   color:#7d8492;
   margin-top:4px;
 }
-
-/* COMPOSER */
 
 .composer-wrap{
   position:fixed;
@@ -300,10 +290,7 @@ textarea::placeholder{
   margin-top:7px;
 }
 
-/* MOBILE */
-
 @media(max-width:760px){
-
   .sidebar{
     display:none;
   }
@@ -331,151 +318,119 @@ textarea::placeholder{
 
 <div class="app">
 
-  <aside class="sidebar">
+<aside class="sidebar">
 
-    <div class="logo">
-      NEXORA <span>AI</span>
-    </div>
+  <div class="logo">
+    NEXORA <span>AI</span>
+  </div>
 
-    <button class="new-chat" onclick="newChat()">
-      ＋ New chat
-    </button>
+  <button class="new-chat" onclick="newChat()">
+    ＋ New chat
+  </button>
 
-    <div class="history-title">
-      History
-    </div>
+  <div class="history-title">
+    History
+  </div>
 
-    <div id="history" class="history"></div>
+  <div id="history" class="history"></div>
 
-    <div class="sidebar-bottom">
-      FREE LOCAL v7<br>
-      Modular Skills Engine
-    </div>
+  <div class="sidebar-bottom">
+    FREE LOCAL MODE<br>
+    Persistent Browser History
+  </div>
 
-  </aside>
-
-
-  <main class="main">
-
-    <header class="topbar">
-      <div>Nexora AI</div>
-      <div class="status">● Local Ready</div>
-    </header>
+</aside>
 
 
-    <section class="content">
+<main class="main">
 
-      <div class="hero">
-        <h1>Ask anything.</h1>
-
-        <p>
-          Modular AI-style workspace running directly in your browser.
-        </p>
-      </div>
+<header class="topbar">
+  <div>Nexora AI</div>
+  <div class="status">● Local Ready</div>
+</header>
 
 
-      <div id="chat" class="chat">
+<section class="content">
 
-        <div id="welcome" class="welcome">
-
-          <strong>
-            Welcome to Nexora AI
-          </strong>
-
-          Ask a question or choose a skill below.
-
-        </div>
-
-      </div>
+<div class="hero">
+  <h1>Ask anything.</h1>
+  <p>
+    Modular AI-style workspace running directly in your browser.
+  </p>
+</div>
 
 
-      <div class="tools">
+<div id="chat" class="chat">
 
-        <button
-          class="tool"
-          onclick="toolPrompt('ask')"
-        >
-          🧠 Ask
-          <small>Knowledge</small>
-        </button>
+<div id="welcome" class="welcome">
+  <strong>Welcome to Nexora AI</strong>
+  Ask a question or choose a skill below.
+</div>
 
-
-        <button
-          class="tool"
-          onclick="toolPrompt('learn')"
-        >
-          📚 Learn
-          <small>Explain</small>
-        </button>
+</div>
 
 
-        <button
-          class="tool"
-          onclick="toolPrompt('write')"
-        >
-          ✍️ Write
-          <small>Create</small>
-        </button>
+<div class="tools">
 
+<button class="tool" onclick="toolPrompt('ask')">
+  🧠 Ask
+  <small>Knowledge</small>
+</button>
 
-        <button
-          class="tool"
-          onclick="toolPrompt('solve')"
-        >
-          🧮 Solve
-          <small>Calculate</small>
-        </button>
+<button class="tool" onclick="toolPrompt('learn')">
+  📚 Learn
+  <small>Explain</small>
+</button>
 
-      </div>
+<button class="tool" onclick="toolPrompt('write')">
+  ✍️ Write
+  <small>Create</small>
+</button>
 
-    </section>
+<button class="tool" onclick="toolPrompt('solve')">
+  🧮 Solve
+  <small>Calculate</small>
+</button>
 
-  </main>
+</div>
+
+</section>
+
+</main>
 
 </div>
 
 
 <div class="composer-wrap">
 
-  <div class="composer">
+<div class="composer">
 
-    <textarea
-      id="question"
-      placeholder="Ask Nexora anything..."
-      rows="1"
-    ></textarea>
+<textarea
+  id="question"
+  placeholder="Ask Nexora anything..."
+  rows="1"
+></textarea>
 
+<button class="clear" onclick="newChat()">
+  Clear
+</button>
 
-    <button
-      class="clear"
-      onclick="newChat()"
-    >
-      Clear
-    </button>
+<button class="send" onclick="sendMessage()">
+  ➤
+</button>
 
+</div>
 
-    <button
-      class="send"
-      onclick="sendMessage()"
-      title="Send"
-    >
-      ➤
-    </button>
-
-  </div>
-
-
-  <div class="notice">
-    © 2026 Nexora AI · Free Local v7 · No API
-  </div>
+<div class="notice">
+  © 2026 Nexora AI · Free Local Mode
+</div>
 
 </div>
 
 
 <script type="module">
 
-import { processQuestion }
-from "./src/core.js";
+import { processQuestion } from "./src/core.js";
 
 
 const chat =
@@ -488,13 +443,13 @@ const historyBox =
   document.getElementById("history");
 
 
+const HISTORY_KEY =
+  "nexora_history_v1";
+
+
 /* MESSAGE */
 
-function addMessage(
-  text,
-  type,
-  skill = ""
-){
+function addMessage(text,type,skill=""){
 
   const welcome =
     document.getElementById("welcome");
@@ -503,7 +458,6 @@ function addMessage(
     welcome.remove();
   }
 
-
   const div =
     document.createElement("div");
 
@@ -511,10 +465,7 @@ function addMessage(
     "message " + type;
 
 
-  if(
-    type === "assistant" &&
-    skill
-  ){
+  if(type === "assistant" && skill){
 
     const label =
       document.createElement("div");
@@ -539,7 +490,6 @@ function addMessage(
 
   chat.appendChild(div);
 
-
   div.scrollIntoView({
     behavior:"smooth",
     block:"end"
@@ -547,31 +497,66 @@ function addMessage(
 }
 
 
-/* HISTORY */
+/* SAVE HISTORY */
 
 function saveHistory(question){
 
-  const item =
-    document.createElement("button");
+  const old =
+    JSON.parse(
+      localStorage.getItem(HISTORY_KEY) || "[]"
+    );
 
-  item.className =
-    "history-item";
+  old.push({
+    question,
+    time:Date.now()
+  });
 
-  item.textContent =
-    question;
+  const limited =
+    old.slice(-50);
+
+  localStorage.setItem(
+    HISTORY_KEY,
+    JSON.stringify(limited)
+  );
+
+  renderHistory();
+}
 
 
-  item.onclick = function(){
+/* LOAD HISTORY */
 
-    questionBox.value =
-      question;
+function renderHistory(){
 
-    questionBox.focus();
+  historyBox.innerHTML = "";
 
-  };
+  const saved =
+    JSON.parse(
+      localStorage.getItem(HISTORY_KEY) || "[]"
+    );
 
+  saved.reverse().forEach(item => {
 
-  historyBox.prepend(item);
+    const button =
+      document.createElement("button");
+
+    button.className =
+      "history-item";
+
+    button.textContent =
+      item.question;
+
+    button.onclick = () => {
+
+      questionBox.value =
+        item.question;
+
+      questionBox.focus();
+
+    };
+
+    historyBox.appendChild(button);
+
+  });
 }
 
 
@@ -581,30 +566,18 @@ window.newChat =
 function(){
 
   chat.innerHTML = `
-
-    <div
-      id="welcome"
-      class="welcome"
-    >
-
-      <strong>
-        Welcome to Nexora AI
-      </strong>
-
+    <div id="welcome" class="welcome">
+      <strong>Welcome to Nexora AI</strong>
       Ask a question or choose a skill below.
-
     </div>
-
   `;
 
-
   questionBox.value = "";
-
   questionBox.focus();
 };
 
 
-/* TOOL PROMPTS */
+/* TOOLS */
 
 window.toolPrompt =
 function(type){
@@ -615,16 +588,15 @@ function(type){
       "भारत की राजधानी क्या है?",
 
     learn:
-      "Explain AI in simple language.",
+      "AI क्या है? आसान भाषा में समझाओ।",
 
     write:
-      "Write something about technology.",
+      "AI पर paragraph लिखो",
 
     solve:
       "25 × 12"
 
   };
-
 
   questionBox.value =
     prompts[type] || "";
@@ -640,7 +612,6 @@ function(){
 
   const question =
     questionBox.value.trim();
-
 
   if(!question){
     return;
@@ -665,17 +636,13 @@ function(){
       processQuestion(question);
 
 
-    const answer =
-      result.answer ||
-      "इस सवाल के लिए अभी local skill उपलब्ध नहीं है।";
-
-
     addMessage(
-      answer,
+      result.answer ||
+      "कोई local answer नहीं मिला।",
       "assistant",
-      result.skillName || result.skill
+      result.skillName ||
+      result.skill
     );
-
 
   }catch(error){
 
@@ -684,23 +651,21 @@ function(){
       error
     );
 
-
     addMessage(
-      "Nexora का local engine इस request को process नहीं कर पाया।",
+      "Local engine में समस्या आई।",
       "assistant",
       "System"
     );
-
   }
 
 };
 
 
-/* ENTER KEY */
+/* ENTER */
 
 questionBox.addEventListener(
   "keydown",
-  function(event){
+  event => {
 
     if(
       event.key === "Enter" &&
@@ -710,11 +675,15 @@ questionBox.addEventListener(
       event.preventDefault();
 
       window.sendMessage();
-
     }
 
   }
 );
+
+
+/* START */
+
+renderHistory();
 
 </script>
 
