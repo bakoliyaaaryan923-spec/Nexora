@@ -419,4 +419,292 @@ function creator(question) {
 
 
   if (
-    q.includes("youtube")
+    q.includes("youtube") &&
+    (
+      q.includes("tags") ||
+      q.includes("tag")
+    )
+  ) {
+
+    return result(
+      "🎬 Suggested Tags\n\n" +
+      "#AI #ArtificialIntelligence #Technology #NexoraAI #Hindi #AITools",
+      "Creator"
+    );
+
+  }
+
+
+  if (
+    q.includes("hook") ||
+    q.includes("हुक")
+  ) {
+
+    return result(
+      "🎬 YouTube Hook\n\n" +
+      "क्या आप जानते हैं कि AI आपकी रोजमर्रा की जिंदगी को कितनी तेजी से बदल रहा है? इस वीडियो में जानिए इसकी सबसे जरूरी बातें!",
+      "Creator"
+    );
+
+  }
+
+  return null;
+}
+
+
+/* =====================================================
+   TRANSLATION
+===================================================== */
+
+function translation(question) {
+
+  const q = clean(question);
+
+  if (
+    q.startsWith("translate") ||
+    q.startsWith("अनुवाद") ||
+    q.includes("हिंदी में translate")
+  ) {
+
+    return result(
+      "🌐 Translation tool अभी Free Local Mode में सीमित है।\n\n" +
+      "आप छोटा common phrase दें तो मैं उपलब्ध local translations में मदद कर सकता हूँ।",
+      "Translation"
+    );
+
+  }
+
+  return null;
+}
+
+
+/* =====================================================
+   GENERAL
+===================================================== */
+
+function general(question) {
+
+  const q = clean(question);
+
+  if (
+    q === "hello" ||
+    q === "hi" ||
+    q === "hey" ||
+    q === "नमस्ते" ||
+    q === "नमस्कार"
+  ) {
+
+    return result(
+      "नमस्ते! 👋 मैं Nexora AI हूँ।\n\n" +
+      "आप calculation, knowledge, learning, writing और creator tools इस्तेमाल कर सकते हैं।",
+      "General"
+    );
+
+  }
+
+
+  if (
+    q.includes("nexora ai kya hai") ||
+    q.includes("nexora ai क्या है")
+  ) {
+
+    return result(
+      "Nexora AI एक modular browser-based AI workspace है जिसमें अलग-अलग local skills एक ही जगह इस्तेमाल किए जा सकते हैं।",
+      "General"
+    );
+
+  }
+
+
+  if (
+    q.includes("help") ||
+    q.includes("मदद")
+  ) {
+
+    return result(
+      "🧠 Nexora AI में आप ये काम कर सकते हैं:\n\n" +
+      "🧮 Calculation\n" +
+      "🌍 Knowledge\n" +
+      "📚 Learning\n" +
+      "✍️ Writing\n" +
+      "🎬 YouTube Creator tools\n" +
+      "🌐 Basic translation",
+      "General"
+    );
+
+  }
+
+  return null;
+}
+
+
+/* =====================================================
+   MAIN ENGINE
+===================================================== */
+
+export function processQuestion(question) {
+
+  const text =
+    String(question || "").trim();
+
+  if (!text) {
+
+    return result(
+      "कृपया कोई सवाल लिखें।",
+      "General"
+    );
+
+  }
+
+
+  /* 1 — Calculator */
+
+  const calc =
+    calculator(text);
+
+  if (calc) {
+    return calc;
+  }
+
+
+  /* 2 — Knowledge */
+
+  const know =
+    findKnowledge(text);
+
+  if (know) {
+    return know;
+  }
+
+
+  /* 3 — Learning */
+
+  const learn =
+    learning(text);
+
+  if (learn) {
+    return learn;
+  }
+
+
+  /* 4 — Writing */
+
+  const write =
+    writing(text);
+
+  if (write) {
+    return write;
+  }
+
+
+  /* 5 — Creator */
+
+  const create =
+    creator(text);
+
+  if (create) {
+    return create;
+  }
+
+
+  /* 6 — Translation */
+
+  const translate =
+    translation(text);
+
+  if (translate) {
+    return translate;
+  }
+
+
+  /* 7 — General */
+
+  const generalAnswer =
+    general(text);
+
+  if (generalAnswer) {
+    return generalAnswer;
+  }
+
+
+  /* =================================================
+     UNKNOWN QUESTION
+     
+     Free Local Mode में fake answer नहीं देंगे।
+     Existing frontend इसे backend पर भेज सकता है।
+  ================================================= */
+
+  return {
+    answer:
+      "इस सवाल का local answer अभी उपलब्ध नहीं है।\n\n" +
+      "आप Knowledge, Learning, Writing, Creator या Calculator feature आज़मा सकते हैं।",
+
+    skill:
+      "General",
+
+    skillName:
+      "General",
+
+    local:
+      true,
+
+    needsBackend:
+      false
+  };
+
+}
+
+
+/* =====================================================
+   SKILL LIST
+===================================================== */
+
+export function getLocalSkills() {
+
+  return [
+
+    {
+      id: "calculator",
+      name: "Calculator",
+      description: "Math and calculations"
+    },
+
+    {
+      id: "knowledge",
+      name: "Knowledge",
+      description: "Local knowledge"
+    },
+
+    {
+      id: "learning",
+      name: "Learning",
+      description: "Explain topics"
+    },
+
+    {
+      id: "writing",
+      name: "Writing",
+      description: "Create text"
+    },
+
+    {
+      id: "creator",
+      name: "Creator",
+      description: "Titles, descriptions and ideas"
+    },
+
+    {
+      id: "translation",
+      name: "Translation",
+      description: "Basic translation"
+    },
+
+    {
+      id: "general",
+      name: "General",
+      description: "General help"
+    }
+
+  ];
+
+}
