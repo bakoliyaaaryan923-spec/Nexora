@@ -2,17 +2,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexora AI — Free Local</title><style>
+<title>Nexora AI — Free v4</title><style>
 *{box-sizing:border-box;margin:0;padding:0}
 
 body{
   font-family:Inter,Arial,sans-serif;
-  background:#090b10;
+  background:#080a0f;
   color:#f5f7fb;
   min-height:100vh;
 }
 
-button,textarea,input{font:inherit}
+button,textarea{font:inherit}
 
 .app{
   min-height:100vh;
@@ -26,7 +26,7 @@ button,textarea,input{font:inherit}
   padding:18px 14px;
   display:flex;
   flex-direction:column;
-  gap:15px;
+  gap:14px;
 }
 
 .logo{
@@ -40,12 +40,11 @@ button,textarea,input{font:inherit}
 }
 
 .new-chat{
-  width:100%;
-  padding:12px;
-  border-radius:12px;
   border:1px solid #303541;
   background:#191c24;
   color:white;
+  border-radius:12px;
+  padding:12px;
   cursor:pointer;
   text-align:left;
 }
@@ -122,14 +121,14 @@ button,textarea,input{font:inherit}
 }
 
 .content{
-  width:min(900px,94%);
+  width:min(920px,94%);
   margin:auto;
-  padding:50px 0 175px;
+  padding:48px 0 180px;
 }
 
 .hero{
   text-align:center;
-  margin-bottom:30px;
+  margin-bottom:28px;
 }
 
 .hero h1{
@@ -154,7 +153,7 @@ button,textarea,input{font:inherit}
 .welcome{
   text-align:center;
   color:#8c93a0;
-  padding:28px 10px;
+  padding:25px 10px;
 }
 
 .welcome strong{
@@ -219,11 +218,11 @@ button,textarea,input{font:inherit}
   right:0;
   bottom:0;
   padding:14px 20px 18px;
-  background:linear-gradient(transparent,#090b10 25%);
+  background:linear-gradient(transparent,#080a0f 25%);
 }
 
 .composer{
-  width:min(900px,94%);
+  width:min(920px,94%);
   margin:auto;
   display:flex;
   align-items:flex-end;
@@ -286,241 +285,289 @@ textarea::placeholder{
 }
 
 @media(max-width:760px){
-  .sidebar{
-    display:none;
-  }
-
-  .composer-wrap{
-    left:0;
-  }
-
-  .content{
-    padding-top:35px;
-  }
-
-  .tools{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .message{
-    max-width:93%;
-  }
+  .sidebar{display:none}
+  .composer-wrap{left:0}
+  .content{padding-top:35px}
+  .tools{grid-template-columns:repeat(2,1fr)}
+  .message{max-width:93%}
 }
-</style></head><body><div class="app"><aside class="sidebar">  <div class="logo">NEXORA <span>AI</span></div>  <button class="new-chat" onclick="newChat()">
-    ＋ New chat
-  </button>  <div class="history-title">History</div>  <div id="history" class="history"></div>  <div class="sidebar-bottom">
-    FREE LOCAL MODE<br>
-    No API required
-  </div></aside><main class="main"><header class="topbar">
-  <div class="brand">Nexora AI</div>
-  <div class="status">● Local Ready</div>
-</header><section class="content">  <div class="hero">
-    <h1>Ask anything.</h1>
-    <p>Useful AI-style tools that work directly in your browser.</p>
-  </div>  <div id="chat" class="chat"><div id="welcome" class="welcome">
-  <strong>Welcome to Nexora AI</strong>
-  Ask a question or choose a tool below.
-</div>
+</style></head><body><div class="app"><aside class="sidebar"><div class="logo">NEXORA <span>AI</span></div><button class="new-chat" onclick="newChat()">
+＋ New chat
+</button><div class="history-title">History</div><div id="history" class="history"></div><div class="sidebar-bottom">
+FREE LOCAL v4<br>
+No API required
+</div></aside><main class="main"><header class="topbar">
+<div class="brand">Nexora AI</div>
+<div class="status">● Local Ready</div>
+</header><section class="content"><div class="hero">
+<h1>Ask anything.</h1>
+<p>Learn, calculate, translate and write — directly in your browser.</p>
+</div><div id="chat" class="chat"><div id="welcome" class="welcome">
+<strong>Welcome to Nexora AI</strong>
+Ask a question or choose a tool below.
+</div></div><div class="tools"><button class="tool" onclick="chooseTool('ask')">
+🧠 Ask
+<small>General question</small>
+</button><button class="tool" onclick="chooseTool('learn')">
+📚 Learn
+<small>Explain simply</small>
+</button><button class="tool" onclick="chooseTool('write')">
+✍️ Write
+<small>Writing helper</small>
+</button><button class="tool" onclick="chooseTool('solve')">
+🧮 Solve
+<small>Calculator</small>
+</button></div></section>
+</main>
+</div><div class="composer-wrap"><div class="composer"><textarea
+id="question"
+placeholder="Ask Nexora anything..."
+rows="1"
+onkeydown="handleKey(event)"
+></textarea><button class="clear" onclick="clearChat()">Clear</button>
 
-  </div>  <div class="tools"><button class="tool" onclick="chooseTool('ask')">
-  🧠 Ask
-  <small>Ask a question</small>
-</button>
+<button class="send" onclick="sendMessage()">➤</button>
 
-<button class="tool" onclick="chooseTool('learn')">
-  📚 Learn
-  <small>Explain a topic</small>
-</button>
-
-<button class="tool" onclick="chooseTool('write')">
-  ✍️ Write
-  <small>Writing helper</small>
-</button>
-
-<button class="tool" onclick="chooseTool('solve')">
-  🧮 Solve
-  <small>Calculator</small>
-</button>
-
-  </div></section></main>
-</div><div class="composer-wrap">  <div class="composer"><textarea
-  id="question"
-  placeholder="Ask Nexora anything..."
-  rows="1"
-  onkeydown="handleKey(event)"
-></textarea>
-
-<button class="clear" onclick="clearChat()">
-  Clear
-</button>
-
-<button class="send" onclick="sendMessage()">
-  ➤
-</button>
-
-  </div>  <div class="notice">
-    © 2026 Nexora AI · Free Local Mode
-  </div></div><script>
+</div><div class="notice">
+© 2026 Nexora AI · Free Local v4
+</div></div><script>
 
 const chat=document.getElementById("chat");
 const box=document.getElementById("question");
 const historyBox=document.getElementById("history");
 
+/* ---------- UI ---------- */
+
 function addMessage(text,type){
 
-  const welcome=document.getElementById("welcome");
+const welcome=document.getElementById("welcome");
 
-  if(welcome){
-    welcome.remove();
-  }
+if(welcome) welcome.remove();
 
-  const div=document.createElement("div");
+const div=document.createElement("div");
 
-  div.className="message "+type;
-  div.textContent=text;
+div.className="message "+type;
+div.textContent=text;
 
-  chat.appendChild(div);
+chat.appendChild(div);
 
-  window.scrollTo({
-    top:document.body.scrollHeight,
-    behavior:"smooth"
-  });
+window.scrollTo({
+top:document.body.scrollHeight,
+behavior:"smooth"
+});
 
-  return div;
+return div;
 }
 
 function addHistory(text){
 
-  const item=document.createElement("button");
+const item=document.createElement("button");
 
-  item.className="history-item";
-  item.textContent=text;
+item.className="history-item";
+item.textContent=text;
 
-  item.onclick=function(){
-    box.value=text;
-    box.focus();
-  };
+item.onclick=()=>{
+box.value=text;
+box.focus();
+};
 
-  historyBox.prepend(item);
+historyBox.prepend(item);
 }
 
 function newChat(){
 
-  chat.innerHTML=`
-    <div id="welcome" class="welcome">
-      <strong>Welcome to Nexora AI</strong>
-      Ask a question or choose a tool below.
-    </div>
-  `;
+chat.innerHTML=`
+<div id="welcome" class="welcome">
+<strong>Welcome to Nexora AI</strong>
+Ask a question or choose a tool below.
+</div>`;
 
-  box.value="";
-  box.focus();
+box.value="";
+box.focus();
 }
 
 function clearChat(){
-  newChat();
+newChat();
 }
 
 function handleKey(event){
 
-  if(event.key==="Enter" && !event.shiftKey){
-    event.preventDefault();
-    sendMessage();
-  }
+if(event.key==="Enter" && !event.shiftKey){
+event.preventDefault();
+sendMessage();
+}
+
 }
 
 function chooseTool(type){
 
-  const prompts={
-    ask:"",
-    learn:"Explain this topic in simple language: ",
-    write:"Help me write: ",
-    solve:"Calculate: "
-  };
+const prompts={
+ask:"",
+learn:"Explain this topic in simple language: ",
+write:"Help me write: ",
+solve:"Calculate: "
+};
 
-  box.value=prompts[type] ?? "";
-  box.focus();
+box.value=prompts[type] || "";
+box.focus();
 }
+
+/* ---------- CALCULATOR ---------- */
 
 function calculate(expression){
 
-  let value=expression
-    .replace(/×/g,"*")
-    .replace(/÷/g,"/")
-    .replace(/\s/g,"");
+let value=expression
+.replace(/×/g,"*")
+.replace(/÷/g,"/")
+.replace(/\^/g,"**")
+.replace(/\s/g,"");
 
-  if(!/^[0-9+\-*/().%]+$/.test(value)){
-    return null;
-  }
-
-  try{
-
-    const result=Function(
-      '"use strict";return ('+value+')'
-    )();
-
-    if(
-      typeof result==="number" &&
-      Number.isFinite(result)
-    ){
-      return result;
-    }
-
-  }catch(error){}
-
-  return null;
+if(!/^[0-9+\-*/().%]+$/.test(value)){
+return null;
 }
+
+try{
+
+const result=Function(
+'"use strict";return ('+value+')'
+)();
+
+if(typeof result==="number" && Number.isFinite(result)){
+return result;
+}
+
+}catch(error){}
+
+return null;
+}
+
+/* ---------- TRANSLATION ---------- */
+
+function translateText(q){
+
+const hindiToEnglish={
+"नमस्ते":"Hello",
+"धन्यवाद":"Thank you",
+"पानी":"Water",
+"किताब":"Book",
+"घर":"House",
+"स्कूल":"School",
+"दोस्त":"Friend",
+"भारत":"India",
+"राजस्थान":"Rajasthan",
+"जयपुर":"Jaipur",
+"सूर्य":"Sun",
+"चंद्रमा":"Moon",
+"पृथ्वी":"Earth",
+"आकाश":"Sky"
+};
+
+const englishToHindi={
+"hello":"नमस्ते",
+"thank you":"धन्यवाद",
+"water":"पानी",
+"book":"किताब",
+"house":"घर",
+"school":"स्कूल",
+"friend":"दोस्त",
+"india":"भारत",
+"rajasthan":"राजस्थान",
+"jaipur":"जयपुर",
+"sun":"सूर्य",
+"moon":"चंद्रमा",
+"earth":"पृथ्वी",
+"sky":"आकाश"
+};
+
+let text=q
+.replace(/^translate\s*/i,"")
+.replace(/^अनुवाद\s*/i,"")
+.trim();
+
+const lower=text.toLowerCase();
+
+if(hindiToEnglish[text]){
+return "English: "+hindiToEnglish[text];
+}
+
+if(englishToHindi[lower]){
+return "Hindi: "+englishToHindi[lower];
+}
+
+return "Translation helper: अभी basic Hindi ↔ English words supported हैं। उदाहरण: Translate नमस्ते";
+}
+
+/* ---------- KNOWLEDGE ---------- */
 
 function localKnowledge(question){
 
-  const q=question.toLowerCase().trim();
+const q=question.toLowerCase().trim();
 
-  const result=calculate(question);
+/* calculator */
 
-  if(result!==null){
-    return "🧮 Answer: "+result;
-  }
+const result=calculate(question);
 
-  if(
-    q==="hi" ||
-    q==="hello" ||
-    q==="hey" ||
-    q==="नमस्ते"
-  ){
-    return "नमस्ते! मैं Nexora AI हूँ। अपना सवाल पूछिए।";
-  }
+if(result!==null){
+return "🧮 Answer: "+result;
+}
 
-  if(
-    q.includes("bharat ki rajdhani") ||
-    q.includes("india ki capital") ||
-    q.includes("capital of india") ||
-    q.includes("भारत की राजधानी")
-  ){
-    return `भारत की राजधानी नई दिल्ली (New Delhi) है।
+/* greetings */
+
+if(
+q==="hi" ||
+q==="hello" ||
+q==="hey" ||
+q==="नमस्ते"
+){
+return "नमस्ते! मैं Nexora AI हूँ। अपना सवाल पूछिए।";
+}
+
+/* translation */
+
+if(
+q.startsWith("translate ") ||
+q.startsWith("अनुवाद ")
+){
+return translateText(question);
+}
+
+/* India */
+
+if(
+q.includes("bharat ki rajdhani") ||
+q.includes("india ki capital") ||
+q.includes("capital of india") ||
+q.includes("भारत की राजधानी")
+){
+return `भारत की राजधानी नई दिल्ली (New Delhi) है।
 
 3 महत्वपूर्ण बातें:
 1. नई दिल्ली भारत की राष्ट्रीय राजधानी है।
 2. यहाँ भारत की संसद स्थित है।
 3. राष्ट्रपति भवन और कई केंद्रीय सरकारी कार्यालय यहाँ स्थित हैं।`;
-  }
+}
 
-  if(
-    q.includes("rajasthan ki rajdhani") ||
-    q.includes("rajasthan capital") ||
-    q.includes("राजस्थान की राजधानी")
-  ){
-    return `राजस्थान की राजधानी जयपुर (Jaipur) है।
+/* Rajasthan */
+
+if(
+q.includes("rajasthan ki rajdhani") ||
+q.includes("rajasthan capital") ||
+q.includes("राजस्थान की राजधानी")
+){
+return `राजस्थान की राजधानी जयपुर (Jaipur) है।
 
 जयपुर को "Pink City" के नाम से भी जाना जाता है।`;
-  }
+}
 
-  if(
-    q.includes("ai kya hai") ||
-    q.includes("what is ai") ||
-    q.includes("artificial intelligence") ||
-    q.includes("एआई क्या है")
-  ){
-    return `AI यानी Artificial Intelligence ऐसी technology है जिसमें computer systems ऐसे काम कर सकते हैं जिनमें सामान्यतः human intelligence की जरूरत होती है।
+/* AI */
+
+if(
+q.includes("ai kya hai") ||
+q.includes("what is ai") ||
+q.includes("artificial intelligence") ||
+q.includes("एआई क्या है")
+){
+return `AI यानी Artificial Intelligence ऐसी technology है जिसमें computer systems ऐसे काम कर सकते हैं जिनमें सामान्यतः human intelligence की जरूरत होती है।
 
 उदाहरण:
 • भाषा समझना
@@ -528,118 +575,172 @@ function localKnowledge(question){
 • images पहचानना
 • patterns ढूँढना
 • predictions करना`;
-  }
+}
 
-  if(
-    q.includes("computer kya hai") ||
-    q.includes("what is computer") ||
-    q.includes("कंप्यूटर क्या है")
-  ){
-    return `कंप्यूटर एक electronic device है जो data को process करके उपयोगी information देता है।
+/* computer */
 
-इसके मुख्य काम हैं:
-1. Input लेना
-2. Data process करना
-3. Output देना
-4. Data store करना`;
-  }
+if(
+q.includes("computer kya hai") ||
+q.includes("what is computer") ||
+q.includes("कंप्यूटर क्या है")
+){
+return `कंप्यूटर एक electronic device है जो data को process करके useful information देता है।
 
-  if(
-    q.includes("water formula") ||
-    q.includes("pani ka formula") ||
-    q.includes("पानी का सूत्र")
-  ){
-    return "पानी का रासायनिक सूत्र H₂O है। इसमें दो hydrogen atoms और एक oxygen atom होते हैं।";
-  }
+मुख्य काम:
+1. Input
+2. Processing
+3. Output
+4. Storage`;
+}
 
-  if(
-    q.includes("solar system") ||
-    q.includes("saur mandal") ||
-    q.includes("सौर मंडल")
-  ){
-    return `सौर मंडल सूर्य और उसके चारों ओर घूमने वाले ग्रहों तथा अन्य खगोलीय objects का समूह है।
+/* water */
 
-सौर मंडल में 8 ग्रह हैं:
+if(
+q.includes("water formula") ||
+q.includes("pani ka formula") ||
+q.includes("पानी का सूत्र")
+){
+return "पानी का chemical formula H₂O है। इसमें दो hydrogen atoms और एक oxygen atom होते हैं।";
+}
+
+/* Solar system */
+
+if(
+q.includes("solar system") ||
+q.includes("saur mandal") ||
+q.includes("सौर मंडल")
+){
+return `सौर मंडल सूर्य और उसके चारों ओर घूमने वाले ग्रहों तथा अन्य खगोलीय objects का समूह है।
+
+8 ग्रह:
 Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus और Neptune।`;
-  }
+}
 
-  if(
-    q.includes("earth") ||
-    q.includes("prithvi") ||
-    q.includes("पृथ्वी")
-  ){
-    return `पृथ्वी सूर्य से तीसरा ग्रह है।
+/* Earth */
+
+if(
+q.includes("earth") ||
+q.includes("prithvi") ||
+q.includes("पृथ्वी")
+){
+return `पृथ्वी सूर्य से तीसरा ग्रह है।
 
 पृथ्वी पर liquid water और जीवन के लिए उपयुक्त वातावरण मौजूद है। इसका एक प्राकृतिक उपग्रह है — चंद्रमा।`;
-  }
+}
 
-  if(
-    q.includes("sun") ||
-    q.includes("surya") ||
-    q.includes("सूर्य")
-  ){
-    return `सूर्य हमारे सौर मंडल का तारा है और पृथ्वी के लिए प्रकाश तथा ऊर्जा का मुख्य स्रोत है।`;
-  }
+/* Sun */
 
-  if(
-    q.includes("rajasthan") ||
-    q.includes("राजस्थान")
-  ){
-    return `राजस्थान भारत के उत्तर-पश्चिमी भाग में स्थित राज्य है।
+if(
+q==="sun" ||
+q.includes("surya") ||
+q.includes("सूर्य")
+){
+return "सूर्य हमारे सौर मंडल का तारा है और पृथ्वी के लिए प्रकाश तथा ऊर्जा का मुख्य स्रोत है।";
+}
+
+/* Rajasthan general */
+
+if(
+q==="rajasthan" ||
+q.includes("rajasthan ke bare") ||
+q.includes("राजस्थान के बारे")
+){
+return `राजस्थान भारत के उत्तर-पश्चिमी भाग में स्थित राज्य है।
 
 राजधानी: जयपुर
 प्रसिद्ध क्षेत्र: थार मरुस्थल
-प्रसिद्ध शहर: जयपुर, जोधपुर, उदयपुर और जैसलमेर`;
-  }
+प्रमुख शहर: जयपुर, जोधपुर, उदयपुर और जैसलमेर`;
+}
 
-  if(
-    q.includes("india") ||
-    q.includes("bharat") ||
-    q.includes("भारत")
-  ){
-    return `भारत दक्षिण एशिया का एक विशाल देश है।
+/* India general */
+
+if(
+q==="india" ||
+q==="bharat" ||
+q.includes("about india") ||
+q.includes("भारत के बारे")
+){
+return `भारत दक्षिण एशिया का एक विशाल देश है।
 
 राजधानी: नई दिल्ली
 मुद्रा: भारतीय रुपया (₹)
 क्षेत्र: दक्षिण एशिया
 
 भारत अपनी विविध भाषाओं, संस्कृतियों और इतिहास के लिए प्रसिद्ध है।`;
-  }
+}
 
-  return `मैं अभी Free Local Mode में चल रहा हूँ।
+/* Writing */
 
-इस version में API की जरूरत नहीं है।
+if(
+q.startsWith("write ") ||
+q.startsWith("write a ") ||
+q.startsWith("लिखो ")
+){
+return `✍️ Writing helper
 
-आप ये सवाल पूछ सकते हैं:
+आपके लिए basic writing mode तैयार है।
+
+उदाहरण:
+"Write a paragraph about India"
+
+या
+
+"लिखो: पर्यावरण संरक्षण पर छोटा paragraph"`;
+}
+
+/* Learn */
+
+if(
+q.startsWith("explain ") ||
+q.startsWith("explain this") ||
+q.startsWith("समझाओ ")
+){
+return `📚 Learn Mode
+
+मैं topic को simple language में समझाने के लिए तैयार हूँ।
+
+उदाहरण:
+"Explain photosynthesis"
+"समझाओ कि AI कैसे काम करता है"`;
+}
+
+/* fallback */
+
+return `मैं अभी Nexora AI Free Local v4 में चल रहा हूँ।
+
+मैं बिना API के calculator, common knowledge, basic translation और learning/writing helpers चला सकता हूँ।
+
+Try:
+• AI क्या है?
 • भारत की राजधानी क्या है?
 • राजस्थान की राजधानी क्या है?
-• AI क्या है?
-• कंप्यूटर क्या है?
 • पानी का formula क्या है?
 • सौर मंडल क्या है?
+• Translate नमस्ते
 • 25 × 12
 
-बाद में AI provider जोड़कर सामान्य सवालों के लिए real AI answers भी जोड़े जा सकते हैं।`;
+नए और बहुत specific सवालों के लिए बाद में किसी AI provider को जोड़ना होगा।`;
 }
+
+/* ---------- SEND ---------- */
 
 function sendMessage(){
 
-  const question=box.value.trim();
+const question=box.value.trim();
 
-  if(!question){
-    return;
-  }
+if(!question) return;
 
-  addMessage(question,"user");
-  addHistory(question);
+addMessage(question,"user");
+addHistory(question);
 
-  box.value="";
+box.value="";
 
-  const answer=localKnowledge(question);
+const answer=localKnowledge(question);
 
-  setTimeout(function(){
-    addMessage(answer,"assistant");
-  },220);
+setTimeout(()=>{
+addMessage(answer,"assistant");
+},220);
+
 }
 
 </script></body>
