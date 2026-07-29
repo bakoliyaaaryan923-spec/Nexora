@@ -2,175 +2,346 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nexora AI</title>
 
 <style>
-*{box-sizing:border-box}
-body{
+*{
+  box-sizing:border-box;
   margin:0;
-  font-family:Arial,sans-serif;
-  background:#080808;
-  color:white;
+  padding:0;
 }
+
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:#080808;
+  color:#f5f7fb;
+  min-height:100vh;
+}
+
+button,
+textarea{
+  font:inherit;
+}
+
+button{
+  -webkit-tap-highlight-color:transparent;
+}
+
 .app{
   min-height:100vh;
   display:flex;
 }
+
+/* SIDEBAR */
+
 .sidebar{
-  width:240px;
+  width:250px;
   background:#111;
-  padding:20px;
   border-right:1px solid #292929;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
 }
+
 .logo{
   font-size:22px;
-  font-weight:bold;
-  margin-bottom:25px;
+  font-weight:800;
+  padding:8px;
+  margin-bottom:14px;
 }
-.logo span{color:#7d6cff}
+
+.logo span{
+  color:#897cff;
+}
+
 .new-chat{
   width:100%;
-  padding:12px;
-  background:#1c1c1c;
-  color:white;
   border:1px solid #333;
+  background:#191919;
+  color:#fff;
   border-radius:10px;
+  padding:12px;
   cursor:pointer;
+  text-align:left;
 }
+
+.new-chat:hover{
+  background:#232323;
+}
+
 .history-title{
   color:#777;
-  font-size:12px;
-  margin:25px 0 10px;
+  font-size:11px;
+  margin:22px 8px 8px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
 }
+
+.history{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  overflow:auto;
+  max-height:350px;
+}
+
 .history-item{
   width:100%;
-  text-align:left;
-  padding:9px;
-  margin-bottom:4px;
+  border:0;
   background:transparent;
   color:#ccc;
-  border:0;
+  padding:10px;
   border-radius:8px;
+  text-align:left;
   cursor:pointer;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
-.history-item:hover{background:#222}
+
+.history-item:hover{
+  background:#202020;
+}
+
+.sidebar-bottom{
+  margin-top:auto;
+  color:#666;
+  font-size:11px;
+  padding:8px;
+}
+
+/* MAIN */
 
 .main{
   flex:1;
   min-width:0;
+  min-height:100vh;
   display:flex;
   flex-direction:column;
 }
+
 .topbar{
   height:60px;
-  padding:0 20px;
   border-bottom:1px solid #292929;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  background:#0d0d0d;
 }
-.status{color:#65e39c;font-size:13px}
+
+.brand{
+  font-weight:700;
+}
+
+.status{
+  color:#66e3a0;
+  font-size:12px;
+}
+
+.status.thinking{
+  color:#c4baff;
+}
+
+.status.error{
+  color:#ff8d8d;
+}
+
+/* CHAT */
 
 .chat{
-  width:min(850px,94%);
+  width:min(900px,94%);
   margin:auto;
   flex:1;
-  padding:40px 0 150px;
+  padding:40px 0 160px;
 }
+
 .welcome{
   text-align:center;
   color:#888;
-  padding:100px 10px;
+  padding:100px 10px 50px;
 }
+
 .welcome h1{
-  color:white;
-  font-size:50px;
-  margin-bottom:10px;
+  color:#fff;
+  font-size:clamp(38px,6vw,56px);
+  margin-bottom:12px;
 }
+
+.welcome p{
+  color:#888;
+}
+
 .message{
-  margin:20px 0;
   display:flex;
+  margin:20px 0;
+  line-height:1.65;
 }
-.message.user{justify-content:flex-end}
+
+.message.user{
+  justify-content:flex-end;
+}
+
 .bubble{
-  max-width:82%;
+  max-width:84%;
   padding:14px 17px;
   border-radius:16px;
-  line-height:1.6;
   white-space:pre-wrap;
+  overflow-wrap:anywhere;
 }
+
 .user .bubble{
-  background:#6255d8;
+  background:#6256d8;
+  border-bottom-right-radius:5px;
 }
+
 .assistant .bubble{
   background:#181818;
   border:1px solid #292929;
+  border-bottom-left-radius:5px;
 }
+
 .label{
-  color:#8d95a5;
+  color:#929aaa;
   font-size:11px;
-  margin-bottom:5px;
+  margin-bottom:6px;
 }
+
+/* TYPING */
+
+.typing{
+  display:flex;
+  gap:5px;
+  align-items:center;
+  height:20px;
+}
+
+.typing span{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#aaa;
+  animation:blink 1s infinite;
+}
+
+.typing span:nth-child(2){
+  animation-delay:.15s;
+}
+
+.typing span:nth-child(3){
+  animation-delay:.3s;
+}
+
+@keyframes blink{
+  0%,80%,100%{
+    opacity:.25;
+  }
+  40%{
+    opacity:1;
+  }
+}
+
+/* COMPOSER */
 
 .composer-wrap{
   position:fixed;
-  bottom:0;
-  left:240px;
+  left:250px;
   right:0;
-  padding:15px 20px;
-  background:linear-gradient(transparent,#080808 30%);
+  bottom:0;
+  padding:15px 20px 18px;
+  background:linear-gradient(
+    transparent,
+    #080808 30%
+  );
 }
+
 .composer{
-  width:min(850px,94%);
+  width:min(900px,94%);
   margin:auto;
   display:flex;
+  align-items:flex-end;
   gap:8px;
   padding:8px;
   background:#171717;
-  border:1px solid #333;
+  border:1px solid #353535;
   border-radius:17px;
 }
+
 textarea{
   flex:1;
+  min-height:46px;
+  max-height:150px;
   resize:none;
-  min-height:45px;
-  max-height:130px;
   border:0;
   outline:0;
   background:transparent;
-  color:white;
+  color:#fff;
   padding:12px;
 }
+
+textarea::placeholder{
+  color:#707070;
+}
+
 .clear{
+  border:0;
   background:transparent;
   color:#888;
-  border:0;
+  padding:11px;
   cursor:pointer;
 }
+
 .send{
-  width:48px;
-  height:45px;
+  width:47px;
+  height:46px;
   border:0;
   border-radius:12px;
-  background:#6d5ce7;
-  color:white;
+  background:#6b5fe5;
+  color:#fff;
   cursor:pointer;
   font-size:18px;
 }
-.send:hover{background:#806ff0}
+
+.send:hover{
+  background:#7a6ff0;
+}
+
+.send:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
 .notice{
   text-align:center;
   color:#555;
   font-size:10px;
-  margin-top:6px;
+  margin-top:7px;
 }
 
-@media(max-width:700px){
-  .sidebar{display:none}
-  .composer-wrap{left:0}
-  .welcome h1{font-size:40px}
-  .bubble{max-width:92%}
+/* MOBILE */
+
+@media(max-width:760px){
+
+  .sidebar{
+    display:none;
+  }
+
+  .composer-wrap{
+    left:0;
+  }
+
+  .chat{
+    padding-top:25px;
+  }
+
+  .bubble{
+    max-width:93%;
+  }
+
+  .welcome{
+    padding-top:80px;
+  }
 }
 </style>
 </head>
@@ -179,130 +350,159 @@ textarea{
 
 <div class="app">
 
-<aside class="sidebar">
+  <aside class="sidebar">
 
-  <div class="logo">
-    NEXORA <span>AI</span>
-  </div>
+    <div class="logo">
+      NEXORA <span>AI</span>
+    </div>
 
-  <button
-    class="new-chat"
-    id="newChat"
-  >
-    ＋ New chat
-  </button>
+    <button
+      class="new-chat"
+      id="newChatButton"
+    >
+      ＋ New chat
+    </button>
 
-  <div class="history-title">
-    History
-  </div>
+    <div class="history-title">
+      History
+    </div>
 
-  <div id="history"></div>
+    <div
+      id="history"
+      class="history"
+    ></div>
 
-</aside>
+    <div class="sidebar-bottom">
+      Nexora AI<br>
+      Local + AI Backend
+    </div>
 
-
-<main class="main">
-
-<header class="topbar">
-
-  <strong>Nexora AI</strong>
-
-  <span
-    class="status"
-    id="status"
-  >
-    ● Ready
-  </span>
-
-</header>
+  </aside>
 
 
-<section
-  class="chat"
-  id="chat"
->
+  <main class="main">
 
-  <div
-    class="welcome"
-    id="welcome"
-  >
+    <header class="topbar">
 
-    <h1>Ask anything.</h1>
+      <div class="brand">
+        Nexora AI
+      </div>
 
-    <p>
-      Chat, learn, write and solve with Nexora AI.
-    </p>
+      <div
+        id="status"
+        class="status"
+      >
+        ● Ready
+      </div>
 
-  </div>
+    </header>
 
-</section>
 
-</main>
+    <section
+      id="chat"
+      class="chat"
+    >
+
+      <div
+        id="welcome"
+        class="welcome"
+      >
+
+        <h1>
+          Ask anything.
+        </h1>
+
+        <p>
+          Chat, learn, write and solve with Nexora AI.
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
 
 </div>
 
 
 <div class="composer-wrap">
 
-<div class="composer">
+  <div class="composer">
 
-<textarea
-  id="question"
-  placeholder="Ask Nexora anything..."
-></textarea>
+    <textarea
+      id="question"
+      placeholder="Ask Nexora anything..."
+      rows="1"
+    ></textarea>
 
-<button
-  class="clear"
-  id="clear"
->
-Clear
-</button>
+    <button
+      class="clear"
+      id="clearButton"
+    >
+      Clear
+    </button>
 
-<button
-  class="send"
-  id="send"
->
-➤
-</button>
+    <button
+      class="send"
+      id="sendButton"
+    >
+      ➤
+    </button>
 
-</div>
+  </div>
 
-<div class="notice">
-© 2026 Nexora AI · Free Local Mode
-</div>
+  <div class="notice">
+    © 2026 Nexora AI
+  </div>
 
 </div>
 
 
 <script>
 
-const question =
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const questionBox =
   document.getElementById("question");
 
-const send =
-  document.getElementById("send");
+const sendButton =
+  document.getElementById("sendButton");
 
-const clear =
-  document.getElementById("clear");
+const clearButton =
+  document.getElementById("clearButton");
 
-const newChat =
-  document.getElementById("newChat");
+const newChatButton =
+  document.getElementById("newChatButton");
 
 const chat =
   document.getElementById("chat");
 
-const history =
+const historyBox =
   document.getElementById("history");
 
 const status =
   document.getElementById("status");
 
 
-/* =========================
-   LOCAL ANSWER ENGINE
-========================= */
+/* =====================================================
+   STATE
+===================================================== */
 
-function getAnswer(text){
+const HISTORY_KEY =
+  "nexora_chat_history_v8";
+
+let conversation = [];
+
+let activeChatId = null;
+
+
+/* =====================================================
+   LOCAL ENGINE
+===================================================== */
+
+function getLocalAnswer(text){
 
   const q =
     text
@@ -326,7 +526,7 @@ function getAnswer(text){
 
     try{
 
-      const answer =
+      const result =
         Function(
           '"use strict";return (' +
           expression +
@@ -335,18 +535,21 @@ function getAnswer(text){
 
 
       if(
-        typeof answer === "number" &&
-        Number.isFinite(answer)
+        typeof result === "number" &&
+        Number.isFinite(result)
       ){
 
         return {
-          text:"🧮 Answer: " + answer,
-          skill:"Calculator"
+          answer:
+            "🧮 Answer: " + result,
+
+          skill:
+            "Calculator"
         };
 
       }
 
-    }catch(e){}
+    }catch(error){}
 
   }
 
@@ -359,12 +562,14 @@ function getAnswer(text){
   ){
 
     return {
-      text:
+      answer:
         "भारत की राजधानी नई दिल्ली (New Delhi) है।\n\n" +
         "• यहाँ भारत की संसद स्थित है।\n" +
         "• राष्ट्रपति भवन नई दिल्ली में है।\n" +
         "• यह भारत की केंद्र सरकार का प्रमुख केंद्र है।",
-      skill:"Knowledge"
+
+      skill:
+        "Knowledge"
     };
 
   }
@@ -374,14 +579,17 @@ function getAnswer(text){
 
   if(
     q.includes("भारत का संविधान कब लागू हुआ") ||
-    q.includes("संविधान कब लागू हुआ")
+    q.includes("संविधान कब लागू हुआ") ||
+    q.includes("constitution of india")
   ){
 
     return {
-      text:
+      answer:
         "भारत का संविधान 26 जनवरी 1950 को लागू हुआ था।\n\n" +
         "इसी कारण 26 जनवरी को भारत में गणतंत्र दिवस मनाया जाता है।",
-      skill:"Knowledge"
+
+      skill:
+        "Knowledge"
     };
 
   }
@@ -396,14 +604,16 @@ function getAnswer(text){
   ){
 
     return {
-      text:
+      answer:
         "AI यानी Artificial Intelligence ऐसी technology है जिसमें computer systems ऐसे काम कर सकते हैं जिनमें आमतौर पर human intelligence की जरूरत होती है।\n\n" +
         "उदाहरण:\n" +
         "• भाषा समझना\n" +
         "• तस्वीरें पहचानना\n" +
         "• सवालों के जवाब देना\n" +
         "• patterns पहचानना",
-      skill:"Learning"
+
+      skill:
+        "Learning"
     };
 
   }
@@ -419,9 +629,11 @@ function getAnswer(text){
   ){
 
     return {
-      text:
+      answer:
         "नमस्ते! 👋 मैं Nexora AI हूँ।",
-      skill:"General"
+
+      skill:
+        "General"
     };
 
   }
@@ -435,9 +647,11 @@ function getAnswer(text){
   ){
 
     return {
-      text:
+      answer:
         "AI आज की technology का एक महत्वपूर्ण हिस्सा है। यह computers को information समझने, patterns पहचानने और कई intelligent tasks करने में मदद करता है। इसका उपयोग education, communication, business और कई अन्य क्षेत्रों में किया जा रहा है।",
-      skill:"Writing"
+
+      skill:
+        "Writing"
     };
 
   }
@@ -454,39 +668,43 @@ function getAnswer(text){
   ){
 
     return {
-      text:
+      answer:
         "🎬 YouTube Title Ideas\n\n" +
         "1. AI क्या है? आसान भाषा में समझें\n" +
         "2. AI कैसे काम करता है?\n" +
         "3. AI की 5 जरूरी बातें\n" +
         "4. AI का इस्तेमाल कैसे करें?\n" +
         "5. AI का Future क्या है?",
-      skill:"Creator"
+
+      skill:
+        "Creator"
     };
 
   }
 
 
-  /* FALLBACK */
+  /*
+    IMPORTANT:
 
-  return {
-    text:
-      "इस सवाल का local answer अभी उपलब्ध नहीं है।\n\n" +
-      "आप Calculator, Knowledge, Learning, Writing या Creator feature आज़मा सकते हैं।",
-    skill:"General"
-  };
+    null का मतलब:
+    Local engine को answer नहीं मिला।
+
+    तब sendMessage() backend को call करेगा।
+  */
+
+  return null;
 
 }
 
 
-/* =========================
+/* =====================================================
    ADD MESSAGE
-========================= */
+===================================================== */
 
 function addMessage(
   text,
-  type,
-  skill
+  role,
+  skill = ""
 ){
 
   const welcome =
@@ -497,11 +715,11 @@ function addMessage(
   }
 
 
-  const message =
+  const wrapper =
     document.createElement("div");
 
-  message.className =
-    "message " + type;
+  wrapper.className =
+    "message " + role;
 
 
   const bubble =
@@ -512,7 +730,7 @@ function addMessage(
 
 
   if(
-    type === "assistant"
+    role === "assistant"
   ){
 
     const label =
@@ -534,17 +752,17 @@ function addMessage(
     document.createElement("div");
 
   body.textContent =
-    text;
+    String(text || "");
 
 
   bubble.appendChild(body);
 
-  message.appendChild(bubble);
+  wrapper.appendChild(bubble);
 
-  chat.appendChild(message);
+  chat.appendChild(wrapper);
 
 
-  message.scrollIntoView({
+  wrapper.scrollIntoView({
     behavior:"smooth",
     block:"end"
   });
@@ -552,20 +770,183 @@ function addMessage(
 }
 
 
-/* =========================
-   SEND
-========================= */
+/* =====================================================
+   TYPING
+===================================================== */
 
-function sendMessage(){
+function showTyping(){
+
+  removeTyping();
+
+
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.id =
+    "typingMessage";
+
+  wrapper.className =
+    "message assistant";
+
+
+  const bubble =
+    document.createElement("div");
+
+  bubble.className =
+    "bubble";
+
+
+  const label =
+    document.createElement("div");
+
+  label.className =
+    "label";
+
+  label.textContent =
+    "⚡ Nexora AI";
+
+
+  const typing =
+    document.createElement("div");
+
+  typing.className =
+    "typing";
+
+  typing.innerHTML =
+    "<span></span><span></span><span></span>";
+
+
+  bubble.appendChild(label);
+
+  bubble.appendChild(typing);
+
+  wrapper.appendChild(bubble);
+
+  chat.appendChild(wrapper);
+
+
+  wrapper.scrollIntoView({
+    behavior:"smooth",
+    block:"end"
+  });
+
+}
+
+
+function removeTyping(){
+
+  const typing =
+    document.getElementById(
+      "typingMessage"
+    );
+
+  if(typing){
+    typing.remove();
+  }
+
+}
+
+
+/* =====================================================
+   BACKEND CALL
+===================================================== */
+
+async function askBackend(){
+
+  /*
+    We send the conversation so the backend
+    can understand the current chat.
+  */
+
+  const response =
+    await fetch(
+      "/api/ask",
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify({
+
+            messages:
+              conversation.slice(-20)
+
+          })
+      }
+    );
+
+
+  let data = {};
+
+  try{
+
+    data =
+      await response.json();
+
+  }catch(error){
+
+    throw new Error(
+      "Backend ने valid JSON response नहीं दिया।"
+    );
+
+  }
+
+
+  if(!response.ok){
+
+    throw new Error(
+      data?.reply ||
+      data?.error ||
+      "Backend request failed."
+    );
+
+  }
+
+
+  const answer =
+    data?.reply ||
+    data?.answer ||
+    data?.message;
+
+
+  if(!answer){
+
+    throw new Error(
+      "Backend से कोई answer नहीं मिला।"
+    );
+
+  }
+
+
+  return String(answer);
+
+}
+
+
+/* =====================================================
+   SEND MESSAGE
+===================================================== */
+
+async function sendMessage(){
 
   const text =
-    question.value.trim();
+    questionBox.value.trim();
 
 
   if(!text){
+
+    questionBox.focus();
+
     return;
+
   }
 
+
+  /* USER MESSAGE */
 
   addMessage(
     text,
@@ -573,53 +954,461 @@ function sendMessage(){
   );
 
 
-  question.value = "";
+  conversation.push({
+
+    role:
+      "user",
+
+    content:
+      text
+
+  });
+
+
+  questionBox.value = "";
+
+  sendButton.disabled = true;
 
   status.textContent =
     "● Thinking...";
 
+  status.className =
+    "status thinking";
 
-  /*
-    Small delay only for
-    ChatGPT-like feel.
-  */
 
-  setTimeout(function(){
+  try{
+
+    /*
+      1. LOCAL FIRST
+    */
+
+    const local =
+      getLocalAnswer(text);
+
+
+    if(local){
+
+      await wait(250);
+
+
+      addMessage(
+
+        local.answer,
+
+        "assistant",
+
+        local.skill
+
+      );
+
+
+      conversation.push({
+
+        role:
+          "assistant",
+
+        content:
+          local.answer
+
+      });
+
+
+      saveCurrentChat();
+
+
+      status.textContent =
+        "● Local Ready";
+
+      status.className =
+        "status";
+
+
+      return;
+
+    }
+
+
+    /*
+      2. LOCAL ANSWER नहीं मिला
+         अब BACKEND CALL होगा।
+    */
+
+    showTyping();
+
 
     const answer =
-      getAnswer(text);
+      await askBackend();
+
+
+    removeTyping();
 
 
     addMessage(
-      answer.text,
+
+      answer,
+
       "assistant",
-      answer.skill
+
+      "AI"
+
+    );
+
+
+    conversation.push({
+
+      role:
+        "assistant",
+
+      content:
+        answer
+
+    });
+
+
+    saveCurrentChat();
+
+
+    status.textContent =
+      "● AI Ready";
+
+    status.className =
+      "status";
+
+
+  }catch(error){
+
+    console.error(
+      "Nexora backend error:",
+      error
+    );
+
+
+    removeTyping();
+
+
+    addMessage(
+
+      "अभी AI service से जवाब नहीं मिल पाया। " +
+      "Local features अभी भी काम कर रहे हैं।",
+
+      "assistant",
+
+      "Nexora"
+
     );
 
 
     status.textContent =
-      "● Ready";
+      "● Local Ready";
 
-  },250);
+    status.className =
+      "status error";
+
+
+  }finally{
+
+    sendButton.disabled =
+      false;
+
+    questionBox.focus();
+
+  }
 
 }
 
 
-/* =========================
-   BUTTON
-========================= */
+/* =====================================================
+   SAVE CHAT
+===================================================== */
 
-send.addEventListener(
+function saveCurrentChat(){
+
+  if(
+    conversation.length === 0
+  ){
+    return;
+  }
+
+
+  try{
+
+    const chats =
+      JSON.parse(
+
+        localStorage.getItem(
+          HISTORY_KEY
+        ) || "[]"
+
+      );
+
+
+    if(!activeChatId){
+
+      activeChatId =
+        Date.now().toString();
+
+    }
+
+
+    const firstUser =
+      conversation.find(
+        item =>
+          item.role === "user"
+      );
+
+
+    if(!firstUser){
+      return;
+    }
+
+
+    const index =
+      chats.findIndex(
+        item =>
+          item.id === activeChatId
+      );
+
+
+    const chatData = {
+
+      id:
+        activeChatId,
+
+      title:
+        firstUser.content
+          .slice(0,60),
+
+      messages:
+        conversation,
+
+      time:
+        Date.now()
+
+    };
+
+
+    if(index >= 0){
+
+      chats[index] =
+        chatData;
+
+    }else{
+
+      chats.push(
+        chatData
+      );
+
+    }
+
+
+    localStorage.setItem(
+
+      HISTORY_KEY,
+
+      JSON.stringify(
+        chats.slice(-30)
+      )
+
+    );
+
+
+    renderHistory();
+
+  }catch(error){
+
+    console.warn(
+      "Could not save chat:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+function renderHistory(){
+
+  historyBox.innerHTML = "";
+
+
+  try{
+
+    const chats =
+      JSON.parse(
+
+        localStorage.getItem(
+          HISTORY_KEY
+        ) || "[]"
+
+      );
+
+
+    chats
+      .slice()
+      .reverse()
+      .forEach(item => {
+
+        const button =
+          document.createElement(
+            "button"
+          );
+
+
+        button.className =
+          "history-item";
+
+
+        button.textContent =
+          item.title ||
+          "New chat";
+
+
+        button.addEventListener(
+          "click",
+          function(){
+
+            loadChat(item);
+
+          }
+        );
+
+
+        historyBox.appendChild(
+          button
+        );
+
+      });
+
+  }catch(error){
+
+    console.warn(
+      "History error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   LOAD CHAT
+===================================================== */
+
+function loadChat(item){
+
+  conversation =
+    Array.isArray(item.messages)
+      ? item.messages
+      : [];
+
+
+  activeChatId =
+    item.id || null;
+
+
+  chat.innerHTML = "";
+
+
+  conversation.forEach(message => {
+
+    addMessage(
+
+      message.content,
+
+      message.role,
+
+      message.role === "assistant"
+        ? "AI"
+        : ""
+
+    );
+
+  });
+
+
+  status.textContent =
+    "● Ready";
+
+  status.className =
+    "status";
+
+}
+
+
+/* =====================================================
+   NEW CHAT
+===================================================== */
+
+function newChat(){
+
+  conversation = [];
+
+  activeChatId = null;
+
+  removeTyping();
+
+
+  chat.innerHTML = `
+
+    <div
+      id="welcome"
+      class="welcome"
+    >
+
+      <h1>
+        Ask anything.
+      </h1>
+
+      <p>
+        Chat, learn, write and solve with Nexora AI.
+      </p>
+
+    </div>
+
+  `;
+
+
+  questionBox.value = "";
+
+  status.textContent =
+    "● Ready";
+
+  status.className =
+    "status";
+
+  questionBox.focus();
+
+}
+
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+sendButton.addEventListener(
   "click",
   sendMessage
 );
 
 
-/* =========================
-   ENTER
-========================= */
+clearButton.addEventListener(
+  "click",
+  newChat
+);
 
-question.addEventListener(
+
+newChatButton.addEventListener(
+  "click",
+  newChat
+);
+
+
+questionBox.addEventListener(
   "keydown",
   function(event){
 
@@ -638,55 +1427,27 @@ question.addEventListener(
 );
 
 
-/* =========================
-   CLEAR
-========================= */
+/* =====================================================
+   WAIT
+===================================================== */
 
-function resetChat(){
+function wait(ms){
 
-  chat.innerHTML = `
-
-    <div
-      class="welcome"
-      id="welcome"
-    >
-
-      <h1>Ask anything.</h1>
-
-      <p>
-        Chat, learn, write and solve with Nexora AI.
-      </p>
-
-    </div>
-
-  `;
-
-  question.value = "";
-
-  status.textContent =
-    "● Ready";
-
-  question.focus();
+  return new Promise(
+    resolve =>
+      setTimeout(resolve,ms)
+  );
 
 }
 
 
-clear.addEventListener(
-  "click",
-  resetChat
-);
+/* =====================================================
+   START
+===================================================== */
 
-newChat.addEventListener(
-  "click",
-  resetChat
-);
+renderHistory();
 
-
-/* =========================
-   READY
-========================= */
-
-question.focus();
+questionBox.focus();
 
 </script>
 
