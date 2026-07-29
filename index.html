@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Nexora AI</title>
+<title>Nexora AI v3</title>
 
 <style>
 *{
@@ -23,6 +22,10 @@ body{
 button,
 textarea{
   font:inherit;
+}
+
+button{
+  -webkit-tap-highlight-color:transparent;
 }
 
 .app{
@@ -127,15 +130,21 @@ textarea{
   background:#0d0f14;
 }
 
+.brand{
+  font-weight:700;
+}
+
 .status{
   color:#62e3a0;
   font-size:12px;
 }
 
+/* CONTENT */
+
 .content{
   width:min(920px,94%);
   margin:auto;
-  padding:48px 0 180px;
+  padding:48px 0 190px;
 }
 
 .hero{
@@ -155,6 +164,8 @@ textarea{
 .hero p{
   color:#9299a7;
 }
+
+/* CHAT */
 
 .chat{
   display:flex;
@@ -203,10 +214,39 @@ textarea{
   margin-bottom:7px;
 }
 
-/* SKILLS PANEL */
+/* TOOLS */
+
+.tools{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+  margin-top:25px;
+}
+
+.tool{
+  padding:13px 8px;
+  border-radius:12px;
+  border:1px solid #292e38;
+  background:#14171e;
+  color:#e9ebf0;
+  cursor:pointer;
+}
+
+.tool:hover{
+  background:#1c2029;
+  border-color:#675cdc;
+}
+
+.tool small{
+  display:block;
+  color:#7d8492;
+  margin-top:4px;
+}
+
+/* SKILLS CENTER */
 
 .skills-panel{
-  margin-top:30px;
+  margin-top:32px;
 }
 
 .skills-panel-title{
@@ -257,35 +297,6 @@ textarea{
   display:block;
   color:#7d8492;
   margin-top:3px;
-}
-
-/* TOOLS */
-
-.tools{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:9px;
-  margin-top:25px;
-}
-
-.tool{
-  padding:13px 8px;
-  border-radius:12px;
-  border:1px solid #292e38;
-  background:#14171e;
-  color:#e9ebf0;
-  cursor:pointer;
-}
-
-.tool:hover{
-  background:#1c2029;
-  border-color:#675cdc;
-}
-
-.tool small{
-  display:block;
-  color:#7d8492;
-  margin-top:4px;
 }
 
 /* COMPOSER */
@@ -406,7 +417,10 @@ textarea::placeholder{
     NEXORA <span>AI</span>
   </div>
 
-  <button class="new-chat" onclick="newChat()">
+  <button
+    class="new-chat"
+    onclick="newChat()"
+  >
     ＋ New chat
   </button>
 
@@ -414,11 +428,14 @@ textarea::placeholder{
     History
   </div>
 
-  <div id="history" class="history"></div>
+  <div
+    id="history"
+    class="history"
+  ></div>
 
   <div class="sidebar-bottom">
-    FREE LOCAL MODE<br>
-    Modular Skills Engine
+    NEXORA AI v3<br>
+    Free Local Mode
   </div>
 
 </aside>
@@ -427,25 +444,42 @@ textarea::placeholder{
 <main class="main">
 
 <header class="topbar">
-  <div>Nexora AI</div>
-  <div class="status">● Local Ready</div>
+
+  <div class="brand">
+    Nexora AI
+  </div>
+
+  <div class="status">
+    ● Local Ready
+  </div>
+
 </header>
 
 
 <section class="content">
 
 <div class="hero">
-  <h1>Ask anything.</h1>
+
+  <h1>
+    Ask anything.
+  </h1>
 
   <p>
     Modular AI-style workspace running directly in your browser.
   </p>
+
 </div>
 
 
-<div id="chat" class="chat">
+<div
+  id="chat"
+  class="chat"
+>
 
-  <div id="welcome" class="welcome">
+  <div
+    id="welcome"
+    class="welcome"
+  >
 
     <strong>
       Welcome to Nexora AI
@@ -460,30 +494,43 @@ textarea::placeholder{
 
 <div class="tools">
 
-<button class="tool" onclick="toolPrompt('ask')">
+<button
+  class="tool"
+  onclick="toolPrompt('ask')"
+>
   🧠 Ask
   <small>Knowledge</small>
 </button>
 
-<button class="tool" onclick="toolPrompt('learn')">
+
+<button
+  class="tool"
+  onclick="toolPrompt('learn')"
+>
   📚 Learn
   <small>Explain</small>
 </button>
 
-<button class="tool" onclick="toolPrompt('write')">
+
+<button
+  class="tool"
+  onclick="toolPrompt('write')"
+>
   ✍️ Write
   <small>Create</small>
 </button>
 
-<button class="tool" onclick="toolPrompt('solve')">
+
+<button
+  class="tool"
+  onclick="toolPrompt('solve')"
+>
   🧮 Solve
   <small>Calculate</small>
 </button>
 
 </div>
 
-
-<!-- Skills Center -->
 
 <div
   id="skillsPanel"
@@ -508,12 +555,14 @@ textarea::placeholder{
   rows="1"
 ></textarea>
 
+
 <button
   class="clear"
   onclick="newChat()"
 >
   Clear
 </button>
+
 
 <button
   class="send"
@@ -524,6 +573,7 @@ textarea::placeholder{
 
 </div>
 
+
 <div class="notice">
   © 2026 Nexora AI · Free Local Mode
 </div>
@@ -533,69 +583,128 @@ textarea::placeholder{
 
 <script type="module">
 
-import { processQuestion }
-from "./src/core.js";
+/* =========================
+   IMPORTS
+========================= */
 
-import { createSkillsPanel }
-from "./src/skills-panel.js";
+import {
+  processQuestion
+} from "./src/core.js";
 
+
+import {
+  createSkillsPanel
+} from "./src/skills-panel.js";
+
+
+import {
+  registerDefaultCustomSkills
+} from "./src/custom-skills.js";
+
+
+/* =========================
+   START CUSTOM SKILLS
+========================= */
+
+try{
+
+  registerDefaultCustomSkills();
+
+}catch(error){
+
+  console.warn(
+    "Custom skills could not be loaded:",
+    error
+  );
+
+}
+
+
+/* =========================
+   ELEMENTS
+========================= */
 
 const chat =
   document.getElementById("chat");
 
+
 const questionBox =
   document.getElementById("question");
 
+
 const historyBox =
   document.getElementById("history");
+
 
 const skillsPanel =
   document.getElementById("skillsPanel");
 
 
 const HISTORY_KEY =
-  "nexora_history_v2";
+  "nexora_history_v3";
 
 
-/* SKILLS CENTER */
+/* =========================
+   SKILLS PANEL
+========================= */
 
-createSkillsPanel(
-  skillsPanel,
+try{
 
-  function(skill){
+  createSkillsPanel(
 
-    const prompts = {
+    skillsPanel,
 
-      calculator:
-        "25 × 12",
+    function(skill){
 
-      knowledge:
-        "भारत की राजधानी क्या है?",
+      const prompts = {
 
-      learning:
-        "AI क्या है? आसान भाषा में समझाओ।",
+        calculator:
+          "25 × 12",
 
-      writing:
-        "AI पर paragraph लिखो",
+        knowledge:
+          "भारत की राजधानी क्या है?",
 
-      creator:
-        "YouTube title generate करो: AI",
+        learning:
+          "AI क्या है? आसान भाषा में समझाओ।",
 
-      general:
-        "Hello"
+        writing:
+          "AI पर paragraph लिखो",
 
-    };
+        creator:
+          "YouTube title generate करो: AI",
 
-    questionBox.value =
-      prompts[skill.id] || "";
+        general:
+          "Hello",
 
-    questionBox.focus();
+        "youtube-hooks":
+          "YouTube hook generate करो: AI"
 
-  }
-);
+      };
 
 
-/* MESSAGE */
+      questionBox.value =
+        prompts[skill.id] || "";
+
+
+      questionBox.focus();
+
+    }
+
+  );
+
+}catch(error){
+
+  console.warn(
+    "Skills panel error:",
+    error
+  );
+
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
 
 function addMessage(
   text,
@@ -606,6 +715,7 @@ function addMessage(
   const welcome =
     document.getElementById("welcome");
 
+
   if(welcome){
     welcome.remove();
   }
@@ -613,6 +723,7 @@ function addMessage(
 
   const div =
     document.createElement("div");
+
 
   div.className =
     "message " + type;
@@ -626,115 +737,170 @@ function addMessage(
     const label =
       document.createElement("div");
 
+
     label.className =
       "skill";
+
 
     label.textContent =
       "⚡ " + skill;
 
+
     div.appendChild(label);
+
   }
 
 
   const body =
     document.createElement("div");
 
+
   body.textContent =
     text;
 
+
   div.appendChild(body);
+
 
   chat.appendChild(div);
 
 
   div.scrollIntoView({
+
     behavior:"smooth",
+
     block:"end"
+
   });
+
 }
 
 
-/* SAVE HISTORY */
+/* =========================
+   HISTORY SAVE
+========================= */
 
 function saveHistory(question){
 
-  const old =
-    JSON.parse(
-      localStorage.getItem(
-        HISTORY_KEY
-      ) || "[]"
+  try{
+
+    const old =
+      JSON.parse(
+
+        localStorage.getItem(
+          HISTORY_KEY
+        ) || "[]"
+
+      );
+
+
+    old.push({
+
+      question,
+
+      time:Date.now()
+
+    });
+
+
+    const limited =
+      old.slice(-50);
+
+
+    localStorage.setItem(
+
+      HISTORY_KEY,
+
+      JSON.stringify(limited)
+
     );
 
 
-  old.push({
-    question,
-    time:Date.now()
-  });
+    renderHistory();
 
+  }catch(error){
 
-  const limited =
-    old.slice(-50);
+    console.warn(
+      "History save error:",
+      error
+    );
 
+  }
 
-  localStorage.setItem(
-    HISTORY_KEY,
-    JSON.stringify(limited)
-  );
-
-
-  renderHistory();
 }
 
 
-/* LOAD HISTORY */
+/* =========================
+   HISTORY LOAD
+========================= */
 
 function renderHistory(){
 
   historyBox.innerHTML = "";
 
 
-  const saved =
-    JSON.parse(
-      localStorage.getItem(
-        HISTORY_KEY
-      ) || "[]"
+  try{
+
+    const saved =
+      JSON.parse(
+
+        localStorage.getItem(
+          HISTORY_KEY
+        ) || "[]"
+
+      );
+
+
+    saved
+      .slice()
+      .reverse()
+      .forEach(item => {
+
+        const button =
+          document.createElement("button");
+
+
+        button.className =
+          "history-item";
+
+
+        button.textContent =
+          item.question;
+
+
+        button.onclick =
+          function(){
+
+            questionBox.value =
+              item.question;
+
+
+            questionBox.focus();
+
+          };
+
+
+        historyBox.appendChild(
+          button
+        );
+
+      });
+
+  }catch(error){
+
+    console.warn(
+      "History load error:",
+      error
     );
 
+  }
 
-  saved
-    .reverse()
-    .forEach(item => {
-
-      const button =
-        document.createElement("button");
-
-
-      button.className =
-        "history-item";
-
-
-      button.textContent =
-        item.question;
-
-
-      button.onclick =
-        function(){
-
-          questionBox.value =
-            item.question;
-
-          questionBox.focus();
-
-        };
-
-
-      historyBox.appendChild(button);
-
-    });
 }
 
 
-/* NEW CHAT */
+/* =========================
+   NEW CHAT
+========================= */
 
 window.newChat =
 function(){
@@ -759,11 +925,15 @@ function(){
 
   questionBox.value = "";
 
+
   questionBox.focus();
+
 };
 
 
-/* TOOL PROMPTS */
+/* =========================
+   TOOL PROMPTS
+========================= */
 
 window.toolPrompt =
 function(type){
@@ -788,11 +958,15 @@ function(type){
   questionBox.value =
     prompts[type] || "";
 
+
   questionBox.focus();
+
 };
 
 
-/* SEND */
+/* =========================
+   SEND
+========================= */
 
 window.sendMessage =
 function(){
@@ -812,7 +986,9 @@ function(){
   );
 
 
-  saveHistory(question);
+  saveHistory(
+    question
+  );
 
 
   questionBox.value = "";
@@ -821,7 +997,9 @@ function(){
   try{
 
     const result =
-      processQuestion(question);
+      processQuestion(
+        question
+      );
 
 
     addMessage(
@@ -832,7 +1010,8 @@ function(){
       "assistant",
 
       result.skillName ||
-      result.skill
+      result.skill ||
+      "General"
 
     );
 
@@ -840,14 +1019,14 @@ function(){
   }catch(error){
 
     console.error(
-      "Nexora error:",
+      "Nexora engine error:",
       error
     );
 
 
     addMessage(
 
-      "Local engine में समस्या आई।",
+      "Nexora का local engine इस समय इस request को process नहीं कर पाया।",
 
       "assistant",
 
@@ -860,16 +1039,21 @@ function(){
 };
 
 
-/* ENTER KEY */
+/* =========================
+   ENTER
+========================= */
 
 questionBox.addEventListener(
+
   "keydown",
 
   function(event){
 
     if(
+
       event.key === "Enter" &&
       !event.shiftKey
+
     ){
 
       event.preventDefault();
@@ -879,10 +1063,13 @@ questionBox.addEventListener(
     }
 
   }
+
 );
 
 
-/* START */
+/* =========================
+   INITIAL LOAD
+========================= */
 
 renderHistory();
 
