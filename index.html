@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexora AI v4</title>
+
+<title>Nexora AI</title>
 
 <style>
 *{
@@ -13,354 +14,251 @@
 }
 
 body{
-  font-family:Inter,Arial,sans-serif;
-  background:#080a0f;
-  color:#f5f7fb;
+  font-family:Arial,Inter,sans-serif;
+  background:#080808;
+  color:#fff;
   min-height:100vh;
 }
 
-button,textarea{
+button,
+textarea{
   font:inherit;
 }
 
-button{
-  -webkit-tap-highlight-color:transparent;
+.app{
+  display:flex;
+  min-height:100vh;
 }
 
-.app{
-  min-height:100vh;
-  display:flex;
-}
+/* SIDEBAR */
 
 .sidebar{
-  width:250px;
-  background:#10131a;
-  border-right:1px solid #252a34;
-  padding:18px 14px;
+  width:260px;
+  background:#111;
+  border-right:1px solid #292929;
+  padding:14px;
   display:flex;
   flex-direction:column;
-  gap:14px;
 }
 
 .logo{
   font-size:21px;
   font-weight:800;
-  padding:8px;
+  padding:12px 10px 18px;
 }
 
 .logo span{
-  color:#897cff;
+  color:#8b7cff;
 }
 
 .new-chat{
-  border:1px solid #303541;
-  background:#191c24;
-  color:white;
-  border-radius:12px;
+  width:100%;
   padding:12px;
+  border:1px solid #333;
+  border-radius:10px;
+  background:#191919;
+  color:white;
   cursor:pointer;
   text-align:left;
 }
 
 .new-chat:hover{
-  background:#222631;
+  background:#242424;
 }
 
 .history-title{
-  color:#777e8c;
+  color:#777;
   font-size:11px;
-  padding:8px;
+  margin:22px 9px 8px;
   text-transform:uppercase;
-  letter-spacing:.1em;
 }
 
 .history{
   display:flex;
   flex-direction:column;
-  gap:4px;
+  gap:3px;
   overflow:auto;
-  max-height:220px;
 }
 
 .history-item{
-  width:100%;
   border:0;
   background:transparent;
-  color:#cdd2dc;
+  color:#ccc;
   padding:10px;
-  border-radius:9px;
-  text-align:left;
+  border-radius:8px;
   cursor:pointer;
+  text-align:left;
+  white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  white-space:nowrap;
 }
 
 .history-item:hover{
-  background:#1b1f28;
+  background:#202020;
 }
 
-.sidebar-bottom{
+.sidebar-footer{
   margin-top:auto;
-  color:#656c79;
+  color:#666;
   font-size:11px;
-  padding:8px;
+  padding:10px;
 }
+
+/* MAIN */
 
 .main{
   flex:1;
   min-width:0;
-  min-height:100vh;
   display:flex;
   flex-direction:column;
+  min-height:100vh;
 }
 
 .topbar{
-  height:62px;
-  border-bottom:1px solid #252a34;
+  height:58px;
+  border-bottom:1px solid #292929;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 22px;
-  background:#0d0f14;
-}
-
-.brand{
-  font-weight:700;
+  padding:0 20px;
+  background:#0d0d0d;
 }
 
 .status{
-  color:#62e3a0;
+  color:#6ee7a0;
   font-size:12px;
 }
 
-.content{
-  width:min(920px,94%);
-  margin:auto;
-  padding:48px 0 190px;
-}
-
-.hero{
-  text-align:center;
-  margin-bottom:28px;
-}
-
-.hero h1{
-  font-size:clamp(34px,6vw,58px);
-  line-height:1.05;
-  margin-bottom:12px;
-  background:linear-gradient(90deg,#fff,#aaa0ff);
-  -webkit-background-clip:text;
-  color:transparent;
-}
-
-.hero p{
-  color:#9299a7;
-}
+/* CHAT */
 
 .chat{
-  display:flex;
-  flex-direction:column;
-  gap:16px;
+  flex:1;
+  width:min(850px,94%);
+  margin:auto;
+  padding:35px 0 150px;
 }
 
 .welcome{
   text-align:center;
-  color:#8c93a0;
-  padding:25px 10px;
+  padding:100px 15px 40px;
+  color:#777;
 }
 
-.welcome strong{
-  display:block;
-  color:#fff;
-  font-size:20px;
-  margin-bottom:8px;
+.welcome h1{
+  color:white;
+  font-size:42px;
+  margin-bottom:10px;
+}
+
+.welcome p{
+  color:#888;
 }
 
 .message{
-  max-width:84%;
-  padding:14px 16px;
+  display:flex;
+  margin:24px 0;
+  line-height:1.65;
+}
+
+.message.user{
+  justify-content:flex-end;
+}
+
+.bubble{
+  max-width:80%;
+  padding:13px 17px;
   border-radius:16px;
-  line-height:1.6;
   white-space:pre-wrap;
   overflow-wrap:anywhere;
 }
 
-.user{
-  margin-left:auto;
-  background:#6256d8;
-  border-bottom-right-radius:5px;
+.user .bubble{
+  background:#2f2f2f;
 }
 
-.assistant{
-  margin-right:auto;
-  background:#171a22;
-  border:1px solid #292e38;
-  border-bottom-left-radius:5px;
+.assistant .bubble{
+  background:transparent;
 }
 
-.skill{
+.label{
   font-size:11px;
-  color:#8e96a5;
-  margin-bottom:7px;
-}
-
-.loading{
-  opacity:.7;
-}
-
-.tools{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:9px;
-  margin-top:25px;
-}
-
-.tool{
-  padding:13px 8px;
-  border-radius:12px;
-  border:1px solid #292e38;
-  background:#14171e;
-  color:#e9ebf0;
-  cursor:pointer;
-}
-
-.tool:hover{
-  background:#1c2029;
-  border-color:#675cdc;
-}
-
-.tool small{
-  display:block;
-  color:#7d8492;
-  margin-top:4px;
-}
-
-.skills-panel{
-  margin-top:32px;
-}
-
-.skills-panel-title{
-  font-size:20px;
+  color:#888;
   margin-bottom:5px;
 }
 
-.skills-panel-subtitle{
-  color:#858c99;
-  font-size:13px;
-  margin-bottom:14px;
-}
-
-.skills-panel-list{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-
-.skill-card{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  text-align:left;
-  padding:13px;
-  border:1px solid #292e38;
-  border-radius:13px;
-  background:#14171e;
-  color:#fff;
-  cursor:pointer;
-}
-
-.skill-card:hover{
-  background:#1c2029;
-  border-color:#675cdc;
-}
-
-.skill-icon{
-  font-size:24px;
-}
-
-.skill-info strong{
-  display:block;
-  font-size:14px;
-}
-
-.skill-info small{
-  display:block;
-  color:#7d8492;
-  margin-top:3px;
-}
+/* COMPOSER */
 
 .composer-wrap{
   position:fixed;
-  left:250px;
+  left:260px;
   right:0;
   bottom:0;
-  padding:14px 20px 18px;
-  background:linear-gradient(transparent,#080a0f 25%);
+  padding:15px 20px 18px;
+  background:linear-gradient(
+    transparent,
+    #080808 28%
+  );
 }
 
 .composer{
-  width:min(920px,94%);
+  width:min(850px,94%);
   margin:auto;
   display:flex;
   align-items:flex-end;
   gap:8px;
-  padding:9px;
-  background:#151820;
-  border:1px solid #303541;
-  border-radius:17px;
+  padding:8px;
+  background:#171717;
+  border:1px solid #3a3a3a;
+  border-radius:18px;
 }
 
 textarea{
   flex:1;
-  min-height:46px;
+  min-height:48px;
   max-height:150px;
   resize:none;
   border:0;
   outline:0;
   background:transparent;
-  color:#fff;
+  color:white;
   padding:12px;
 }
 
 textarea::placeholder{
-  color:#707785;
+  color:#777;
 }
 
 .clear{
   border:0;
   background:transparent;
-  color:#858c99;
+  color:#888;
+  padding:12px;
   cursor:pointer;
-  padding:11px;
 }
 
 .send{
-  width:47px;
+  width:46px;
   height:46px;
   border:0;
   border-radius:12px;
-  background:#6b5fe5;
-  color:#fff;
+  background:#6d5ce7;
+  color:white;
   cursor:pointer;
   font-size:18px;
 }
 
-.send:hover{
-  background:#7b6ff0;
-}
-
 .send:disabled{
   opacity:.5;
-  cursor:not-allowed;
 }
 
 .notice{
   text-align:center;
-  color:#555c68;
+  color:#555;
   font-size:10px;
   margin-top:7px;
 }
+
+/* MOBILE */
 
 @media(max-width:760px){
 
@@ -372,29 +270,17 @@ textarea::placeholder{
     left:0;
   }
 
-  .content{
-    padding-top:35px;
+  .chat{
+    padding-top:20px;
   }
 
-  .tools{
-    grid-template-columns:repeat(2,1fr);
+  .bubble{
+    max-width:90%;
   }
 
-  .skills-panel-list{
-    grid-template-columns:repeat(2,1fr);
+  .welcome h1{
+    font-size:34px;
   }
-
-  .message{
-    max-width:93%;
-  }
-}
-
-@media(max-width:450px){
-
-  .skills-panel-list{
-    grid-template-columns:1fr;
-  }
-
 }
 </style>
 </head>
@@ -417,7 +303,7 @@ textarea::placeholder{
   </button>
 
   <div class="history-title">
-    History
+    Chats
   </div>
 
   <div
@@ -425,9 +311,9 @@ textarea::placeholder{
     class="history"
   ></div>
 
-  <div class="sidebar-bottom">
-    NEXORA AI v4<br>
-    Local + AI Backend
+  <div class="sidebar-footer">
+    Nexora AI v5<br>
+    Local + Secure AI Backend
   </div>
 
 </aside>
@@ -437,9 +323,7 @@ textarea::placeholder{
 
 <header class="topbar">
 
-  <div class="brand">
-    Nexora AI
-  </div>
+  <strong>Nexora AI</strong>
 
   <div
     id="status"
@@ -449,21 +333,6 @@ textarea::placeholder{
   </div>
 
 </header>
-
-
-<section class="content">
-
-<div class="hero">
-
-  <h1>
-    Ask anything.
-  </h1>
-
-  <p>
-    Modular AI workspace with local skills and secure AI backend.
-  </p>
-
-</div>
 
 
 <div
@@ -476,61 +345,17 @@ textarea::placeholder{
     class="welcome"
   >
 
-    <strong>
-      Welcome to Nexora AI
-    </strong>
+    <h1>
+      Ask anything.
+    </h1>
 
-    Ask a question or choose a skill below.
+    <p>
+      Chat, learn, write and solve with Nexora AI.
+    </p>
 
   </div>
 
 </div>
-
-
-<div class="tools">
-
-<button
-  class="tool"
-  onclick="toolPrompt('ask')"
->
-  🧠 Ask
-  <small>AI Knowledge</small>
-</button>
-
-<button
-  class="tool"
-  onclick="toolPrompt('learn')"
->
-  📚 Learn
-  <small>Explain</small>
-</button>
-
-<button
-  class="tool"
-  onclick="toolPrompt('write')"
->
-  ✍️ Write
-  <small>Create</small>
-</button>
-
-<button
-  class="tool"
-  onclick="toolPrompt('solve')"
->
-  🧮 Solve
-  <small>Calculate</small>
-</button>
-
-</div>
-
-
-<div
-  id="skillsPanel"
-  class="skills-panel"
-></div>
-
-
-</section>
 
 </main>
 
@@ -565,7 +390,7 @@ textarea::placeholder{
 </div>
 
 <div class="notice">
-  © 2026 Nexora AI · Local + Secure Backend
+  © 2026 Nexora AI
 </div>
 
 </div>
@@ -577,18 +402,6 @@ import {
   processQuestion
 } from "./src/core.js";
 
-import {
-  createSkillsPanel
-} from "./src/skills-panel.js";
-
-import {
-  registerDefaultCustomSkills
-} from "./src/custom-skills.js";
-
-
-/* =========================
-   ELEMENTS
-========================= */
 
 const chat =
   document.getElementById("chat");
@@ -599,9 +412,6 @@ const questionBox =
 const historyBox =
   document.getElementById("history");
 
-const skillsPanel =
-  document.getElementById("skillsPanel");
-
 const sendButton =
   document.getElementById("sendButton");
 
@@ -610,91 +420,20 @@ const status =
 
 
 const HISTORY_KEY =
-  "nexora_history_v4";
+  "nexora_chats_v5";
+
+
+let messages = [];
 
 
 /* =========================
-   CUSTOM SKILLS
-========================= */
-
-try{
-
-  registerDefaultCustomSkills();
-
-}catch(error){
-
-  console.warn(
-    "Custom skills unavailable:",
-    error
-  );
-
-}
-
-
-/* =========================
-   SKILLS PANEL
-========================= */
-
-try{
-
-  createSkillsPanel(
-
-    skillsPanel,
-
-    function(skill){
-
-      const prompts = {
-
-        calculator:
-          "25 × 12",
-
-        knowledge:
-          "भारत की राजधानी क्या है?",
-
-        learning:
-          "AI क्या है? आसान भाषा में समझाओ।",
-
-        writing:
-          "AI पर paragraph लिखो",
-
-        creator:
-          "YouTube title generate करो: AI",
-
-        general:
-          "Hello",
-
-        "youtube-hooks":
-          "YouTube hook generate करो: AI"
-
-      };
-
-      questionBox.value =
-        prompts[skill.id] || "";
-
-      questionBox.focus();
-
-    }
-
-  );
-
-}catch(error){
-
-  console.warn(
-    "Skills panel unavailable:",
-    error
-  );
-
-}
-
-
-/* =========================
-   MESSAGE
+   ADD MESSAGE
 ========================= */
 
 function addMessage(
   text,
-  type,
-  skill = ""
+  role,
+  label
 ){
 
   const welcome =
@@ -704,97 +443,116 @@ function addMessage(
     welcome.remove();
   }
 
-
-  const div =
+  const wrapper =
     document.createElement("div");
 
-  div.className =
-    "message " + type;
+  wrapper.className =
+    "message " + role;
 
+  const bubble =
+    document.createElement("div");
 
-  if(
-    type === "assistant" &&
-    skill
-  ){
+  bubble.className =
+    "bubble";
 
-    const label =
+  if(label){
+
+    const labelDiv =
       document.createElement("div");
 
-    label.className =
-      "skill";
+    labelDiv.className =
+      "label";
 
-    label.textContent =
-      "⚡ " + skill;
+    labelDiv.textContent =
+      label;
 
-    div.appendChild(label);
-
+    bubble.appendChild(
+      labelDiv
+    );
   }
 
-
-  const body =
+  const content =
     document.createElement("div");
 
-  body.textContent =
+  content.textContent =
     text;
 
-  div.appendChild(body);
+  bubble.appendChild(
+    content
+  );
 
-  chat.appendChild(div);
+  wrapper.appendChild(
+    bubble
+  );
 
+  chat.appendChild(
+    wrapper
+  );
 
-  div.scrollIntoView({
+  wrapper.scrollIntoView({
     behavior:"smooth",
     block:"end"
   });
-
-
-  return div;
 }
 
 
 /* =========================
-   HISTORY
+   SAVE HISTORY
 ========================= */
 
-function saveHistory(question){
+function saveHistory(){
 
   try{
 
-    const old =
+    const chats =
       JSON.parse(
         localStorage.getItem(
           HISTORY_KEY
         ) || "[]"
       );
 
+    const firstUser =
+      messages.find(
+        m => m.role === "user"
+      );
 
-    old.push({
-      question,
-      time:Date.now()
+    if(!firstUser){
+      return;
+    }
+
+    chats.push({
+      title:
+        firstUser.content.slice(0,60),
+
+      messages,
+
+      time:
+        Date.now()
     });
-
 
     localStorage.setItem(
       HISTORY_KEY,
       JSON.stringify(
-        old.slice(-50)
+        chats.slice(-30)
       )
     );
-
 
     renderHistory();
 
   }catch(error){
 
     console.warn(
-      "History save error:",
+      "History error:",
       error
     );
 
   }
-
 }
 
+
+/* =========================
+   HISTORY UI
+========================= */
 
 function renderHistory(){
 
@@ -802,15 +560,14 @@ function renderHistory(){
 
   try{
 
-    const saved =
+    const chats =
       JSON.parse(
         localStorage.getItem(
           HISTORY_KEY
         ) || "[]"
       );
 
-
-    saved
+    chats
       .slice()
       .reverse()
       .forEach(item => {
@@ -822,17 +579,10 @@ function renderHistory(){
           "history-item";
 
         button.textContent =
-          item.question;
+          item.title;
 
         button.onclick =
-          function(){
-
-            questionBox.value =
-              item.question;
-
-            questionBox.focus();
-
-          };
+          () => loadChat(item);
 
         historyBox.appendChild(
           button
@@ -843,69 +593,41 @@ function renderHistory(){
   }catch(error){
 
     console.warn(
-      "History load error:",
+      "History render error:",
       error
     );
 
   }
-
 }
 
 
 /* =========================
-   LOCAL HISTORY FOR AI
+   LOAD CHAT
 ========================= */
 
-function getConversationHistory(){
+function loadChat(item){
 
-  try{
+  messages =
+    Array.isArray(item.messages)
+      ? item.messages
+      : [];
 
-    const messages =
-      Array.from(
-        chat.querySelectorAll(
-          ".message"
-        )
-      );
+  chat.innerHTML = "";
 
+  messages.forEach(message => {
 
-    return messages
-      .slice(-10)
-      .map(message => {
+    addMessage(
+      message.content,
+      message.role,
+      message.role === "assistant"
+        ? "Nexora AI"
+        : ""
+    );
 
-        const isUser =
-          message.classList.contains(
-            "user"
-          );
+  });
 
-
-        const body =
-          message.querySelector(
-            "div:last-child"
-          );
-
-
-        return {
-
-          role:
-            isUser
-              ? "user"
-              : "assistant",
-
-          content:
-            body
-              ? body.textContent
-              : message.textContent
-
-        };
-
-      });
-
-  }catch(error){
-
-    return [];
-
-  }
-
+  status.textContent =
+    "● Ready";
 }
 
 
@@ -916,6 +638,8 @@ function getConversationHistory(){
 window.newChat =
 function(){
 
+  messages = [];
+
   chat.innerHTML = `
 
     <div
@@ -923,11 +647,13 @@ function(){
       class="welcome"
     >
 
-      <strong>
-        Welcome to Nexora AI
-      </strong>
+      <h1>
+        Ask anything.
+      </h1>
 
-      Ask a question or choose a skill below.
+      <p>
+        Chat, learn, write and solve with Nexora AI.
+      </p>
 
     </div>
 
@@ -939,50 +665,14 @@ function(){
     "● Ready";
 
   questionBox.focus();
-
 };
 
 
 /* =========================
-   TOOL PROMPTS
+   BACKEND
 ========================= */
 
-window.toolPrompt =
-function(type){
-
-  const prompts = {
-
-    ask:
-      "भारत की राजधानी क्या है?",
-
-    learn:
-      "AI क्या है? आसान भाषा में समझाओ।",
-
-    write:
-      "AI पर paragraph लिखो",
-
-    solve:
-      "25 × 12"
-
-  };
-
-
-  questionBox.value =
-    prompts[type] || "";
-
-  questionBox.focus();
-
-};
-
-
-/* =========================
-   BACKEND AI
-========================= */
-
-async function askBackend(
-  question,
-  history
-){
+async function callBackend(){
 
   const response =
     await fetch(
@@ -996,38 +686,21 @@ async function askBackend(
         },
 
         body:JSON.stringify({
-
-          question,
-
-          history
-
+          messages
         })
-
       }
     );
 
 
-  let data = {};
-
-  try{
-
-    data =
-      await response.json();
-
-  }catch(error){
-
-    throw new Error(
-      "Backend returned invalid JSON."
-    );
-
-  }
+  const data =
+    await response.json();
 
 
   if(!response.ok){
 
     throw new Error(
-      data?.reply ||
-      `Backend error ${response.status}`
+      data?.error ||
+      "Backend request failed."
     );
 
   }
@@ -1035,14 +708,13 @@ async function askBackend(
 
   return (
     data?.reply ||
-    "AI ने कोई response नहीं दिया।"
+    "No response received."
   );
-
 }
 
 
 /* =========================
-   SEND MESSAGE
+   SEND
 ========================= */
 
 window.sendMessage =
@@ -1063,9 +735,10 @@ async function(){
   );
 
 
-  saveHistory(
-    question
-  );
+  messages.push({
+    role:"user",
+    content:question
+  });
 
 
   questionBox.value = "";
@@ -1076,149 +749,76 @@ async function(){
     "● Thinking...";
 
 
-  const loading =
-    addMessage(
-      "Nexora सोच रहा है...",
-      "assistant loading",
-      "AI"
-    );
-
-
   try{
 
-    /*
-     * पहले local skill try करें।
-     * Calculator, local knowledge,
-     * writing और creator tools
-     * बिना API के चल सकते हैं।
-     */
-
-    const localResult =
+    const local =
       processQuestion(
         question
       );
 
 
-    /*
-     * अगर calculator या कोई
-     * useful local skill मिला,
-     * तो उसे तुरंत दिखाएँ।
-     */
-
-    const localSkill =
-      localResult?.skill;
-
-
-    const localAnswer =
-      localResult?.answer;
-
-
-    const localSkills = [
-      "calculator",
-      "knowledge",
-      "learning",
-      "writing",
-      "creator",
-      "youtube-hooks"
-    ];
-
-
-    const isLocal =
-      localSkills.includes(
-        localSkill
-      );
-
-
     if(
-      isLocal &&
-      localAnswer
+      local?.local &&
+      local?.answer
     ){
 
-      loading.remove();
+      addMessage(
+        local.answer,
+        "assistant",
+        local.skillName
+      );
+
+      messages.push({
+        role:"assistant",
+        content:local.answer
+      });
+
+    }else{
+
+      const answer =
+        await callBackend();
 
 
       addMessage(
-
-        localAnswer,
-
+        answer,
         "assistant",
-
-        localResult.skillName ||
-        localSkill
-
+        "Nexora AI"
       );
 
 
-      status.textContent =
-        "● Local Ready";
-
-
-      return;
+      messages.push({
+        role:"assistant",
+        content:answer
+      });
 
     }
 
 
-    /*
-     * Local answer उपलब्ध नहीं है,
-     * इसलिए secure backend call करें।
-     */
-
-    const history =
-      getConversationHistory()
-        .slice(0,-1);
-
-
-    const aiAnswer =
-      await askBackend(
-        question,
-        history
-      );
-
-
-    loading.remove();
-
-
-    addMessage(
-
-      aiAnswer,
-
-      "assistant",
-
-      "Nexora AI"
-
-    );
+    saveHistory();
 
 
     status.textContent =
-      "● AI Ready";
-
+      "● Ready";
 
   }catch(error){
 
-    console.error(
-      "Nexora AI error:",
-      error
-    );
+    console.error(error);
 
 
-    loading.remove();
+    const message =
+      "AI backend से connection नहीं हो पाया। " +
+      "Vercel deployment और API configuration check करें।";
 
 
     addMessage(
-
-      "AI backend से connection नहीं हो पाया। " +
-      "Local features अभी भी उपलब्ध हैं।",
-
+      message,
       "assistant",
-
-      "Backend"
-
+      "System"
     );
 
 
     status.textContent =
-      "● Backend Error";
-
+      "● Error";
 
   }finally{
 
@@ -1230,14 +830,12 @@ async function(){
 
 
 /* =========================
-   ENTER KEY
+   ENTER
 ========================= */
 
 questionBox.addEventListener(
-
   "keydown",
-
-  function(event){
+  event => {
 
     if(
       event.key === "Enter" &&
@@ -1246,12 +844,11 @@ questionBox.addEventListener(
 
       event.preventDefault();
 
-      window.sendMessage();
+      sendMessage();
 
     }
 
   }
-
 );
 
 
