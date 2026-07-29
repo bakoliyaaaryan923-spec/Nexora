@@ -366,8 +366,6 @@ const chat=document.getElementById("chat");
 const box=document.getElementById("question");
 const historyBox=document.getElementById("history");
 
-let historyData=[];
-
 function addMessage(text,type){
 
   const welcome=document.getElementById("welcome");
@@ -392,8 +390,6 @@ function addMessage(text,type){
 }
 
 function addHistory(text){
-
-  historyData.unshift(text);
 
   const item=document.createElement("button");
 
@@ -479,15 +475,11 @@ function localKnowledge(question){
 
   const q=question.toLowerCase().trim();
 
-  /* CALCULATOR */
-
   const result=calculate(question);
 
   if(result!==null){
     return "🧮 Answer: "+result;
   }
-
-  /* GREETING */
 
   if(
     q==="hi" ||
@@ -498,84 +490,78 @@ function localKnowledge(question){
     return "नमस्ते! मैं Nexora AI हूँ। अपना सवाल पूछिए।";
   }
 
-  /* INDIA */
-
   if(
     q.includes("bharat ki rajdhani") ||
     q.includes("india ki capital") ||
-    q.includes("capital of india")
+    q.includes("capital of india") ||
+    q.includes("भारत की राजधानी")
   ){
     return `भारत की राजधानी नई दिल्ली (New Delhi) है।
 
-नई दिल्ली भारत की राष्ट्रीय राजधानी है।
-
 3 महत्वपूर्ण बातें:
-1. यहाँ भारत की संसद स्थित है।
-2. राष्ट्रपति भवन नई दिल्ली में है।
-3. भारत सरकार के कई प्रमुख केंद्रीय कार्यालय यहीं स्थित हैं।`;
+1. नई दिल्ली भारत की राष्ट्रीय राजधानी है।
+2. यहाँ भारत की संसद स्थित है।
+3. राष्ट्रपति भवन और कई केंद्रीय सरकारी कार्यालय यहाँ स्थित हैं।`;
   }
-
-  /* RAJASTHAN */
 
   if(
     q.includes("rajasthan ki rajdhani") ||
-    q.includes("rajasthan capital")
+    q.includes("rajasthan capital") ||
+    q.includes("राजस्थान की राजधानी")
   ){
     return `राजस्थान की राजधानी जयपुर (Jaipur) है।
 
-जयपुर को "Pink City" के नाम से भी जाना जाता है।
-
-यह राजस्थान का प्रमुख प्रशासनिक, ऐतिहासिक और पर्यटन केंद्र है।`;
+जयपुर को "Pink City" के नाम से भी जाना जाता है।`;
   }
-
-  /* INDIA COUNTRY */
 
   if(
-    q==="bharat" ||
-    q==="india" ||
-    q.includes("about india") ||
-    q.includes("bharat ke bare")
+    q.includes("ai kya hai") ||
+    q.includes("what is ai") ||
+    q.includes("artificial intelligence") ||
+    q.includes("एआई क्या है")
   ){
-    return `भारत दक्षिण एशिया का एक विशाल देश है।
+    return `AI यानी Artificial Intelligence ऐसी technology है जिसमें computer systems ऐसे काम कर सकते हैं जिनमें सामान्यतः human intelligence की जरूरत होती है।
 
-मुख्य जानकारी:
-• राजधानी: नई दिल्ली
-• मुद्रा: भारतीय रुपया (₹)
-• क्षेत्र: दक्षिण एशिया
-• शासन व्यवस्था: संघीय संसदीय लोकतंत्र
-
-भारत अपनी विविध भाषाओं, संस्कृतियों, इतिहास और भौगोलिक विविधता के लिए प्रसिद्ध है।`;
+उदाहरण:
+• भाषा समझना
+• सवालों के जवाब देना
+• images पहचानना
+• patterns ढूँढना
+• predictions करना`;
   }
-
-  /* RAJASTHAN */
 
   if(
-    q==="rajasthan" ||
-    q.includes("about rajasthan") ||
-    q.includes("rajasthan ke bare")
+    q.includes("computer kya hai") ||
+    q.includes("what is computer") ||
+    q.includes("कंप्यूटर क्या है")
   ){
-    return `राजस्थान भारत के उत्तर-पश्चिमी भाग में स्थित राज्य है।
+    return `कंप्यूटर एक electronic device है जो data को process करके उपयोगी information देता है।
 
-मुख्य जानकारी:
-• राजधानी: जयपुर
-• प्रसिद्ध नाम: Land of Kings
-• प्रमुख क्षेत्र: थार मरुस्थल
-• प्रसिद्ध स्थल: आमेर किला, सिटी पैलेस और उदयपुर के झील क्षेत्र`;
+इसके मुख्य काम हैं:
+1. Input लेना
+2. Data process करना
+3. Output देना
+4. Data store करना`;
   }
-
-  /* DELHI */
 
   if(
-    q==="new delhi" ||
-    q==="नई दिल्ली" ||
-    q.includes("new delhi ke bare")
+    q.includes("water formula") ||
+    q.includes("pani ka formula") ||
+    q.includes("पानी का सूत्र")
   ){
-    return `नई दिल्ली भारत की राजधानी है।
-
-यह भारत के राष्ट्रीय राजनीतिक और प्रशासनिक केंद्रों में से एक है। संसद भवन, राष्ट्रपति भवन और कई केंद्रीय सरकारी संस्थान यहाँ स्थित हैं।`;
+    return "पानी का रासायनिक सूत्र H₂O है। इसमें दो hydrogen atoms और एक oxygen atom होते हैं।";
   }
 
-  /* EARTH */
+  if(
+    q.includes("solar system") ||
+    q.includes("saur mandal") ||
+    q.includes("सौर मंडल")
+  ){
+    return `सौर मंडल सूर्य और उसके चारों ओर घूमने वाले ग्रहों तथा अन्य खगोलीय objects का समूह है।
+
+सौर मंडल में 8 ग्रह हैं:
+Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus और Neptune।`;
+  }
 
   if(
     q.includes("earth") ||
@@ -584,114 +570,56 @@ function localKnowledge(question){
   ){
     return `पृथ्वी सूर्य से तीसरा ग्रह है।
 
-पृथ्वी की सतह पर बड़ी मात्रा में तरल जल है और यहाँ जीवन के लिए उपयुक्त वातावरण मौजूद है।
-
-पृथ्वी का एक प्राकृतिक उपग्रह है — चंद्रमा।`;
+पृथ्वी पर liquid water और जीवन के लिए उपयुक्त वातावरण मौजूद है। इसका एक प्राकृतिक उपग्रह है — चंद्रमा।`;
   }
 
-  /* SUN */
-
   if(
-    q==="sun" ||
+    q.includes("sun") ||
     q.includes("surya") ||
     q.includes("सूर्य")
   ){
-    return `सूर्य हमारे सौरमंडल का तारा है।
-
-यह पृथ्वी के लिए प्रकाश और ऊर्जा का मुख्य स्रोत है।
-
-सूर्य के चारों ओर पृथ्वी सहित कई ग्रह परिक्रमा करते हैं।`;
+    return `सूर्य हमारे सौर मंडल का तारा है और पृथ्वी के लिए प्रकाश तथा ऊर्जा का मुख्य स्रोत है।`;
   }
-
-  /* COMPUTER */
 
   if(
-    q.includes("computer kya hai") ||
-    q.includes("what is computer")
+    q.includes("rajasthan") ||
+    q.includes("राजस्थान")
   ){
-    return `कंप्यूटर एक electronic device है जो data को process करके उपयोगी information देता है।
+    return `राजस्थान भारत के उत्तर-पश्चिमी भाग में स्थित राज्य है।
 
-इसके मुख्य काम हैं:
-1. Input लेना
-2. Data process करना
-3. Information output देना
-4. Data store करना`;
+राजधानी: जयपुर
+प्रसिद्ध क्षेत्र: थार मरुस्थल
+प्रसिद्ध शहर: जयपुर, जोधपुर, उदयपुर और जैसलमेर`;
   }
-
-  /* AI */
 
   if(
-    q.includes("ai kya hai") ||
-    q.includes("what is ai") ||
-    q.includes("artificial intelligence")
+    q.includes("india") ||
+    q.includes("bharat") ||
+    q.includes("भारत")
   ){
-    return `Artificial Intelligence (AI) ऐसी technology है जिसमें computer systems ऐसे काम कर सकते हैं जिनमें सामान्यतः human intelligence की जरूरत होती है।
+    return `भारत दक्षिण एशिया का एक विशाल देश है।
 
-उदाहरण:
-• भाषा समझना
-• सवालों का जवाब देना
-• images पहचानना
-• patterns ढूँढना
-• predictions करना`;
+राजधानी: नई दिल्ली
+मुद्रा: भारतीय रुपया (₹)
+क्षेत्र: दक्षिण एशिया
+
+भारत अपनी विविध भाषाओं, संस्कृतियों और इतिहास के लिए प्रसिद्ध है।`;
   }
-
-  /* SPACE */
-
-  if(
-    q.includes("solar system") ||
-    q.includes("saur mandal") ||
-    q.includes("सौर मंडल")
-  ){
-    return `सौर मंडल सूर्य और उसके चारों ओर घूमने वाले ग्रहों, उनके चंद्रमाओं, asteroids और अन्य objects का समूह है।
-
-हमारे सौर मंडल में 8 ग्रह हैं:
-Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus और Neptune।`;
-  }
-
-  /* WATER */
-
-  if(
-    q.includes("water formula") ||
-    q.includes("pani ka formula") ||
-    q.includes("पानी का सूत्र")
-  ){
-    return "पानी का रासायनिक सूत्र H₂O है। इसका एक molecule दो hydrogen atoms और एक oxygen atom से बना होता है।";
-  }
-
-  /* WRITING */
-
-  if(
-    q.startsWith("write a paragraph") ||
-    q.startsWith("write paragraph")
-  ){
-    return "Writing helper: अपना विषय बताइए, जैसे “पर्यावरण संरक्षण पर paragraph लिखो।”";
-  }
-
-  /* LEARNING */
-
-  if(
-    q.startsWith("explain") ||
-    q.startsWith("explain this")
-  ){
-    return "Learn mode: जिस topic को समझना है उसका नाम लिखिए। उदाहरण: “Explain photosynthesis in simple language.”";
-  }
-
-  /* FALLBACK */
 
   return `मैं अभी Free Local Mode में चल रहा हूँ।
 
-इस version में सामान्य जानकारी, calculations और कई common topics बिना API के काम करते हैं।
+इस version में API की जरूरत नहीं है।
 
-आप इनमें से कुछ पूछ सकते हैं:
+आप ये सवाल पूछ सकते हैं:
 • भारत की राजधानी क्या है?
 • राजस्थान की राजधानी क्या है?
 • AI क्या है?
-• पृथ्वी क्या है?
+• कंप्यूटर क्या है?
 • पानी का formula क्या है?
-• 25 × 12
 • सौर मंडल क्या है?
+• 25 × 12
 
-बाद में किसी AI provider को जोड़कर सामान्य सवालों के लिए भी real AI answers जोड़े जा सकते हैं।`;
+बाद में AI provider जोड़कर सामान्य सवालों के लिए real AI answers भी जोड़े जा सकते हैं।`;
 }
 
 function sendMessage(){
@@ -710,9 +638,7 @@ function sendMessage(){
   const answer=localKnowledge(question);
 
   setTimeout(function(){
-
     addMessage(answer,"assistant");
-
   },220);
 }
 
