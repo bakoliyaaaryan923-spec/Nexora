@@ -1,31 +1,35 @@
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({
+      reply: "यह request method supported नहीं है।"
+    });
   }
 
   try {
-    const { messages = [] } = req.body || {};
+    const { messages, question } = req.body || {};
 
-    if (!process.env.OPENAI_API_KEY) {
-      return res.status(500).json({
-        error: "OPENAI_API_KEY is not configured."
+    // पुराने frontend और नए frontend — दोनों को support करेगा
+    const userQuestion =
+      question ||
+      (Array.isArray(messages)
+        ? messages
+            .filter(m => m?.role === "user")
+            .map(m => m?.content)
+            .filter(Boolean)
+            .join("\n")
+        : "");
+
+    if (!userQuestion.trim()) {
+      return res.status(400).json({
+        reply: "कृपया कोई सवाल लिखें।"
       });
     }
 
-    const safeMessages = Array.isArray(messages)
-      ? messages
-          .filter(
-            m =>
-              m &&
-              ["user", "assistant"].includes(m.role) &&
-              typeof m.content === "string"
-          )
-          .slice(-20)
-      : [];
+    const apiKey = process.env.OPENAI_API_KEY;
 
-    if (!safeMessages.length) {
-      return res.status(400).json({
-        error: "No messages provided."
+    if (!apiKey) {
+      return res.status(500).json({
+        reply: "AI service अभी configure नहीं हुई है।"
       });
     }
 
@@ -33,18 +37,21 @@ export default async function handler(req, res) {
       "https://api.openai.com/v1/responses",
       {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+          "Authorization": `Bearer ${apiKey}`
         },
+
         body: JSON.stringify({
           model: "gpt-4o-mini",
+
           instructions:
-            "You are Nexora AI. Give clear, helpful and accurate answers. " +
-            "Answer in the language the user uses. " +
-            "For school-style questions, explain concepts clearly.",
-          input: safeMessages,
-          max_output_tokens: 1500
+            "You are Nexora AI. Answer clearly and helpfully. " +
+            "For Hindi questions, answer in simple Hindi. " +
+            "Do not claim that you browsed the web unless web access was actually used.",
+
+          input: userQuestion
         })
       }
     );
@@ -52,26 +59,40 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Provider error:", data);
+      console.error("OpenAI API error:", data);
 
       return res.status(response.status).json({
-        error:
-          data?.error?.message ||
-          "AI provider returned an error."
+        reply:
+          "AI service अभी जवाब नहीं दे पा रही है।"
+      });
+    }
+
+    const answer =
+      data?.output_text ||
+      data?.output
+        ?.flatMap(item => item?.content || [])
+        ?.map(item => item?.text)
+        ?.filter(Boolean)
+        ?.join("\n") ||
+      "";
+
+    if (!answer) {
+      return res.status(500).json({
+        reply: "AI ने कोई जवाब नहीं दिया।"
       });
     }
 
     return res.status(200).json({
-      reply:
-        data?.output_text ||
-        "No response was returned."
+      reply: answer
     });
 
   } catch (error) {
-    console.error("Backend error:", error);
+
+    console.error("Nexora backend error:", error);
 
     return res.status(500).json({
-      error: "Nexora backend error."
+      reply:
+        "अभी AI से connection नहीं हो पाया।"
     });
   }
 }
