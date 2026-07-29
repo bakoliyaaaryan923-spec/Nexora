@@ -14,7 +14,14 @@ import {
   generateCaption
 } from "./creator.js";
 
+import {
+  findCustomSkill,
+  runCustomSkill
+} from "./skill-builder.js";
+
+
 export function processQuestion(question = "") {
+
   const text = question.trim();
 
   if (!text) {
@@ -27,102 +34,235 @@ export function processQuestion(question = "") {
     };
   }
 
-  const skillName = routeSkill(text);
-  const skill = getSkill(skillName);
+
+  /*
+   * CUSTOM SKILLS
+   * इन्हें पहले check किया जाता है,
+   * ताकि future में नए modules आसानी से जुड़ सकें।
+   */
+
+  const customSkill =
+    findCustomSkill(text);
+
+  if (customSkill) {
+
+    const customAnswer =
+      runCustomSkill(
+        customSkill,
+        text
+      );
+
+    if (customAnswer !== null) {
+
+      return {
+        skill: customSkill.id,
+        skillName:
+          `${customSkill.icon} ${customSkill.name}`,
+        answer: customAnswer,
+        question: text,
+        timestamp: Date.now()
+      };
+
+    }
+  }
+
+
+  /*
+   * NORMAL SKILL ROUTER
+   */
+
+  const skillName =
+    routeSkill(text);
+
+  const skill =
+    getSkill(skillName);
+
 
   let answer = null;
 
-  // Calculator
-  if (skillName === "calculator") {
-    const percent = text.match(
-      /(\d+(?:\.\d+)?)\s*%\s*(?:of|का|की|के)\s*(\d+(?:\.\d+)?)/i
-    );
 
-    if (percent) {
-      const result = calculatePercentage(
-        percent[1],
-        percent[2]
+  /*
+   * CALCULATOR
+   */
+
+  if (skillName === "calculator") {
+
+    const percent =
+      text.match(
+        /(\d+(?:\.\d+)?)\s*%\s*(?:of|का|की|के)\s*(\d+(?:\.\d+)?)/i
       );
 
+
+    if (percent) {
+
+      const result =
+        calculatePercentage(
+          percent[1],
+          percent[2]
+        );
+
       if (result !== null) {
-        answer = `🧮 Answer: ${result}`;
+        answer =
+          `🧮 Answer: ${result}`;
       }
     }
+
 
     if (answer === null) {
-      const result = calculate(text);
+
+      const result =
+        calculate(text);
 
       if (result !== null) {
-        answer = `🧮 Answer: ${result}`;
+        answer =
+          `🧮 Answer: ${result}`;
       }
     }
   }
 
-  // Knowledge
-  if (answer === null && skillName === "knowledge") {
-    answer = findKnowledge(text);
+
+  /*
+   * KNOWLEDGE
+   */
+
+  if (
+    answer === null &&
+    skillName === "knowledge"
+  ) {
+
+    answer =
+      findKnowledge(text);
   }
 
-  // Learning
-  if (answer === null && skillName === "learning") {
-    answer = explainTopic(text);
+
+  /*
+   * LEARNING
+   */
+
+  if (
+    answer === null &&
+    skillName === "learning"
+  ) {
+
+    answer =
+      explainTopic(text);
   }
 
-  // Creator
-  if (answer === null && skillName === "creator") {
-    const q = text.toLowerCase();
+
+  /*
+   * CREATOR
+   */
+
+  if (
+    answer === null &&
+    skillName === "creator"
+  ) {
+
+    const q =
+      text.toLowerCase();
+
 
     if (
       q.includes("title") ||
       q.includes("टाइटल")
     ) {
-      answer = generateTitle(text);
 
-    } else if (
+      answer =
+        generateTitle(text);
+
+    }
+
+    else if (
       q.includes("description") ||
       q.includes("discription") ||
       q.includes("डिस्क्रिप्शन")
     ) {
-      answer = generateDescription(text);
 
-    } else if (
+      answer =
+        generateDescription(text);
+
+    }
+
+    else if (
       q.includes("hashtag") ||
       q.includes("hashtags") ||
       q.includes("हैशटैग")
     ) {
-      answer = generateHashtags(text);
 
-    } else if (
+      answer =
+        generateHashtags(text);
+
+    }
+
+    else if (
       q.includes("caption") ||
       q.includes("कैप्शन")
     ) {
-      answer = generateCaption(text);
 
-    } else {
-      answer = generateIdeas(text);
+      answer =
+        generateCaption(text);
+
+    }
+
+    else {
+
+      answer =
+        generateIdeas(text);
     }
   }
 
-  // Writing
-  if (answer === null && skillName === "writing") {
-    answer = generateWriting(text);
+
+  /*
+   * WRITING
+   */
+
+  if (
+    answer === null &&
+    skillName === "writing"
+  ) {
+
+    answer =
+      generateWriting(text);
   }
 
-  // General fallback
-  if (answer === null && skillName === "general") {
-    answer = generalAnswer(text);
+
+  /*
+   * GENERAL
+   */
+
+  if (
+    answer === null &&
+    skillName === "general"
+  ) {
+
+    answer =
+      generalAnswer(text);
   }
 
-  // Final fallback
+
+  /*
+   * FINAL FALLBACK
+   */
+
   if (answer === null) {
-    answer = generalAnswer(text);
+
+    answer =
+      generalAnswer(text);
   }
+
 
   return {
+
     skill: skillName,
-    skillName: skill.name,
+
+    skillName:
+      skill.name,
+
     answer,
+
     question: text,
+
     timestamp: Date.now()
+
   };
 }
