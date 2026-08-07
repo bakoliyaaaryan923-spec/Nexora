@@ -1,32 +1,1267 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nexora AI</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexora AI v4</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:#080a0f;
+  color:#f5f7fb;
+  min-height:100vh;
+}
+
+button,textarea{
+  font:inherit;
+}
+
+button{
+  -webkit-tap-highlight-color:transparent;
+}
+
+.app{
+  min-height:100vh;
+  display:flex;
+}
+
+.sidebar{
+  width:250px;
+  background:#10131a;
+  border-right:1px solid #252a34;
+  padding:18px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.logo{
+  font-size:21px;
+  font-weight:800;
+  padding:8px;
+}
+
+.logo span{
+  color:#897cff;
+}
+
+.new-chat{
+  border:1px solid #303541;
+  background:#191c24;
+  color:white;
+  border-radius:12px;
+  padding:12px;
+  cursor:pointer;
+  text-align:left;
+}
+
+.new-chat:hover{
+  background:#222631;
+}
+
+.history-title{
+  color:#777e8c;
+  font-size:11px;
+  padding:8px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
+
+.history{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  overflow:auto;
+  max-height:220px;
+}
+
+.history-item{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#cdd2dc;
+  padding:10px;
+  border-radius:9px;
+  text-align:left;
+  cursor:pointer;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.history-item:hover{
+  background:#1b1f28;
+}
+
+.sidebar-bottom{
+  margin-top:auto;
+  color:#656c79;
+  font-size:11px;
+  padding:8px;
+}
+
+.main{
+  flex:1;
+  min-width:0;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.topbar{
+  height:62px;
+  border-bottom:1px solid #252a34;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 22px;
+  background:#0d0f14;
+}
+
+.brand{
+  font-weight:700;
+}
+
+.status{
+  color:#62e3a0;
+  font-size:12px;
+}
+
+.content{
+  width:min(920px,94%);
+  margin:auto;
+  padding:48px 0 190px;
+}
+
+.hero{
+  text-align:center;
+  margin-bottom:28px;
+}
+
+.hero h1{
+  font-size:clamp(34px,6vw,58px);
+  line-height:1.05;
+  margin-bottom:12px;
+  background:linear-gradient(90deg,#fff,#aaa0ff);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.hero p{
+  color:#9299a7;
+}
+
+.chat{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.welcome{
+  text-align:center;
+  color:#8c93a0;
+  padding:25px 10px;
+}
+
+.welcome strong{
+  display:block;
+  color:#fff;
+  font-size:20px;
+  margin-bottom:8px;
+}
+
+.message{
+  max-width:84%;
+  padding:14px 16px;
+  border-radius:16px;
+  line-height:1.6;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.user{
+  margin-left:auto;
+  background:#6256d8;
+  border-bottom-right-radius:5px;
+}
+
+.assistant{
+  margin-right:auto;
+  background:#171a22;
+  border:1px solid #292e38;
+  border-bottom-left-radius:5px;
+}
+
+.skill{
+  font-size:11px;
+  color:#8e96a5;
+  margin-bottom:7px;
+}
+
+.loading{
+  opacity:.7;
+}
+
+.tools{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+  margin-top:25px;
+}
+
+.tool{
+  padding:13px 8px;
+  border-radius:12px;
+  border:1px solid #292e38;
+  background:#14171e;
+  color:#e9ebf0;
+  cursor:pointer;
+}
+
+.tool:hover{
+  background:#1c2029;
+  border-color:#675cdc;
+}
+
+.tool small{
+  display:block;
+  color:#7d8492;
+  margin-top:4px;
+}
+
+.skills-panel{
+  margin-top:32px;
+}
+
+.skills-panel-title{
+  font-size:20px;
+  margin-bottom:5px;
+}
+
+.skills-panel-subtitle{
+  color:#858c99;
+  font-size:13px;
+  margin-bottom:14px;
+}
+
+.skills-panel-list{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.skill-card{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  text-align:left;
+  padding:13px;
+  border:1px solid #292e38;
+  border-radius:13px;
+  background:#14171e;
+  color:#fff;
+  cursor:pointer;
+}
+
+.skill-card:hover{
+  background:#1c2029;
+  border-color:#675cdc;
+}
+
+.skill-icon{
+  font-size:24px;
+}
+
+.skill-info strong{
+  display:block;
+  font-size:14px;
+}
+
+.skill-info small{
+  display:block;
+  color:#7d8492;
+  margin-top:3px;
+}
+
+.composer-wrap{
+  position:fixed;
+  left:250px;
+  right:0;
+  bottom:0;
+  padding:14px 20px 18px;
+  background:linear-gradient(transparent,#080a0f 25%);
+}
+
+.composer{
+  width:min(920px,94%);
+  margin:auto;
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  padding:9px;
+  background:#151820;
+  border:1px solid #303541;
+  border-radius:17px;
+}
+
+textarea{
+  flex:1;
+  min-height:46px;
+  max-height:150px;
+  resize:none;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#fff;
+  padding:12px;
+}
+
+textarea::placeholder{
+  color:#707785;
+}
+
+.clear{
+  border:0;
+  background:transparent;
+  color:#858c99;
+  cursor:pointer;
+  padding:11px;
+}
+
+.send{
+  width:47px;
+  height:46px;
+  border:0;
+  border-radius:12px;
+  background:#6b5fe5;
+  color:#fff;
+  cursor:pointer;
+  font-size:18px;
+}
+
+.send:hover{
+  background:#7b6ff0;
+}
+
+.send:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.notice{
+  text-align:center;
+  color:#555c68;
+  font-size:10px;
+  margin-top:7px;
+}
+
+@media(max-width:760px){
+
+  .sidebar{
+    display:none;
+  }
+
+  .composer-wrap{
+    left:0;
+  }
+
+  .content{
+    padding-top:35px;
+  }
+
+  .tools{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .skills-panel-list{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .message{
+    max-width:93%;
+  }
+}
+
+@media(max-width:450px){
+
+  .skills-panel-list{
+    grid-template-columns:1fr;
+  }
+
+}
+</style>
 </head>
+
 <body>
 
-<div id="app">
-    <h1>Nexora AI</h1>
+<div class="app">
 
-    <div id="chat"></div>
+<aside class="sidebar">
 
-    <input
-        type="text"
-        id="question"
-        placeholder="Ask anything..."
-    />
+  <div class="logo">
+    NEXORA <span>AI</span>
+  </div>
 
-    <button id="sendBtn">
-        Send
-    </button>
+  <button
+    class="new-chat"
+    onclick="newChat()"
+  >
+    ＋ New chat
+  </button>
 
-    <div id="answer"></div>
+  <div class="history-title">
+    History
+  </div>
+
+  <div
+    id="history"
+    class="history"
+  ></div>
+
+  <div class="sidebar-bottom">
+    NEXORA AI v4<br>
+    Local + AI Backend
+  </div>
+
+</aside>
+
+
+<main class="main">
+
+<header class="topbar">
+
+  <div class="brand">
+    Nexora AI
+  </div>
+
+  <div
+    id="status"
+    class="status"
+  >
+    ● Ready
+  </div>
+
+</header>
+
+
+<section class="content">
+
+<div class="hero">
+
+  <h1>
+    Ask anything.
+  </h1>
+
+  <p>
+    Modular AI workspace with local skills and secure AI backend.
+  </p>
+
 </div>
 
-<script src="app.js"></script>
+
+<div
+  id="chat"
+  class="chat"
+>
+
+  <div
+    id="welcome"
+    class="welcome"
+  >
+
+    <strong>
+      Welcome to Nexora AI
+    </strong>
+
+    Ask a question or choose a skill below.
+
+  </div>
+
+</div>
+
+
+<div class="tools">
+
+<button
+  class="tool"
+  onclick="toolPrompt('ask')"
+>
+  🧠 Ask
+  <small>AI Knowledge</small>
+</button>
+
+<button
+  class="tool"
+  onclick="toolPrompt('learn')"
+>
+  📚 Learn
+  <small>Explain</small>
+</button>
+
+<button
+  class="tool"
+  onclick="toolPrompt('write')"
+>
+  ✍️ Write
+  <small>Create</small>
+</button>
+
+<button
+  class="tool"
+  onclick="toolPrompt('solve')"
+>
+  🧮 Solve
+  <small>Calculate</small>
+</button>
+
+</div>
+
+
+<div
+  id="skillsPanel"
+  class="skills-panel"
+></div>
+
+
+</section>
+
+</main>
+
+</div>
+
+
+<div class="composer-wrap">
+
+<div class="composer">
+
+<textarea
+  id="question"
+  placeholder="Ask Nexora anything..."
+  rows="1"
+></textarea>
+
+<button
+  class="clear"
+  onclick="newChat()"
+>
+  Clear
+</button>
+
+<button
+  id="sendButton"
+  class="send"
+  onclick="sendMessage()"
+>
+  ➤
+</button>
+
+</div>
+
+<div class="notice">
+  © 2026 Nexora AI · Local + Secure Backend
+</div>
+
+</div>
+
+
+<script type="module">
+
+import {
+  processQuestion
+} from "./src/core.js";
+
+import {
+  createSkillsPanel
+} from "./src/skills-panel.js";
+
+import {
+  registerDefaultCustomSkills
+} from "./src/custom-skills.js";
+
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const chat =
+  document.getElementById("chat");
+
+const questionBox =
+  document.getElementById("question");
+
+const historyBox =
+  document.getElementById("history");
+
+const skillsPanel =
+  document.getElementById("skillsPanel");
+
+const sendButton =
+  document.getElementById("sendButton");
+
+const status =
+  document.getElementById("status");
+
+
+const HISTORY_KEY =
+  "nexora_history_v4";
+
+
+/* =========================
+   CUSTOM SKILLS
+========================= */
+
+try{
+
+  registerDefaultCustomSkills();
+
+}catch(error){
+
+  console.warn(
+    "Custom skills unavailable:",
+    error
+  );
+
+}
+
+
+/* =========================
+   SKILLS PANEL
+========================= */
+
+try{
+
+  createSkillsPanel(
+
+    skillsPanel,
+
+    function(skill){
+
+      const prompts = {
+
+        calculator:
+          "25 × 12",
+
+        knowledge:
+          "भारत की राजधानी क्या है?",
+
+        learning:
+          "AI क्या है? आसान भाषा में समझाओ।",
+
+        writing:
+          "AI पर paragraph लिखो",
+
+        creator:
+          "YouTube title generate करो: AI",
+
+        general:
+          "Hello",
+
+        "youtube-hooks":
+          "YouTube hook generate करो: AI"
+
+      };
+
+      questionBox.value =
+        prompts[skill.id] || "";
+
+      questionBox.focus();
+
+    }
+
+  );
+
+}catch(error){
+
+  console.warn(
+    "Skills panel unavailable:",
+    error
+  );
+
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function addMessage(
+  text,
+  type,
+  skill = ""
+){
+
+  const welcome =
+    document.getElementById("welcome");
+
+  if(welcome){
+    welcome.remove();
+  }
+
+
+  const div =
+    document.createElement("div");
+
+  div.className =
+    "message " + type;
+
+
+  if(
+    type === "assistant" &&
+    skill
+  ){
+
+    const label =
+      document.createElement("div");
+
+    label.className =
+      "skill";
+
+    label.textContent =
+      "⚡ " + skill;
+
+    div.appendChild(label);
+
+  }
+
+
+  const body =
+    document.createElement("div");
+
+  body.textContent =
+    text;
+
+  div.appendChild(body);
+
+  chat.appendChild(div);
+
+
+  div.scrollIntoView({
+    behavior:"smooth",
+    block:"end"
+  });
+
+
+  return div;
+}
+
+
+/* =========================
+   HISTORY
+========================= */
+
+function saveHistory(question){
+
+  try{
+
+    const old =
+      JSON.parse(
+        localStorage.getItem(
+          HISTORY_KEY
+        ) || "[]"
+      );
+
+
+    old.push({
+      question,
+      time:Date.now()
+    });
+
+
+    localStorage.setItem(
+      HISTORY_KEY,
+      JSON.stringify(
+        old.slice(-50)
+      )
+    );
+
+
+    renderHistory();
+
+  }catch(error){
+
+    console.warn(
+      "History save error:",
+      error
+    );
+
+  }
+
+}
+
+
+function renderHistory(){
+
+  historyBox.innerHTML = "";
+
+  try{
+
+    const saved =
+      JSON.parse(
+        localStorage.getItem(
+          HISTORY_KEY
+        ) || "[]"
+      );
+
+
+    saved
+      .slice()
+      .reverse()
+      .forEach(item => {
+
+        const button =
+          document.createElement("button");
+
+        button.className =
+          "history-item";
+
+        button.textContent =
+          item.question;
+
+        button.onclick =
+          function(){
+
+            questionBox.value =
+              item.question;
+
+            questionBox.focus();
+
+          };
+
+        historyBox.appendChild(
+          button
+        );
+
+      });
+
+  }catch(error){
+
+    console.warn(
+      "History load error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================
+   LOCAL HISTORY FOR AI
+========================= */
+
+function getConversationHistory(){
+
+  try{
+
+    const messages =
+      Array.from(
+        chat.querySelectorAll(
+          ".message"
+        )
+      );
+
+
+    return messages
+      .slice(-10)
+      .map(message => {
+
+        const isUser =
+          message.classList.contains(
+            "user"
+          );
+
+
+        const body =
+          message.querySelector(
+            "div:last-child"
+          );
+
+
+        return {
+
+          role:
+            isUser
+              ? "user"
+              : "assistant",
+
+          content:
+            body
+              ? body.textContent
+              : message.textContent
+
+        };
+
+      });
+
+  }catch(error){
+
+    return [];
+
+  }
+
+}
+
+
+/* =========================
+   NEW CHAT
+========================= */
+
+window.newChat =
+function(){
+
+  chat.innerHTML = `
+
+    <div
+      id="welcome"
+      class="welcome"
+    >
+
+      <strong>
+        Welcome to Nexora AI
+      </strong>
+
+      Ask a question or choose a skill below.
+
+    </div>
+
+  `;
+
+  questionBox.value = "";
+
+  status.textContent =
+    "● Ready";
+
+  questionBox.focus();
+
+};
+
+
+/* =========================
+   TOOL PROMPTS
+========================= */
+
+window.toolPrompt =
+function(type){
+
+  const prompts = {
+
+    ask:
+      "भारत की राजधानी क्या है?",
+
+    learn:
+      "AI क्या है? आसान भाषा में समझाओ।",
+
+    write:
+      "AI पर paragraph लिखो",
+
+    solve:
+      "25 × 12"
+
+  };
+
+
+  questionBox.value =
+    prompts[type] || "";
+
+  questionBox.focus();
+
+};
+
+
+/* =========================
+   BACKEND AI
+========================= */
+
+async function askBackend(
+  question,
+  history
+){
+
+  const response =
+    await fetch(
+      "/api/ask",
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:JSON.stringify({
+
+          question,
+
+          history
+
+        })
+
+      }
+    );
+
+
+  let data = {};
+
+  try{
+
+    data =
+      await response.json();
+
+  }catch(error){
+
+    throw new Error(
+      "Backend returned invalid JSON."
+    );
+
+  }
+
+
+  if(!response.ok){
+
+    throw new Error(
+      data?.reply ||
+      `Backend error ${response.status}`
+    );
+
+  }
+
+
+  return (
+    data?.reply ||
+    "AI ने कोई response नहीं दिया।"
+  );
+
+}
+
+
+/* =========================
+   SEND MESSAGE
+========================= */
+
+window.sendMessage =
+async function(){
+
+  const question =
+    questionBox.value.trim();
+
+
+  if(!question){
+    return;
+  }
+
+
+  addMessage(
+    question,
+    "user"
+  );
+
+
+  saveHistory(
+    question
+  );
+
+
+  questionBox.value = "";
+
+  sendButton.disabled = true;
+
+  status.textContent =
+    "● Thinking...";
+
+
+  const loading =
+    addMessage(
+      "Nexora सोच रहा है...",
+      "assistant loading",
+      "AI"
+    );
+
+
+  try{
+
+    /*
+     * पहले local skill try करें।
+     * Calculator, local knowledge,
+     * writing और creator tools
+     * बिना API के चल सकते हैं।
+     */
+
+    const localResult =
+      processQuestion(
+        question
+      );
+
+
+    /*
+     * अगर calculator या कोई
+     * useful local skill मिला,
+     * तो उसे तुरंत दिखाएँ।
+     */
+
+    const localSkill =
+      localResult?.skill;
+
+
+    const localAnswer =
+      localResult?.answer;
+
+
+    const localSkills = [
+      "calculator",
+      "knowledge",
+      "learning",
+      "writing",
+      "creator",
+      "youtube-hooks"
+    ];
+
+
+    const isLocal =
+      localSkills.includes(
+        localSkill
+      );
+
+
+    if(
+      isLocal &&
+      localAnswer
+    ){
+
+      loading.remove();
+
+
+      addMessage(
+
+        localAnswer,
+
+        "assistant",
+
+        localResult.skillName ||
+        localSkill
+
+      );
+
+
+      status.textContent =
+        "● Local Ready";
+
+
+      return;
+
+    }
+
+
+    /*
+     * Local answer उपलब्ध नहीं है,
+     * इसलिए secure backend call करें।
+     */
+
+    const history =
+      getConversationHistory()
+        .slice(0,-1);
+
+
+    const aiAnswer =
+      await askBackend(
+        question,
+        history
+      );
+
+
+    loading.remove();
+
+
+    addMessage(
+
+      aiAnswer,
+
+      "assistant",
+
+      "Nexora AI"
+
+    );
+
+
+    status.textContent =
+      "● AI Ready";
+
+
+  }catch(error){
+
+    console.error(
+      "Nexora AI error:",
+      error
+    );
+
+
+    loading.remove();
+
+
+    addMessage(
+
+      "AI backend से connection नहीं हो पाया। " +
+      "Local features अभी भी उपलब्ध हैं।",
+
+      "assistant",
+
+      "Backend"
+
+    );
+
+
+    status.textContent =
+      "● Backend Error";
+
+
+  }finally{
+
+    sendButton.disabled = false;
+
+  }
+
+};
+
+
+/* =========================
+   ENTER KEY
+========================= */
+
+questionBox.addEventListener(
+
+  "keydown",
+
+  function(event){
+
+    if(
+      event.key === "Enter" &&
+      !event.shiftKey
+    ){
+
+      event.preventDefault();
+
+      window.sendMessage();
+
+    }
+
+  }
+
+);
+
+
+/* =========================
+   START
+========================= */
+
+renderHistory();
+
+</script>
 
 </body>
 </html>
