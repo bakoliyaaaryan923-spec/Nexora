@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>हिसाब किताब – फ्री EMI, SIP, GST, उम्र और BMI कैलकुलेटर</title>
-<meta name="description" content="फ्री ऑनलाइन कैलकुलेटर: EMI, SIP, GST, उम्र और BMI। तुरंत नतीजा, कोई साइन-अप नहीं।">
+<title>हिसाब किताब – फ्री EMI, SIP, FD, GST, प्रतिशत, डिस्काउंट, उम्र, BMI कैलकुलेटर</title>
+<meta name="description" content="फ्री ऑनलाइन कैलकुलेटर: EMI, SIP, FD, GST, प्रतिशत, डिस्काउंट, उम्र और BMI। लिखते ही नतीजा, WhatsApp पर शेयर करें।">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Hind:wght@400;500&display=swap">
 <style>
 :root{--bg:#eef2f1;--card:#fff;--ink:#12302b;--mut:#5a6f6a;--line:#cfdad7;--acc:#f2b705;--acc-ink:#12302b;--out:#12302b;--out-ink:#f4fbf9;
@@ -17,24 +17,28 @@ body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 Hind,syste
 .wrap{max-width:760px;margin:0 auto;padding:20px 16px 40px}
 h1,h2{font-family:"Baloo 2",system-ui,sans-serif;line-height:1.15;margin:0}
 h1{font-size:clamp(30px,7vw,46px);margin-top:10px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.logo{font:700 20px "Baloo 2",sans-serif}
 .sub{color:var(--mut);margin:8px 0 18px;max-width:52ch}
 .tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}
-.tabs button{flex:none;font:500 16px Hind,sans-serif;padding:9px 16px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;cursor:pointer}
+button{font-family:inherit;cursor:pointer}
+.tabs button,.tg{flex:none;font:500 16px Hind,sans-serif;padding:9px 16px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px}
 .tabs button[aria-selected=true]{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 .ad{margin:16px 0;min-height:90px;border:1.5px dashed var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:14px;text-align:center;padding:8px}
 .tool{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:20px}
-.tool[hidden]{display:none}
 .tool h2{font-size:26px;margin-bottom:14px}
 .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
 label{display:block;font-size:15px;color:var(--mut)}
 input,select{width:100%;margin-top:4px;font:500 18px Hind,sans-serif;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
-.go{margin-top:16px;font:700 18px "Baloo 2",sans-serif;padding:10px 26px;border:0;border-radius:8px;background:var(--acc);color:var(--acc-ink);cursor:pointer}
-.res{margin-top:18px;background:var(--out);color:var(--out-ink);border-radius:12px;padding:16px 18px;display:none}
-.res.on{display:block}
+.res{margin-top:18px;background:var(--out);color:var(--out-ink);border-radius:12px;padding:16px 18px}
 .res .big{font:700 34px/1.1 "Baloo 2",sans-serif}
 .res p{margin:4px 0 0;opacity:.85}
 .row{display:flex;justify-content:space-between;gap:12px;border-top:1px solid rgba(128,128,128,.35);padding:6px 0;margin-top:6px}
+.bar{height:10px;border-radius:6px;background:rgba(128,128,128,.4);margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);}
+.bl{display:flex;justify-content:space-between;font-size:13px;opacity:.85;margin-top:4px}
+.wa{display:inline-block;margin-top:14px;padding:9px 18px;border-radius:8px;background:#25d366;color:#06301a;font:700 16px "Baloo 2",sans-serif;text-decoration:none}
 .faq{margin-top:26px;color:var(--mut);font-size:15px}
 .faq b{color:var(--ink)}
 footer{margin-top:30px;color:var(--mut);font-size:14px;border-top:1px solid var(--line);padding-top:14px}
@@ -42,73 +46,28 @@ footer{margin-top:30px;color:var(--mut);font-size:14px;border-top:1px solid var(
 </head>
 <body>
 <div class="wrap">
-  <h2 style="font-size:20px">हिसाब किताब</h2>
+  <div class="top"><span class="logo">हिसाब किताब</span><button class="tg" id="tg" aria-label="डार्क या लाइट मोड बदलें">🌓</button></div>
   <h1>झटपट कैलकुलेटर, बिल्कुल फ्री</h1>
-  <p class="sub">लोन की EMI, SIP का रिटर्न, GST, उम्र और BMI। आंकड़े डालिए, नतीजा तुरंत मिलेगा।</p>
+  <p class="sub">आंकड़े लिखते ही नतीजा बदल जाता है। कोई साइन-अप नहीं।</p>
 
   <div class="tabs" role="tablist" id="tabs"></div>
 
   <!-- AD SLOT 1: यहाँ AdSense का कोड चिपकाएँ -->
-  <div class="ad" id="ad1">विज्ञापन की जगह (AdSense)</div>
+  <div class="ad">विज्ञापन की जगह (AdSense)</div>
 
-  <section class="tool" id="emi" data-t="EMI">
-    <h2>लोन EMI कैलकुलेटर</h2>
-    <div class="grid">
-      <label>लोन राशि (₹)<input id="e1" type="number" value="500000" min="0"></label>
-      <label>ब्याज दर (% सालाना)<input id="e2" type="number" value="9" step="0.1" min="0"></label>
-      <label>अवधि (साल)<input id="e3" type="number" value="5" min="1"></label>
-    </div>
-    <button class="go" onclick="emi()">EMI निकालें</button>
-    <div class="res" id="eo"></div>
-  </section>
-
-  <section class="tool" id="sip" data-t="SIP" hidden>
-    <h2>SIP रिटर्न कैलकुलेटर</h2>
-    <div class="grid">
-      <label>हर महीने निवेश (₹)<input id="s1" type="number" value="5000" min="0"></label>
-      <label>अनुमानित रिटर्न (% सालाना)<input id="s2" type="number" value="12" step="0.1" min="0"></label>
-      <label>अवधि (साल)<input id="s3" type="number" value="10" min="1"></label>
-    </div>
-    <button class="go" onclick="sip()">रिटर्न निकालें</button>
-    <div class="res" id="so"></div>
-  </section>
-
-  <section class="tool" id="gst" data-t="GST" hidden>
-    <h2>GST कैलकुलेटर</h2>
-    <div class="grid">
-      <label>राशि (₹)<input id="g1" type="number" value="1000" min="0"></label>
-      <label>GST दर<select id="g2"><option>5</option><option>12</option><option selected>18</option><option>28</option></select></label>
-      <label>राशि में GST<select id="g3"><option value="add">जोड़ना है (GST अलग)</option><option value="rem">पहले से शामिल है</option></select></label>
-    </div>
-    <button class="go" onclick="gst()">GST निकालें</button>
-    <div class="res" id="go"></div>
-  </section>
-
-  <section class="tool" id="age" data-t="उम्र" hidden>
-    <h2>उम्र कैलकुलेटर</h2>
-    <div class="grid">
-      <label>जन्म तारीख<input id="a1" type="date"></label>
-    </div>
-    <button class="go" onclick="age()">उम्र निकालें</button>
-    <div class="res" id="ao"></div>
-  </section>
-
-  <section class="tool" id="bmi" data-t="BMI" hidden>
-    <h2>BMI कैलकुलेटर</h2>
-    <div class="grid">
-      <label>वज़न (किलो)<input id="b1" type="number" value="70" min="1"></label>
-      <label>ऊँचाई (सेमी)<input id="b2" type="number" value="170" min="50"></label>
-    </div>
-    <button class="go" onclick="bmi()">BMI निकालें</button>
-    <div class="res" id="bo"></div>
+  <section class="tool">
+    <h2 id="tt"></h2>
+    <div class="grid" id="form"></div>
+    <div class="res" id="out" aria-live="polite"></div>
   </section>
 
   <!-- AD SLOT 2: यहाँ AdSense का कोड चिपकाएँ -->
-  <div class="ad" id="ad2">विज्ञापन की जगह (AdSense)</div>
+  <div class="ad">विज्ञापन की जगह (AdSense)</div>
 
   <div class="faq">
     <p><b>EMI क्या है?</b> लोन चुकाने की हर महीने की तय किस्त, जिसमें मूलधन और ब्याज दोनों होते हैं।</p>
     <p><b>SIP क्या है?</b> हर महीने तय रकम म्यूचुअल फंड में लगाने का तरीका। रिटर्न अनुमानित होता है, गारंटी नहीं।</p>
+    <p><b>FD का ब्याज कैसे जुड़ता है?</b> यहाँ हर तिमाही चक्रवृद्धि मानी गई है, जैसा ज़्यादातर बैंक करते हैं।</p>
   </div>
   <footer>ये कैलकुलेटर सिर्फ़ अनुमान के लिए हैं, वित्तीय या मेडिकल सलाह नहीं। © हिसाब किताब</footer>
 </div>
@@ -116,50 +75,92 @@ footer{margin-top:30px;color:var(--mut);font-size:14px;border-top:1px solid var(
 <script>
 const $=id=>document.getElementById(id);
 const inr=n=>"₹"+Math.round(n).toLocaleString("en-IN");
-const show=(id,html)=>{const e=$(id);e.innerHTML=html;e.classList.add("on")};
-const row=(a,b)=>`<div class="row"><span>${a}</span><b>${b}</b></div>`;
+const R=(a,b)=>[a,b];
 
-function emi(){
-  const P=+$("e1").value,r=+$("e2").value/1200,n=+$("e3").value*12;
-  if(!(P>0&&n>0))return show("eo","सही आंकड़े डालिए।");
-  const m=r?P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1):P/n,t=m*n;
-  show("eo",`<div class="big">${inr(m)} / महीना</div>${row("कुल ब्याज",inr(t-P))}${row("कुल भुगतान",inr(t))}`);
-}
-function sip(){
-  const p=+$("s1").value,r=+$("s2").value/1200,n=+$("s3").value*12;
-  if(!(p>0&&n>0))return show("so","सही आंकड़े डालिए।");
-  const f=r?p*((Math.pow(1+r,n)-1)/r)*(1+r):p*n,i=p*n;
-  show("so",`<div class="big">${inr(f)}</div><p>अनुमानित कुल रकम</p>${row("आपका निवेश",inr(i))}${row("अनुमानित कमाई",inr(f-i))}`);
-}
-function gst(){
-  const a=+$("g1").value,r=+$("g2").value,add=$("g3").value==="add";
-  if(!(a>0))return show("go","सही राशि डालिए।");
-  const g=add?a*r/100:a-a*100/(100+r),base=add?a:a-g;
-  show("go",`<div class="big">${inr(add?a+g:a)}</div><p>कुल राशि</p>${row("बेस राशि",inr(base))}${row("GST ("+r+"%)",inr(g))}${row("CGST + SGST",inr(g/2)+" + "+inr(g/2))}`);
-}
-function age(){
-  const v=$("a1").value;if(!v)return show("ao","जन्म तारीख चुनिए।");
-  const b=new Date(v),t=new Date();if(b>t)return show("ao","जन्म तारीख भविष्य में नहीं हो सकती।");
+/* नया टूल जोड़ने के लिए इस लिस्ट में एक आइटम जोड़ें:
+   id, n (टैब का नाम), t (शीर्षक), f (इनपुट), c (हिसाब) */
+const T=[
+{id:"emi",n:"EMI",t:"लोन EMI कैलकुलेटर",
+ f:[{k:"amt",l:"लोन राशि (₹)",v:500000},{k:"rate",l:"ब्याज दर (% सालाना)",v:9,s:.1},{k:"yrs",l:"अवधि (साल)",v:5}],
+ c:v=>{if(!(v.amt>0&&v.yrs>0&&v.rate>=0))return"सही आंकड़े डालिए।";
+  const r=v.rate/1200,n=v.yrs*12,m=r?v.amt*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1):v.amt/n,t=m*n;
+  return{big:inr(m)+" / महीना",rows:[R("कुल ब्याज",inr(t-v.amt)),R("कुल भुगतान",inr(t))],bar:[v.amt/t*100,"मूलधन","ब्याज"]}}},
+{id:"sip",n:"SIP",t:"SIP रिटर्न कैलकुलेटर",
+ f:[{k:"p",l:"हर महीने निवेश (₹)",v:5000},{k:"rate",l:"अनुमानित रिटर्न (% सालाना)",v:12,s:.1},{k:"yrs",l:"अवधि (साल)",v:10}],
+ c:v=>{if(!(v.p>0&&v.yrs>0&&v.rate>=0))return"सही आंकड़े डालिए।";
+  const r=v.rate/1200,n=v.yrs*12,f=r?v.p*((Math.pow(1+r,n)-1)/r)*(1+r):v.p*n,i=v.p*n;
+  return{big:inr(f),note:"अनुमानित कुल रकम",rows:[R("आपका निवेश",inr(i)),R("अनुमानित कमाई",inr(f-i))],bar:[i/f*100,"निवेश","कमाई"]}}},
+{id:"fd",n:"FD",t:"FD कैलकुलेटर",
+ f:[{k:"p",l:"जमा राशि (₹)",v:100000},{k:"rate",l:"ब्याज दर (% सालाना)",v:7,s:.1},{k:"yrs",l:"अवधि (साल)",v:5}],
+ c:v=>{if(!(v.p>0&&v.yrs>0&&v.rate>=0))return"सही आंकड़े डालिए।";
+  const a=v.p*Math.pow(1+v.rate/400,4*v.yrs);
+  return{big:inr(a),note:"मैच्योरिटी पर रकम",rows:[R("जमा राशि",inr(v.p)),R("कुल ब्याज",inr(a-v.p))],bar:[v.p/a*100,"जमा","ब्याज"]}}},
+{id:"gst",n:"GST",t:"GST कैलकुलेटर",
+ f:[{k:"a",l:"राशि (₹)",v:1000},{k:"r",l:"GST दर",v:"18",o:[["5","5%"],["12","12%"],["18","18%"],["28","28%"]]},{k:"m",l:"GST कैसे लगाना है",v:"add",o:[["add","राशि में जोड़ना है"],["rem","राशि में पहले से शामिल है"]]}],
+ c:v=>{if(!(v.a>0))return"सही राशि डालिए।";
+  const r=+v.r,add=v.m==="add",g=add?v.a*r/100:v.a-v.a*100/(100+r);
+  return{big:inr(add?v.a+g:v.a),note:"कुल राशि",rows:[R("बेस राशि",inr(add?v.a:v.a-g)),R("GST ("+r+"%)",inr(g)),R("CGST + SGST",inr(g/2)+" + "+inr(g/2))]}}},
+{id:"pct",n:"प्रतिशत",t:"प्रतिशत कैलकुलेटर",
+ f:[{k:"a",l:"पहली संख्या",v:500},{k:"b",l:"दूसरी संख्या",v:20},{k:"m",l:"क्या निकालना है",v:"a",o:[["a","पहली का दूसरी% कितना होगा"],["b","पहली, दूसरी का कितना प्रतिशत है"]]}],
+ c:v=>{if(isNaN(v.a)||isNaN(v.b))return"सही संख्या डालिए।";
+  if(v.m==="a")return{big:+(v.a*v.b/100).toFixed(2)+"",note:v.a+" का "+v.b+"%"};
+  if(!v.b)return"दूसरी संख्या 0 नहीं हो सकती।";
+  return{big:+(v.a/v.b*100).toFixed(2)+"%",note:v.a+" संख्या "+v.b+" का कितना प्रतिशत है"}}},
+{id:"disc",n:"डिस्काउंट",t:"डिस्काउंट कैलकुलेटर",
+ f:[{k:"p",l:"असली कीमत (₹)",v:2000},{k:"d",l:"छूट (%)",v:25,s:.1}],
+ c:v=>{if(!(v.p>0&&v.d>=0&&v.d<=100))return"कीमत और 0 से 100 के बीच छूट डालिए।";
+  const s=v.p*v.d/100;return{big:inr(v.p-s),note:"छूट के बाद कीमत",rows:[R("आपकी बचत",inr(s)),R("असली कीमत",inr(v.p))]}}},
+{id:"age",n:"उम्र",t:"उम्र कैलकुलेटर",
+ f:[{k:"dob",l:"जन्म तारीख",d:1}],
+ c:v=>{if(!v.dob)return"जन्म तारीख चुनिए।";
+  const b=new Date(v.dob),t=new Date();if(b>t)return"जन्म तारीख भविष्य में नहीं हो सकती।";
   let y=t.getFullYear()-b.getFullYear(),m=t.getMonth()-b.getMonth(),d=t.getDate()-b.getDate();
   if(d<0){m--;d+=new Date(t.getFullYear(),t.getMonth(),0).getDate()}
   if(m<0){y--;m+=12}
-  const days=Math.floor((t-b)/864e5);
-  show("ao",`<div class="big">${y} साल, ${m} महीने, ${d} दिन</div>${row("कुल दिन",days.toLocaleString("en-IN"))}${row("कुल हफ़्ते",Math.floor(days/7).toLocaleString("en-IN"))}`);
+  const days=Math.floor((t-b)/864e5),nb=new Date(t.getFullYear(),b.getMonth(),b.getDate());if(nb<t)nb.setFullYear(t.getFullYear()+1);
+  return{big:y+" साल, "+m+" महीने, "+d+" दिन",rows:[R("कुल दिन",days.toLocaleString("en-IN")),R("कुल हफ़्ते",Math.floor(days/7).toLocaleString("en-IN")),R("अगले जन्मदिन में",Math.ceil((nb-t)/864e5)+" दिन")]}}},
+{id:"bmi",n:"BMI",t:"BMI कैलकुलेटर",
+ f:[{k:"w",l:"वज़न (किलो)",v:70},{k:"h",l:"ऊँचाई (सेमी)",v:170}],
+ c:v=>{const h=v.h/100;if(!(v.w>0&&h>.5))return"सही आंकड़े डालिए।";
+  const x=v.w/(h*h);return{big:x.toFixed(1),note:x<18.5?"कम वज़न":x<25?"सामान्य":x<30?"ज़्यादा वज़न":"मोटापा",rows:[R("सामान्य वज़न की सीमा",(18.5*h*h).toFixed(0)+"–"+(24.9*h*h).toFixed(0)+" किलो")]}}}
+];
+
+let cur=T[0];
+const tabs=$("tabs");
+T.forEach(x=>{const b=document.createElement("button");b.textContent=x.n;b.setAttribute("role","tab");b.id="tab_"+x.id;b.onclick=()=>open(x.id);tabs.appendChild(b)});
+
+function open(id){
+  cur=T.find(x=>x.id===id)||T[0];
+  T.forEach(x=>$("tab_"+x.id).setAttribute("aria-selected",x===cur));
+  $("tt").textContent=cur.t;
+  $("form").innerHTML=cur.f.map(f=>{
+    const c=`id="f_${f.k}"`;
+    const inp=f.o?`<select ${c}>${f.o.map(o=>`<option value="${o[0]}"${o[0]==f.v?" selected":""}>${o[1]}</option>`).join("")}</select>`
+      :f.d?`<input ${c} type="date">`
+      :`<input ${c} type="number" inputmode="decimal" value="${f.v}" step="${f.s||1}" min="0">`;
+    return`<label>${f.l}${inp}</label>`}).join("");
+  $("form").querySelectorAll("input,select").forEach(e=>e.addEventListener("input",run));
+  try{history.replaceState(null,"","#"+cur.id)}catch(e){}
+  document.title=cur.t+" – हिसाब किताब";
+  run();
 }
-function bmi(){
-  const w=+$("b1").value,h=+$("b2").value/100;
-  if(!(w>0&&h>0.5))return show("bo","सही आंकड़े डालिए।");
-  const x=w/(h*h),c=x<18.5?"कम वज़न":x<25?"सामान्य":x<30?"ज़्यादा वज़न":"मोटापा";
-  show("bo",`<div class="big">${x.toFixed(1)}</div><p>${c}</p>${row("सामान्य वज़न की सीमा",(18.5*h*h).toFixed(0)+"–"+(24.9*h*h).toFixed(0)+" किलो")}`);
+function run(){
+  const v={};
+  cur.f.forEach(f=>{const e=$("f_"+f.k);v[f.k]=(f.o||f.d)?e.value:(e.value===""?NaN:+e.value)});
+  const r=cur.c(v),o=$("out");
+  if(typeof r==="string"){o.innerHTML=`<p>${r}</p>`;return}
+  const txt=cur.t+": "+r.big+(r.rows?" ("+r.rows.map(x=>x.join(" ")).join(", ")+")":"");
+  o.innerHTML=`<div class="big">${r.big}</div>${r.note?`<p>${r.note}</p>`:""}`
+    +(r.rows||[]).map(x=>`<div class="row"><span>${x[0]}</span><b>${x[1]}</b></div>`).join("")
+    +(r.bar?`<div class="bar"><i style="width:${Math.min(100,r.bar[0]).toFixed(1)}%"></i></div><div class="bl"><span>${r.bar[1]}</span><span>${r.bar[2]}</span></div>`:"")
+    +`<a class="wa" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(txt+"\n"+location.href)}">WhatsApp पर शेयर करें</a>`;
 }
 
-const secs=[...document.querySelectorAll(".tool")],tabs=$("tabs");
-secs.forEach((s,i)=>{
-  const b=document.createElement("button");b.textContent=s.dataset.t;b.setAttribute("role","tab");
-  b.setAttribute("aria-selected",i===0);
-  b.onclick=()=>{secs.forEach((x,j)=>x.hidden=j!==i);[...tabs.children].forEach((c,j)=>c.setAttribute("aria-selected",j===i))};
-  tabs.appendChild(b);
-});
+$("tg").onclick=()=>{
+  const d=document.documentElement,dark=d.dataset.theme?d.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+  d.dataset.theme=dark?"light":"dark";
+};
+open(location.hash.slice(1));
 </script>
 </body>
 </html>
