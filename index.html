@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>हिसाब किताब – फ्री EMI, SIP, GST, उम्र और BMI कैलकुलेटर</title>
+<meta name="description" content="फ्री ऑनलाइन कैलकुलेटर: EMI, SIP, GST, उम्र और BMI। तुरंत नतीजा, कोई साइन-अप नहीं।">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Hind:wght@400;500&display=swap">
+<style>
+:root{--bg:#eef2f1;--card:#fff;--ink:#12302b;--mut:#5a6f6a;--line:#cfdad7;--acc:#f2b705;--acc-ink:#12302b;--out:#12302b;--out-ink:#f4fbf9;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1b19;--card:#142825;--ink:#e6f2ef;--mut:#92aaa4;--line:#27413d;--out:#f2b705;--out-ink:#12302b}}
+:root[data-theme="dark"]{--bg:#0d1b19;--card:#142825;--ink:#e6f2ef;--mut:#92aaa4;--line:#27413d;--out:#f2b705;--out-ink:#12302b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 Hind,system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 40px}
+h1,h2{font-family:"Baloo 2",system-ui,sans-serif;line-height:1.15;margin:0}
+h1{font-size:clamp(30px,7vw,46px);margin-top:10px}
+.sub{color:var(--mut);margin:8px 0 18px;max-width:52ch}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}
+.tabs button{flex:none;font:500 16px Hind,sans-serif;padding:9px 16px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.ad{margin:16px 0;min-height:90px;border:1.5px dashed var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:14px;text-align:center;padding:8px}
+.tool{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:20px}
+.tool[hidden]{display:none}
+.tool h2{font-size:26px;margin-bottom:14px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+label{display:block;font-size:15px;color:var(--mut)}
+input,select{width:100%;margin-top:4px;font:500 18px Hind,sans-serif;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.go{margin-top:16px;font:700 18px "Baloo 2",sans-serif;padding:10px 26px;border:0;border-radius:8px;background:var(--acc);color:var(--acc-ink);cursor:pointer}
+.res{margin-top:18px;background:var(--out);color:var(--out-ink);border-radius:12px;padding:16px 18px;display:none}
+.res.on{display:block}
+.res .big{font:700 34px/1.1 "Baloo 2",sans-serif}
+.res p{margin:4px 0 0;opacity:.85}
+.row{display:flex;justify-content:space-between;gap:12px;border-top:1px solid rgba(128,128,128,.35);padding:6px 0;margin-top:6px}
+.faq{margin-top:26px;color:var(--mut);font-size:15px}
+.faq b{color:var(--ink)}
+footer{margin-top:30px;color:var(--mut);font-size:14px;border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 style="font-size:20px">हिसाब किताब</h2>
+  <h1>झटपट कैलकुलेटर, बिल्कुल फ्री</h1>
+  <p class="sub">लोन की EMI, SIP का रिटर्न, GST, उम्र और BMI। आंकड़े डालिए, नतीजा तुरंत मिलेगा।</p>
+
+  <div class="tabs" role="tablist" id="tabs"></div>
+
+  <!-- AD SLOT 1: यहाँ AdSense का कोड चिपकाएँ -->
+  <div class="ad" id="ad1">विज्ञापन की जगह (AdSense)</div>
+
+  <section class="tool" id="emi" data-t="EMI">
+    <h2>लोन EMI कैलकुलेटर</h2>
+    <div class="grid">
+      <label>लोन राशि (₹)<input id="e1" type="number" value="500000" min="0"></label>
+      <label>ब्याज दर (% सालाना)<input id="e2" type="number" value="9" step="0.1" min="0"></label>
+      <label>अवधि (साल)<input id="e3" type="number" value="5" min="1"></label>
+    </div>
+    <button class="go" onclick="emi()">EMI निकालें</button>
+    <div class="res" id="eo"></div>
+  </section>
+
+  <section class="tool" id="sip" data-t="SIP" hidden>
+    <h2>SIP रिटर्न कैलकुलेटर</h2>
+    <div class="grid">
+      <label>हर महीने निवेश (₹)<input id="s1" type="number" value="5000" min="0"></label>
+      <label>अनुमानित रिटर्न (% सालाना)<input id="s2" type="number" value="12" step="0.1" min="0"></label>
+      <label>अवधि (साल)<input id="s3" type="number" value="10" min="1"></label>
+    </div>
+    <button class="go" onclick="sip()">रिटर्न निकालें</button>
+    <div class="res" id="so"></div>
+  </section>
+
+  <section class="tool" id="gst" data-t="GST" hidden>
+    <h2>GST कैलकुलेटर</h2>
+    <div class="grid">
+      <label>राशि (₹)<input id="g1" type="number" value="1000" min="0"></label>
+      <label>GST दर<select id="g2"><option>5</option><option>12</option><option selected>18</option><option>28</option></select></label>
+      <label>राशि में GST<select id="g3"><option value="add">जोड़ना है (GST अलग)</option><option value="rem">पहले से शामिल है</option></select></label>
+    </div>
+    <button class="go" onclick="gst()">GST निकालें</button>
+    <div class="res" id="go"></div>
+  </section>
+
+  <section class="tool" id="age" data-t="उम्र" hidden>
+    <h2>उम्र कैलकुलेटर</h2>
+    <div class="grid">
+      <label>जन्म तारीख<input id="a1" type="date"></label>
+    </div>
+    <button class="go" onclick="age()">उम्र निकालें</button>
+    <div class="res" id="ao"></div>
+  </section>
+
+  <section class="tool" id="bmi" data-t="BMI" hidden>
+    <h2>BMI कैलकुलेटर</h2>
+    <div class="grid">
+      <label>वज़न (किलो)<input id="b1" type="number" value="70" min="1"></label>
+      <label>ऊँचाई (सेमी)<input id="b2" type="number" value="170" min="50"></label>
+    </div>
+    <button class="go" onclick="bmi()">BMI निकालें</button>
+    <div class="res" id="bo"></div>
+  </section>
+
+  <!-- AD SLOT 2: यहाँ AdSense का कोड चिपकाएँ -->
+  <div class="ad" id="ad2">विज्ञापन की जगह (AdSense)</div>
+
+  <div class="faq">
+    <p><b>EMI क्या है?</b> लोन चुकाने की हर महीने की तय किस्त, जिसमें मूलधन और ब्याज दोनों होते हैं।</p>
+    <p><b>SIP क्या है?</b> हर महीने तय रकम म्यूचुअल फंड में लगाने का तरीका। रिटर्न अनुमानित होता है, गारंटी नहीं।</p>
+  </div>
+  <footer>ये कैलकुलेटर सिर्फ़ अनुमान के लिए हैं, वित्तीय या मेडिकल सलाह नहीं। © हिसाब किताब</footer>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const inr=n=>"₹"+Math.round(n).toLocaleString("en-IN");
+const show=(id,html)=>{const e=$(id);e.innerHTML=html;e.classList.add("on")};
+const row=(a,b)=>`<div class="row"><span>${a}</span><b>${b}</b></div>`;
+
+function emi(){
+  const P=+$("e1").value,r=+$("e2").value/1200,n=+$("e3").value*12;
+  if(!(P>0&&n>0))return show("eo","सही आंकड़े डालिए।");
+  const m=r?P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1):P/n,t=m*n;
+  show("eo",`<div class="big">${inr(m)} / महीना</div>${row("कुल ब्याज",inr(t-P))}${row("कुल भुगतान",inr(t))}`);
+}
+function sip(){
+  const p=+$("s1").value,r=+$("s2").value/1200,n=+$("s3").value*12;
+  if(!(p>0&&n>0))return show("so","सही आंकड़े डालिए।");
+  const f=r?p*((Math.pow(1+r,n)-1)/r)*(1+r):p*n,i=p*n;
+  show("so",`<div class="big">${inr(f)}</div><p>अनुमानित कुल रकम</p>${row("आपका निवेश",inr(i))}${row("अनुमानित कमाई",inr(f-i))}`);
+}
+function gst(){
+  const a=+$("g1").value,r=+$("g2").value,add=$("g3").value==="add";
+  if(!(a>0))return show("go","सही राशि डालिए।");
+  const g=add?a*r/100:a-a*100/(100+r),base=add?a:a-g;
+  show("go",`<div class="big">${inr(add?a+g:a)}</div><p>कुल राशि</p>${row("बेस राशि",inr(base))}${row("GST ("+r+"%)",inr(g))}${row("CGST + SGST",inr(g/2)+" + "+inr(g/2))}`);
+}
+function age(){
+  const v=$("a1").value;if(!v)return show("ao","जन्म तारीख चुनिए।");
+  const b=new Date(v),t=new Date();if(b>t)return show("ao","जन्म तारीख भविष्य में नहीं हो सकती।");
+  let y=t.getFullYear()-b.getFullYear(),m=t.getMonth()-b.getMonth(),d=t.getDate()-b.getDate();
+  if(d<0){m--;d+=new Date(t.getFullYear(),t.getMonth(),0).getDate()}
+  if(m<0){y--;m+=12}
+  const days=Math.floor((t-b)/864e5);
+  show("ao",`<div class="big">${y} साल, ${m} महीने, ${d} दिन</div>${row("कुल दिन",days.toLocaleString("en-IN"))}${row("कुल हफ़्ते",Math.floor(days/7).toLocaleString("en-IN"))}`);
+}
+function bmi(){
+  const w=+$("b1").value,h=+$("b2").value/100;
+  if(!(w>0&&h>0.5))return show("bo","सही आंकड़े डालिए।");
+  const x=w/(h*h),c=x<18.5?"कम वज़न":x<25?"सामान्य":x<30?"ज़्यादा वज़न":"मोटापा";
+  show("bo",`<div class="big">${x.toFixed(1)}</div><p>${c}</p>${row("सामान्य वज़न की सीमा",(18.5*h*h).toFixed(0)+"–"+(24.9*h*h).toFixed(0)+" किलो")}`);
+}
+
+const secs=[...document.querySelectorAll(".tool")],tabs=$("tabs");
+secs.forEach((s,i)=>{
+  const b=document.createElement("button");b.textContent=s.dataset.t;b.setAttribute("role","tab");
+  b.setAttribute("aria-selected",i===0);
+  b.onclick=()=>{secs.forEach((x,j)=>x.hidden=j!==i);[...tabs.children].forEach((c,j)=>c.setAttribute("aria-selected",j===i))};
+  tabs.appendChild(b);
+});
+</script>
+</body>
+</html>
