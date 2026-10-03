@@ -5,78 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>हिसाब किताब – फ्री EMI, SIP, FD, GST, प्रतिशत, डिस्काउंट, उम्र, BMI कैलकुलेटर</title>
 <meta name="description" content="फ्री ऑनलाइन कैलकुलेटर: EMI, SIP, FD, GST, प्रतिशत, डिस्काउंट, उम्र और BMI। लिखते ही नतीजा, WhatsApp पर शेयर करें।">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Hind:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Hind:wght@400;500&display=swap">
 <style>
-:root{--bg:#f4f3ff;--card:#fff;--ink:#17153a;--mut:#6b6a8c;--line:#e1defa;--p1:#5b4bff;--p2:#8a3ffc;--hi:#ffd25a;--acc:#5b4bff;--acc-ink:#fff;--sh:0 10px 30px rgba(91,75,255,.12);
+:root{--bg:#eef2f1;--card:#fff;--ink:#12302b;--mut:#5a6f6a;--line:#cfdad7;--acc:#f2b705;--acc-ink:#12302b;--out:#12302b;--out-ink:#f4fbf9;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0d1c;--card:#191733;--ink:#eceaff;--mut:#9b99c2;--line:#2b2850;--p1:#7a6bff;--p2:#a45bff;--sh:none}}
-:root[data-theme="dark"]{--bg:#0e0d1c;--card:#191733;--ink:#eceaff;--mut:#9b99c2;--line:#2b2850;--p1:#7a6bff;--p2:#a45bff;--sh:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1b19;--card:#142825;--ink:#e6f2ef;--mut:#92aaa4;--line:#27413d;--out:#f2b705;--out-ink:#12302b}}
+:root[data-theme="dark"]{--bg:#0d1b19;--card:#142825;--ink:#e6f2ef;--mut:#92aaa4;--line:#27413d;--out:#f2b705;--out-ink:#12302b}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 Hind,system-ui,sans-serif;background-image:radial-gradient(600px 300px at 90% -50px,rgba(138,63,252,.18),transparent)}
-.wrap{max-width:720px;margin:0 auto;padding:16px 16px 48px}
-h1,h2,.logo{font-family:Poppins,Hind,system-ui,sans-serif}
-h1,h2{line-height:1.2;margin:0}
-h1{font-size:clamp(28px,7vw,42px);font-weight:700;margin:22px 0 6px;background:linear-gradient(90deg,var(--p1),var(--p2));-webkit-background-clip:text;background-clip:text;color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 Hind,system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 40px}
+h1,h2{font-family:"Baloo 2",system-ui,sans-serif;line-height:1.15;margin:0}
+h1{font-size:clamp(30px,7vw,46px);margin-top:10px}
 .top{display:flex;justify-content:space-between;align-items:center}
-.logo{font-weight:700;font-size:18px;display:flex;align-items:center;gap:8px}
-.logo b{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--p1),var(--p2));color:#fff}
-.sub{color:var(--mut);margin:0 0 18px}
+.logo{font:700 20px "Baloo 2",sans-serif}
+.sub{color:var(--mut);margin:8px 0 18px;max-width:52ch}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}
 button{font-family:inherit;cursor:pointer}
-.tg{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-size:18px;padding:0}
-.srch{margin:0 0 14px;padding:13px 16px;border-radius:14px;box-shadow:var(--sh)}
-.tabs{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}
-.tabs button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 4px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:16px;font:500 13px Hind,sans-serif;box-shadow:var(--sh)}
-.tabs button[hidden]{display:none}
-.tabs i{font-style:normal;font-size:24px;line-height:1.3}
-.tabs button[aria-selected=true]{background:linear-gradient(135deg,var(--p1),var(--p2));border-color:transparent;color:#fff}
-button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--p1);outline-offset:2px}
-.ad{margin:18px 0;min-height:90px;border:1.5px dashed var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:13px;text-align:center;padding:8px}
-.tool{background:var(--card);border:1.5px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--sh)}
-.tool h2{font-size:21px;margin-bottom:16px}
-.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
-label{display:block;font-size:14px;color:var(--mut);font-weight:500}
-input,select{width:100%;margin-top:5px;font:500 17px Hind,sans-serif;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)}
-input:focus,select:focus{border-color:var(--p1)}
-.res{margin-top:20px;background:linear-gradient(135deg,var(--p1),var(--p2));color:#fff;border-radius:18px;padding:20px}
-.res .big{font:700 clamp(26px,7vw,36px)/1.15 Poppins,Hind,sans-serif}
-.res p{margin:6px 0 0;opacity:.9}
-.row{display:flex;justify-content:space-between;gap:12px;border-top:1px solid rgba(255,255,255,.25);padding:8px 0;margin-top:8px;font-size:15px}
-.bar{height:12px;border-radius:8px;background:rgba(255,255,255,.28);margin-top:14px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--hi);border-radius:8px}
-.bl{display:flex;justify-content:space-between;font-size:13px;opacity:.9;margin-top:5px}
-.hw{display:block;color:var(--p1);font-size:13px;min-height:18px;margin-top:2px;font-weight:500}
-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
-td,th{padding:6px 0;border-top:1px solid rgba(255,255,255,.25);text-align:left}
-td:last-child,th:last-child{text-align:right}
-.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.acts .tg{width:auto;height:auto;border-radius:12px;padding:10px 16px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);color:#fff;font:500 15px Hind,sans-serif}
-.wa{display:inline-block;padding:10px 16px;border-radius:12px;background:#25d366;color:#05301a;font:600 15px Hind,sans-serif;text-decoration:none}
-.hi{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:10px 0;font-size:15px}
-#hist>.tg{width:auto;height:auto;border-radius:12px;padding:8px 16px;margin-top:10px;font:500 14px Hind,sans-serif}
-.mut{color:var(--mut);margin:0}
+.tabs button,.tg{flex:none;font:500 16px Hind,sans-serif;padding:9px 16px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px}
+.tabs button[aria-selected=true]{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.ad{margin:16px 0;min-height:90px;border:1.5px dashed var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:14px;text-align:center;padding:8px}
+.tool{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:20px}
+.tool h2{font-size:26px;margin-bottom:14px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+label{display:block;font-size:15px;color:var(--mut)}
+input,select{width:100%;margin-top:4px;font:500 18px Hind,sans-serif;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.res{margin-top:18px;background:var(--out);color:var(--out-ink);border-radius:12px;padding:16px 18px}
+.res .big{font:700 34px/1.1 "Baloo 2",sans-serif}
+.res p{margin:4px 0 0;opacity:.85}
+.row{display:flex;justify-content:space-between;gap:12px;border-top:1px solid rgba(128,128,128,.35);padding:6px 0;margin-top:6px}
+.bar{height:10px;border-radius:6px;background:rgba(128,128,128,.4);margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);}
+.bl{display:flex;justify-content:space-between;font-size:13px;opacity:.85;margin-top:4px}
+.wa{display:inline-block;margin-top:14px;padding:9px 18px;border-radius:8px;background:#25d366;color:#06301a;font:700 16px "Baloo 2",sans-serif;text-decoration:none}
 .faq{margin-top:26px;color:var(--mut);font-size:15px}
 .faq b{color:var(--ink)}
-footer{margin-top:30px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
-@media print{.tabs,.ad,.srch,.faq,footer,.top,.acts,#histw,.sub{display:none}.res{background:#fff;color:#000}}
-.tools{display:flex;gap:8px;align-items:center}
-.dots{display:flex;gap:6px}
-.dots button{width:22px;height:22px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 1.5px var(--line);padding:0}
-#lg{font:700 13px Poppins,Hind,sans-serif}
-.bnav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--card);border-top:1.5px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));justify-content:space-around}
-.bnav button{flex:1;background:none;border:0;color:var(--ink);font-size:20px;line-height:1.3;padding:4px 0;display:flex;flex-direction:column;align-items:center}
-.bnav span{font:500 11px Hind,sans-serif;color:var(--mut)}
-@media(max-width:720px){.bnav{display:flex}body{padding-bottom:78px}}
-@media print{.bnav{display:none}}
+footer{margin-top:30px;color:var(--mut);font-size:14px;border-top:1px solid var(--line);padding-top:14px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="top"><span class="logo"><b>₹</b>हिसाब किताब</span><div class="tools"><div class="dots" id="dots"></div><button class="tg" id="lg" aria-label="Language">EN</button><button class="tg" id="tg" aria-label="Theme">🌓</button></div></div>
+  <div class="top"><span class="logo">हिसाब किताब</span><button class="tg" id="tg" aria-label="डार्क या लाइट मोड बदलें">🌓</button></div>
   <h1>झटपट कैलकुलेटर, बिल्कुल फ्री</h1>
   <p class="sub">आंकड़े लिखते ही नतीजा बदल जाता है। कोई साइन-अप नहीं।</p>
 
-  <input class="srch" id="q" type="search" placeholder="टूल खोजिए: जैसे लोन, छूट, महंगाई" aria-label="टूल खोजें">
   <div class="tabs" role="tablist" id="tabs"></div>
 
   <!-- AD SLOT 1: यहाँ AdSense का कोड चिपकाएँ -->
@@ -86,11 +59,6 @@ footer{margin-top:30px;color:var(--mut);font-size:13px;border-top:1px solid var(
     <h2 id="tt"></h2>
     <div class="grid" id="form"></div>
     <div class="res" id="out" aria-live="polite"></div>
-  </section>
-
-  <section class="tool" id="histw" style="margin-top:16px">
-    <h2>मेरे सेव किए हिसाब</h2>
-    <div id="hist"></div>
   </section>
 
   <!-- AD SLOT 2: यहाँ AdSense का कोड चिपकाएँ -->
@@ -104,13 +72,6 @@ footer{margin-top:30px;color:var(--mut);font-size:13px;border-top:1px solid var(
   <footer>ये कैलकुलेटर सिर्फ़ अनुमान के लिए हैं, वित्तीय या मेडिकल सलाह नहीं। © हिसाब किताब</footer>
 </div>
 
-<nav class="bnav" aria-label="Quick tools">
-<button onclick="nav('emi')">🏦<span>EMI</span></button>
-<button onclick="nav('sip')">📈<span>SIP</span></button>
-<button onclick="nav('gst')">🧾<span>GST</span></button>
-<button onclick="nav('goal')">🎯<span>लक्ष्य</span></button>
-<button onclick="$('histw').scrollIntoView({behavior:'smooth'})">💾<span>सहेजे</span></button>
-</nav>
 <script>
 const $=id=>document.getElementById(id);
 const inr=n=>"₹"+Math.round(n).toLocaleString("en-IN");
@@ -123,9 +84,7 @@ const T=[
  f:[{k:"amt",l:"लोन राशि (₹)",v:500000},{k:"rate",l:"ब्याज दर (% सालाना)",v:9,s:.1},{k:"yrs",l:"अवधि (साल)",v:5}],
  c:v=>{if(!(v.amt>0&&v.yrs>0&&v.rate>=0))return"सही आंकड़े डालिए।";
   const r=v.rate/1200,n=v.yrs*12,m=r?v.amt*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1):v.amt/n,t=m*n;
-  let b=v.amt;const tb=[["वर्ष","बाकी लोन"]];
-  for(let y=1;y<=Math.min(Math.ceil(v.yrs),30);y++){for(let i=0;i<12&&(y-1)*12+i<n;i++)b=b*(1+r)-m;tb.push([y,inr(Math.max(b,0))])}
-  return{big:inr(m)+" / महीना",rows:[R("कुल ब्याज",inr(t-v.amt)),R("कुल भुगतान",inr(t))],bar:[v.amt/t*100,"मूलधन","ब्याज"],table:tb}}},
+  return{big:inr(m)+" / महीना",rows:[R("कुल ब्याज",inr(t-v.amt)),R("कुल भुगतान",inr(t))],bar:[v.amt/t*100,"मूलधन","ब्याज"]}}},
 {id:"sip",n:"SIP",t:"SIP रिटर्न कैलकुलेटर",
  f:[{k:"p",l:"हर महीने निवेश (₹)",v:5000},{k:"rate",l:"अनुमानित रिटर्न (% सालाना)",v:12,s:.1},{k:"yrs",l:"अवधि (साल)",v:10}],
  c:v=>{if(!(v.p>0&&v.yrs>0&&v.rate>=0))return"सही आंकड़े डालिए।";
@@ -144,9 +103,9 @@ const T=[
 {id:"pct",n:"प्रतिशत",t:"प्रतिशत कैलकुलेटर",
  f:[{k:"a",l:"पहली संख्या",v:500},{k:"b",l:"दूसरी संख्या",v:20},{k:"m",l:"क्या निकालना है",v:"a",o:[["a","पहली का दूसरी% कितना होगा"],["b","पहली, दूसरी का कितना प्रतिशत है"]]}],
  c:v=>{if(isNaN(v.a)||isNaN(v.b))return"सही संख्या डालिए।";
-  if(v.m==="a")return{big:+(v.a*v.b/100).toFixed(2)+"",note:v.a+" × "+v.b+"%"};
+  if(v.m==="a")return{big:+(v.a*v.b/100).toFixed(2)+"",note:v.a+" का "+v.b+"%"};
   if(!v.b)return"दूसरी संख्या 0 नहीं हो सकती।";
-  return{big:+(v.a/v.b*100).toFixed(2)+"%",note:v.a+" ÷ "+v.b+" × 100"}}},
+  return{big:+(v.a/v.b*100).toFixed(2)+"%",note:v.a+" संख्या "+v.b+" का कितना प्रतिशत है"}}},
 {id:"disc",n:"डिस्काउंट",t:"डिस्काउंट कैलकुलेटर",
  f:[{k:"p",l:"असली कीमत (₹)",v:2000},{k:"d",l:"छूट (%)",v:25,s:.1}],
  c:v=>{if(!(v.p>0&&v.d>=0&&v.d<=100))return"कीमत और 0 से 100 के बीच छूट डालिए।";
@@ -166,67 +125,42 @@ const T=[
   const x=v.w/(h*h);return{big:x.toFixed(1),note:x<18.5?"कम वज़न":x<25?"सामान्य":x<30?"ज़्यादा वज़न":"मोटापा",rows:[R("सामान्य वज़न की सीमा",(18.5*h*h).toFixed(0)+"–"+(24.9*h*h).toFixed(0)+" किलो")]}}}
 ];
 
-T.push(
-{id:"goal",n:"लक्ष्य SIP",t:"लक्ष्य SIP: कितना निवेश करूँ?",
- f:[{k:"g",l:"जितना पैसा चाहिए (₹)",v:1000000},{k:"rate",l:"अनुमानित रिटर्न (% सालाना)",v:12,s:.1},{k:"yrs",l:"कितने साल में",v:10}],
- c:v=>{if(!(v.g>0&&v.yrs>0&&v.rate>=0))return"सही आंकड़े डालिए।";
-  const r=v.rate/1200,n=v.yrs*12,p=r?v.g/(((Math.pow(1+r,n)-1)/r)*(1+r)):v.g/n,i=p*n;
-  return{big:inr(p)+" / महीना",note:"लक्ष्य पाने के लिए हर महीने का SIP",rows:[R("कुल निवेश",inr(i)),R("अनुमानित कमाई",inr(v.g-i))],bar:[i/v.g*100,"निवेश","कमाई"]}}},
-{id:"infl",n:"महंगाई",t:"महंगाई कैलकुलेटर: पैसे की कीमत",
- f:[{k:"a",l:"आज की रकम (₹)",v:100000},{k:"rate",l:"महंगाई दर (% सालाना)",v:6,s:.1},{k:"yrs",l:"कितने साल बाद",v:10}],
- c:v=>{if(!(v.a>0&&v.yrs>0&&v.rate>=0))return"सही आंकड़े डालिए।";
-  const f=Math.pow(1+v.rate/100,v.yrs);
-  return{big:inr(v.a*f),note:"आज की "+inr(v.a)+" वाली चीज़ की कीमत "+v.yrs+" साल बाद",rows:[R("आज की रकम की तब कीमत",inr(v.a/f)),R("खरीदने की ताकत घटेगी",((1-1/f)*100).toFixed(0)+"%")]}}},
-{id:"cmp",n:"लोन तुलना",t:"दो लोन की तुलना",
- f:[{k:"amt",l:"लोन राशि (₹)",v:1000000},{k:"yrs",l:"अवधि (साल)",v:10},{k:"a",l:"बैंक A की ब्याज दर (%)",v:9.5,s:.05},{k:"b",l:"बैंक B की ब्याज दर (%)",v:8.9,s:.05}],
- c:v=>{if(!(v.amt>0&&v.yrs>0&&v.a>=0&&v.b>=0))return"सही आंकड़े डालिए।";
-  const n=v.yrs*12,e=x=>{const r=x/1200;return r?v.amt*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1):v.amt/n},ea=e(v.a),eb=e(v.b),d=Math.abs(ea-eb)*n;
-  return{big:ea===eb?"दोनों बराबर":(eb<ea?"बैंक B":"बैंक A")+" सस्ता",note:"कुल बचत "+inr(d),rows:[R("बैंक A की EMI",inr(ea)),R("बैंक B की EMI",inr(eb)),R("बैंक A का कुल ब्याज",inr(ea*n-v.amt)),R("बैंक B का कुल ब्याज",inr(eb*n-v.amt))]}}}
-);
-const words=n=>{const f=(x,u)=>+x.toFixed(2)+" "+u;return n>=1e7?f(n/1e7,"करोड़"):n>=1e5?f(n/1e5,"लाख"):n>=1e3?f(n/1e3,"हज़ार"):""};
 let cur=T[0];
-const tabs=$("tabs"),IC={emi:"🏦",sip:"📈",fd:"🔒",gst:"🧾",pct:"％",disc:"🏷️",age:"🎂",bmi:"⚖️",goal:"🎯",infl:"🎈",cmp:"🆚"};
-T.forEach(x=>{const b=document.createElement("button");b.innerHTML=`<i>${IC[x.id]||"🧮"}</i><span>${x.n}</span>`;b.setAttribute("role","tab");b.id="tab_"+x.id;b.onclick=()=>open(x.id);tabs.appendChild(b)});
+const tabs=$("tabs");
+T.forEach(x=>{const b=document.createElement("button");b.textContent=x.n;b.setAttribute("role","tab");b.id="tab_"+x.id;b.onclick=()=>open(x.id);tabs.appendChild(b)});
 
 function open(id){
   cur=T.find(x=>x.id===id)||T[0];
   T.forEach(x=>$("tab_"+x.id).setAttribute("aria-selected",x===cur));
-  $("tt").textContent=cur.t;L($("tt"));
+  $("tt").textContent=cur.t;
   $("form").innerHTML=cur.f.map(f=>{
     const c=`id="f_${f.k}"`;
     const inp=f.o?`<select ${c}>${f.o.map(o=>`<option value="${o[0]}"${o[0]==f.v?" selected":""}>${o[1]}</option>`).join("")}</select>`
       :f.d?`<input ${c} type="date">`
       :`<input ${c} type="number" inputmode="decimal" value="${f.v}" step="${f.s||1}" min="0">`;
-    return`<label>${f.l}${inp}${f.l.includes("₹")?`<span class="hw" id="w_${f.k}"></span>`:""}</label>`}).join("");
-  L($("form"));
+    return`<label>${f.l}${inp}</label>`}).join("");
   $("form").querySelectorAll("input,select").forEach(e=>e.addEventListener("input",run));
   try{history.replaceState(null,"","#"+cur.id)}catch(e){}
-  document.title=tr(cur.t+" – हिसाब किताब");
+  document.title=cur.t+" – हिसाब किताब";
   run();
 }
 function run(){
   const v={};
   cur.f.forEach(f=>{const e=$("f_"+f.k);v[f.k]=(f.o||f.d)?e.value:(e.value===""?NaN:+e.value)});
-  cur.f.forEach(f=>{const w=$("w_"+f.k);if(w)w.textContent=tr(words(v[f.k]))});
   const r=cur.c(v),o=$("out");
-  if(typeof r==="string"){o.innerHTML=`<p>${r}</p>`;L(o);return}
-  const txt=tr(cur.t+": "+r.big+(r.rows?" ("+r.rows.map(x=>x.join(" ")).join(", ")+")":""));
+  if(typeof r==="string"){o.innerHTML=`<p>${r}</p>`;return}
+  const txt=cur.t+": "+r.big+(r.rows?" ("+r.rows.map(x=>x.join(" ")).join(", ")+")":"");
   o.innerHTML=`<div class="big">${r.big}</div>${r.note?`<p>${r.note}</p>`:""}`
     +(r.rows||[]).map(x=>`<div class="row"><span>${x[0]}</span><b>${x[1]}</b></div>`).join("")
     +(r.bar?`<div class="bar"><i style="width:${Math.min(100,r.bar[0]).toFixed(1)}%"></i></div><div class="bl"><span>${r.bar[1]}</span><span>${r.bar[2]}</span></div>`:"")
-    +(r.table?`<table>${r.table.map((x,i)=>`<${i?"td":"th"}>${x[0]}</${i?"td":"th"}><${i?"td":"th"}>${x[1]}</${i?"td":"th"}>`.replace(/^(.*)$/,"<tr>$1</tr>")).join("")}</table>`:"")
-    +`<div class="acts"><button class="tg" onclick="saveH()">सेव करें</button><button class="tg" onclick="print()">प्रिंट / PDF</button><a class="wa" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(txt+"\n"+location.href)}">WhatsApp पर शेयर</a></div>`;
-  last={id:cur.id,t:cur.t,big:r.big};L(o);
+    +`<a class="wa" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(txt+"\n"+location.href)}">WhatsApp पर शेयर करें</a>`;
 }
 
-let last=null;const HK="hk_hist";
-const ld=()=>{try{return JSON.parse(localStorage.getItem(HK)||"[]")}catch(e){return[]}};
-function saveH(){if(!last)return;const a=ld();a.unshift({...last,w:new Date().toLocaleDateString("en-IN")});try{localStorage.setItem(HK,JSON.stringify(a.slice(0,20)))}catch(e){}renderH()}
-function clrH(){try{localStorage.removeItem(HK)}catch(e){}renderH()}
-function renderH(){const a=ld();$("hist").innerHTML=a.length?a.map(x=>`<div class="hi"><span>${x.t}<br><small>${x.w}</small></span><b>${x.big}</b></div>`).join("")+`<button class="tg" onclick="clrH()">सब हटाएँ</button>`:`<p class="mut">अभी कोई हिसाब सेव नहीं है। नतीजे के नीचे "सेव करें" दबाइए।</p>`}
-$("q").addEventListener("input",e=>{const s=e.target.value.trim().toLowerCase();T.forEach(x=>$("tab_"+x.id).hidden=!!s&&!(x.n+" "+x.t).toLowerCase().includes(s))});
-renderH();
-const D={"झटपट कैलकुलेटर, बिल्कुल फ्री":"Instant calculators, totally free","आंकड़े लिखते ही नतीजा बदल जाता है। कोई साइन-अप नहीं।":"Results update as you type. No sign-up.","टूल खोजिए: जैसे लोन, छूट, महंगाई":"Search tools: e.g. loan, discount, inflation","विज्ञापन की जगह (AdSense)":"Ad space (AdSense)","मेरे सेव किए हिसाब":"My saved calculations","EMI क्या है?":"What is EMI?","लोन चुकाने की हर महीने की तय किस्त, जिसमें मूलधन और ब्याज दोनों होते हैं।":"The fixed monthly instalment to repay a loan, covering both principal and interest.","SIP क्या है?":"What is SIP?","हर महीने तय रकम म्यूचुअल फंड में लगाने का तरीका। रिटर्न अनुमानित होता है, गारंटी नहीं।":"A way to invest a fixed amount in mutual funds every month. Returns are estimates, not guaranteed.","FD का ब्याज कैसे जुड़ता है?":"How is FD interest added?","यहाँ हर तिमाही चक्रवृद्धि मानी गई है, जैसा ज़्यादातर बैंक करते हैं।":"Interest is compounded quarterly here, as most banks do.","ये कैलकुलेटर सिर्फ़ अनुमान के लिए हैं, वित्तीय या मेडिकल सलाह नहीं।":"These calculators give estimates only, not financial or medical advice.","हिसाब किताब":"Hisab Kitab",
-"प्रतिशत":"Percent","डिस्काउंट":"Discount","उम्र":"Age","लक्ष्य SIP: कितना निवेश करूँ?":"Goal SIP: how much should I invest?","लक्ष्य SIP":"Goal SIP","लक्ष्य":"Goal","सहेजे":"Saved","महंगाई कैलकुलेटर: पैसे की कीमत":"Inflation Calculator: value of money","महंगाई":"Inflation","लोन तुलना":"Loan compare","दो लोन की तुलना":"Compare two loans",
-"लोन EMI कैलकुलेटर":"Loan EMI Calculator","SIP रिटर्न कैलकुलेटर":"SIP Return Calculator","FD कैलकुलेटर":"FD Calculator","GST कैलकुलेटर":"GST Calculator","प्रतिशत कैलकुलेटर":"Percentage Calculator","डिस्काउंट कैलकुलेटर":"Discount Calculator","उम्र कैलकुलेटर":"Age Calculator","BMI कैलकुलेटर":"BMI Calculator",
-"लोन राशि (₹)":"Loan amount (₹)","ब्याज दर (% सालाना)":"Interest rate (% per year)","अवधि (साल)":"Tenure (years)","हर महीने निवेश (₹)":"Monthly investment (₹)","अनुमानित रिटर्न (% सालाना)":"Expected return (% per year)","जमा राशि (₹)":"Deposit amount (₹)","राशि (₹)":"Amount (₹)","GST दर":"GST rate","GST कैसे लगाना है":"How to apply GST","राशि में जोड़ना है":"Add to amount","राशि में पहले से शामिल है":"Already included in amount","पहली संख्या":"First number","दूसरी संख्या":"Second number","क्या निकालना है":"What to find","पहली का दूसरी% कितना होगा":"Second % of first","पहली, दूसरी का कितना प्रतिशत है":
+$("tg").onclick=()=>{
+  const d=document.documentElement,dark=d.dataset.theme?d.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+  d.dataset.theme=dark?"light":"dark";
+};
+open(location.hash.slice(1));
+</script>
+</body>
+</html>
